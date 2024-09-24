@@ -4,6 +4,7 @@ import styles from './styles.module.css';
 import Footer from '../../component/footer';
 import Header from '../../component/header';
 import Tagbar from '../../component/tagbar';
+import api from '../../config/axios';
 
 const BlogDetail = () => {
     const { postId } = useParams(); // Lấy ID bài viết từ URL
@@ -18,17 +19,21 @@ const BlogDetail = () => {
         // Hàm lấy chi tiết bài viết từ API dựa vào postId
         const loadPostContent = async (id) => {
             try {
-                const response = await fetch(`http://localhost:8080/posts/${id}`);
-                if (!response.ok) {
+                const response = await api.get(`/posts/${id}`); // Sử dụng 'api' đã cấu hình
+
+                // Kiểm tra nếu phản hồi không hợp lệ
+                if (response.status !== 200) {
                     throw new Error('Bài viết không tồn tại.');
                 }
-                const data = await response.json();
+
+                const data = response.data; // Lấy dữ liệu từ phản hồi
                 setPost(data); // Lưu nội dung bài viết vào state
             } catch (error) {
                 console.error('Lỗi khi tải nội dung bài viết:', error);
                 setError('Đã xảy ra lỗi khi tải nội dung bài viết.');
             }
         };
+
 
         // Gọi hàm để tải nội dung bài viết khi component được mount
         if (postId) {

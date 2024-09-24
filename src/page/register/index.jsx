@@ -4,6 +4,8 @@ import styles from './styles.module.css'; // CSS module cho định kiểu
 import axios from 'axios'; // Import axios để gọi API
 
 const RegisterForm = () => {
+    const navigate = useNavigate();
+    
     useEffect(() => {
         document.body.style.backgroundImage = "url('/imagines/background/Koi.jpg')";
         document.body.style.backgroundSize = "cover";
@@ -16,25 +18,24 @@ const RegisterForm = () => {
 
     const [errors, setErrors] = useState({});
     const [registerValues, setRegisterValues] = useState({
-        username: '',
+        userName: '',
         password: '',
         email: '',
-        phoneNumber: ''
+        phone: ''
     });
 
-    const navigate = useNavigate();
-
     const handleInputChange = (e) => {
+        const { name, value } = e.target;
         setRegisterValues({
             ...registerValues,
-            [e.target.name]: e.target.value
+            [name]: value
         });
     };
 
     const handleRegister = async (e) => {
         e.preventDefault();
 
-        const { username, password, email, phoneNumber } = registerValues;
+        const { userName, password, email, phone } = registerValues;
 
         // Regex xác thực email và số điện thoại
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -48,8 +49,8 @@ const RegisterForm = () => {
         }
 
         // Xác thực định dạng số điện thoại
-        if (!phoneRegex.test(phoneNumber)) {
-            newErrors.phoneNumber = 'Số điện thoại phải có 10 chữ số!';
+        if (!phoneRegex.test(phone)) {
+            newErrors.phone = 'Số điện thoại phải có 10 chữ số!';
         }
 
         // Cập nhật lỗi
@@ -62,11 +63,11 @@ const RegisterForm = () => {
 
         try {
             // Gửi request tới API đăng ký
-            const response = await axios.post('https://dummyjson.com/users/add', {
-                username,
+            const response = await axios.post('/user/addUser', { // Thay đổi URL cho API
+                userName,
                 password,
                 email,
-                phone: phoneNumber
+                phone: phone
             });
             console.log('Đăng ký thành công:', response.data);
 
@@ -74,6 +75,7 @@ const RegisterForm = () => {
             navigate('/login');
         } catch (error) {
             console.error('Đăng ký không thành công:', error);
+            setErrors({ ...errors, api: 'Đăng ký không thành công. Vui lòng thử lại.' }); // Thêm thông báo lỗi từ API
         }
     };
 
@@ -83,10 +85,10 @@ const RegisterForm = () => {
                 <h1>Đăng ký</h1>
                 <div className={styles.inputBox}>
                     <input
-                        name='username'
+                        name='userName' // Sửa name thành 'userName'
                         type='text'
                         placeholder='Tên đăng nhập'
-                        value={registerValues.username}
+                        value={registerValues.userName}
                         onChange={handleInputChange}
                         required
                     />
@@ -114,15 +116,17 @@ const RegisterForm = () => {
                 </div>
                 <div className={styles.inputBox}>
                     <input
-                        name='phoneNumber'
+                        name='phone'
                         type='text'
                         placeholder='Số điện thoại'
-                        value={registerValues.phoneNumber}
+                        value={registerValues.phone}
                         onChange={handleInputChange}
                         required
                     />
-                    {errors.phoneNumber && <p className={styles.error}>{errors.phoneNumber}</p>} {/* Hiển thị lỗi số điện thoại */}
+                    {errors.phone && <p className={styles.error}>{errors.phone}</p>} {/* Hiển thị lỗi số điện thoại */}
                 </div>
+                {errors.api && <p className={styles.error}>{errors.api}</p>} {/* Hiển thị lỗi từ API */}
+
                 <button type='submit'>Đăng ký</button>
 
                 <div className={styles.registerLink}>

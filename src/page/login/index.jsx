@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import styles from './login.module.css';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../config/axios'
 
 export const LoginForm = () => {
     const [userName, setUsername] = useState('');
@@ -27,13 +27,17 @@ export const LoginForm = () => {
         const loginValues = { userName, password };
 
         try {
-            // Thêm 'http://' trước địa chỉ API
-            const response = await axios.post('http://localhost:8080/user/login', loginValues);
-
-            localStorage.setItem('token', response.data.token);
-            navigate('/');
+            // Gửi request đăng nhập bằng api đã cấu hình
+            const response = await api.post(`/user/login/${userName}/${password}`, loginValues);
+            // Kiểm tra response và điều hướng
+            if (response.status === 200 && response.data === 'Login successfully') {
+                localStorage.setItem('token', response.data.token);
+                navigate('/');
+            } else {
+                setErrorMessage("Tài khoản hoặc mật khẩu sai");
+            }
         } catch (error) {
-            setErrorMessage("Tài khoản hoặc mật khẩu sai"); // Cập nhật thông báo lỗi
+            throw error;
         }
     };
 
@@ -66,7 +70,7 @@ export const LoginForm = () => {
                     </div>
                     <div className={styles['remmember-forgot']}>
                         <label><input type='checkbox' />Lưu tài khoản</label>
-                        <a href="#" onClick={() => navigate('/forgot-password')}>Quên mật khẩu</a>
+                        <a href="" onClick={() => navigate('/forgot-password')}>Quên mật khẩu</a>
                     </div>
                     <div className={styles.buttonGroup}>
                         <button type="button" style={{ backgroundColor: 'gray' }} onClick={() => navigate('/')}>Quay lại</button>

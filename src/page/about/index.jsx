@@ -1,43 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import api from '../../config/axios';
+import axios from 'axios';
 import styles from './blog.module.css';
 import Footer from '../../component/footer';
 import Tagbar from '../../component/tagbar';
 import Header from '../../component/header';
 
-const Blog = () => {
-    const [posts, setPosts] = useState([]); // Khởi tạo state để lưu dữ liệu từ API
-    const [visiblePosts, setVisiblePosts] = useState(4); // Số lượng bài viết hiển thị ban đầu
-    const [loading, setLoading] = useState(true); // State để theo dõi trạng thái tải dữ liệu
-
-    useEffect(() => {
-        // Gọi API để lấy dữ liệu
-        // Gọi API để lấy dữ liệu
-        api.get('/posts')  // Sử dụng 'api' đã được cấu hình
-            .then(response => {
-                // Kiểm tra dữ liệu trả về
-                if (Array.isArray(response.data)) {
-                    setPosts(response.data); // Lưu dữ liệu bài viết vào state
-                } else {
-                    console.error("Dữ liệu không phải là mảng:", response.data);
-                }
-                setLoading(false); // Kết thúc trạng thái tải dữ liệu
-            })
-            .catch(error => {
-                console.error("Lỗi khi tải dữ liệu:", error);
-                setLoading(false);
-            });
-
-        // Thêm width: 1920px cho body
-        document.body.style.width = "1920px";
-        document.body.style.backgroundColor = "white"; // Màu nền cho trang blog
-
-        return () => {
-            // Khôi phục lại giá trị mặc định khi rời khỏi trang
-            document.body.style.width = "";
-            document.body.style.backgroundColor = "";
-        };
-    }, []);
+const About = () => {
+    
 
     // Hàm để hiển thị thêm 4 bài viết
     const showMorePosts = () => {
@@ -101,4 +70,4 @@ const Blog = () => {
     );
 };
 
-export default Blog;
+export default About;

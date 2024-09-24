@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "http://localhost:3000/api";
+const baseUrl = "http://localhost:8080"; // Đảm bảo đúng cổng
 
 const config = {
     baseUrl: baseUrl,
@@ -11,11 +11,11 @@ api.defaults.baseURL = baseUrl;
 
 // handle before call API
 const handleBefore = (config) => {
-    // handle hành động trước khi call API
-
-    // lấy ra cái token và đính kèm theo cái request
+    // lấy ra cái token và đính kèm vào headers
     const token = localStorage.getItem("token")?.replaceAll('"', "");
-    config.headers["Authorization"] = `Bearer ${token}`;
+    if (token) {
+        config.headers["Authorization"] = `Bearer ${token}`;
+    }
     return config;
 };
 
