@@ -1,0 +1,70 @@
+
+.postPreview a {
+    color: #212529; /* Đổi màu chữ thành màu đen đậm */
+    text-decoration: none;
+    font-family: Kadwa;
+    font-weight: 700;
+  }
+  
+  .postPreview a:focus, .postPreview a:hover {
+    color: red; /* Màu khi hover */
+  }
+  
+  .postPreview a .postTitle {
+    font-size: 2rem; /* Tăng kích thước chữ */
+    font-weight: 700; /* Chữ đậm cho tiêu đề */
+    margin-top: 1.875rem;
+    margin-bottom: 0.625rem;
+  }
+  
+  .postPreview a .postSubtitle {
+    font-weight: 300; /* Font nhẹ hơn cho phụ đề */
+    margin-bottom: 0.625rem;
+  }
+  
+  .postPreview .postMeta {
+    font-size: 1.125rem;
+    font-style: italic;
+    margin-top: 0;
+    color: #6c757d; /* Màu chữ nhẹ hơn cho phần thông tin đăng bởi */
+  }
+  
+  hr.my-4 {
+    margin-top: 1.5rem; /* Điều chỉnh khoảng cách trên dưới của đường chia */
+    margin-bottom: 1.5rem;
+  }
+
+  header.masthead {
+    position: relative;
+    margin-bottom: 3rem;
+    padding-top: calc(8rem + 57px);
+    padding-bottom: 8rem;
+    background: no-repeat center center;
+    background-color: #6c757d;
+    background-size: cover;
+    background-attachment: scroll;
+    width: 1920px;
+  }
+  header.masthead:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #212529;
+    opacity: 0.5;
+    width: 1920px;
+  }
+
+header.masthead {
+    text-align: center;
+}
+
+header.masthead .siteHeading h1,
+header.masthead .siteHeading .h1 {
+  font-size: 5rem;
+  color: white;
+  font-family: Kadwa;
+  font-weight: bold;
+}
