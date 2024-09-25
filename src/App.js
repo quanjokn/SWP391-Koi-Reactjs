@@ -8,6 +8,7 @@ import Blog from './page/blog';
 import BlogDetail from './page/blog detail';
 import ForgotPassword from './page/forgot';
 import About from './page/about';
+import Contract from './page/contract';
 
 function App() {
   const router = createBrowserRouter([
@@ -38,6 +39,10 @@ function App() {
     {
       path: 'about',
       element: <About />
+    },
+    {
+      path: 'lien-he',
+      element: <Contract />
     },
   ]);
 

@@ -27,7 +27,7 @@ const Footer = () => {
                             <li><a href="#" className={styles.textWhite}>Danh sách mặt hàng</a></li>
                             <li><a href="#" className={styles.textWhite} onClick={() => navigate('/tin-tuc')}>Tin tức</a></li>
                             <li><a href="#" className={styles.textWhite}>Hỗ trợ kỹ thuật</a></li>
-                            <li><a href="#" className={styles.textWhite}>Liên hệ chúng tôi</a></li>
+                            <li><a href="" className={styles.textWhite} onClick={() => navigate('/lien-he')}>Liên hệ</a></li>
                         </ul>
                     </div>
                     <div className="col-md-4">
