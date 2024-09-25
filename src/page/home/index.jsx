@@ -12,6 +12,9 @@ const Home = () => {
             <div>
                 <a href='' onClick={() => navigate('/tin-tuc')}>Blog</a>
             </div>
+            <div>
+                <a href='/about'>about</a>
+            </div>
         </div>
     );
 };

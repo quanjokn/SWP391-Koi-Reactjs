@@ -1,7 +1,9 @@
 import React from 'react';
 import styles from './footer.module.css';
-
+import { useNavigate } from 'react-router-dom';
 const Footer = () => {
+    const navigate = useNavigate();
+
     return (
         <div className={`row ${styles.footer}`} style={{
             fontSize: 'medium', margin: 0, paddingBottom: 0
@@ -20,10 +22,10 @@ const Footer = () => {
                     <div className="col-md-4">
                         <h5>Koi farm Shop</h5>
                         <ul className="list-unstyled">
-                            <li><a href="#" className={styles.textWhite}>Về chúng tôi</a></li>
+                            <li><a href="" className={styles.textWhite} onClick={() => navigate('/about')}>Về chúng tôi</a></li>
                             <li><a href="#" className={styles.textWhite}>Đặt hàng online</a></li>
                             <li><a href="#" className={styles.textWhite}>Danh sách mặt hàng</a></li>
-                            <li><a href="#" className={styles.textWhite}>Tin tức</a></li>
+                            <li><a href="#" className={styles.textWhite} onClick={() => navigate('/tin-tuc')}>Tin tức</a></li>
                             <li><a href="#" className={styles.textWhite}>Hỗ trợ kỹ thuật</a></li>
                             <li><a href="#" className={styles.textWhite}>Liên hệ chúng tôi</a></li>
                         </ul>
@@ -31,7 +33,7 @@ const Footer = () => {
                     <div className="col-md-4">
                         <h5>Thông tin cá nhân</h5>
                         <ul className="list-unstyled">
-                            <li><a href="#" className={styles.textWhite}>Đăng nhập</a></li>
+                            <li><a href="#" className={styles.textWhite} onClick={() => navigate('/login')}>Đăng nhập</a></li>
                             <li><a href="#" className={styles.textWhite}>Quản lý tài khoản</a></li>
                             <li><a href="#" className={styles.textWhite}>Đăng xuất</a></li>
                             <li><a href="#" className={styles.textWhite}>Thông tin cá nhân</a></li>
