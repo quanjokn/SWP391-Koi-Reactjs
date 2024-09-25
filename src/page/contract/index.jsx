@@ -7,13 +7,10 @@ import Footer from '../../component/footer';
 const Contract = () => {
     useEffect(() => {
 
-        // Thêm width: 1920px cho body
-        document.body.style.width = "1920px";
         document.body.style.backgroundColor = "white"; // Màu nền cho trang blog
 
         return () => {
             // Khôi phục lại giá trị mặc định khi rời khỏi trang
-            document.body.style.width = "";
             document.body.style.backgroundColor = "";
         };
     }, []);

@@ -6,7 +6,7 @@
     background: no-repeat center center;
     background-color: #6c757d;
     background-size: cover;
-    width: 1920px;
+    width: 100%;
 }
 
 .masthead:before {
@@ -18,7 +18,7 @@
     bottom: 0;
     background-color: #212529;
     opacity: 0.5;
-    width: 1920px;
+    width: 100%;
 }
 
 .masthead .siteHeading h1 {

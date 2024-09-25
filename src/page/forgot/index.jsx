@@ -8,9 +8,17 @@ const ForgotPassword = () => {
         document.body.style.backgroundSize = "cover";
         document.body.style.backgroundPosition = "center";
 
+        const rootElement = document.getElementById('root');
+        if (rootElement) {
+            rootElement.style.width = 'auto';
+        }
+
         // Khôi phục background khi rời khỏi trang
         return () => {
             document.body.style.backgroundImage = ""; // Hoặc thiết lập lại theo mặc định
+            if (rootElement) {
+                rootElement.style.width = ''; // Khôi phục width cho root
+            }
         };
     }, []);
 

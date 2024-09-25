@@ -9,6 +9,7 @@ import BlogDetail from './page/blog detail';
 import ForgotPassword from './page/forgot';
 import About from './page/about';
 import Contract from './page/contract';
+import ProfilePage from './page/profile';
 
 function App() {
   const router = createBrowserRouter([
@@ -43,6 +44,10 @@ function App() {
     {
       path: 'lien-he',
       element: <Contract />
+    },
+    {
+      path: 'tai-khoan',
+      element: <ProfilePage />
     },
   ]);
 

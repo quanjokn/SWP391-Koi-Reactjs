@@ -16,8 +16,16 @@ export const LoginForm = () => {
         document.body.style.backgroundSize = "cover";
         document.body.style.backgroundPosition = "center";
 
+        const rootElement = document.getElementById('root');
+        if (rootElement) {
+            rootElement.style.width = 'auto';
+        }
+
         return () => {
             document.body.style.backgroundImage = ""; // Khôi phục khi rời khỏi trang
+            if (rootElement) {
+                rootElement.style.width = ''; // Khôi phục width cho root
+            }
         };
     }, []);
 

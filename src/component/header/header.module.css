@@ -6,7 +6,6 @@
   border-bottom: 1px solid #ddd;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 100%; /* Đặt chiều rộng 100% để chiếm toàn bộ không gian */
-  max-width: 1920px; /* Giới hạn chiều rộng tối đa */
   margin: 0 auto; /* Căn giữa header */
 }
 

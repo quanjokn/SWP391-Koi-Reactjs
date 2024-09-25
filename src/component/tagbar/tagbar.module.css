@@ -11,7 +11,6 @@
   justify-content: space-between;
   height: 60px;
   width: 100%; /* Đặt chiều rộng 100% để chiếm toàn bộ không gian */
-  max-width: 1920px; /* Chiều rộng tối đa */
   margin: 0 auto; /* Căn giữa thanh tagbar */
 }
 

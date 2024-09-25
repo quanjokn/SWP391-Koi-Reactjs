@@ -14,7 +14,6 @@ const BlogDetail = () => {
     useEffect(() => {
         // Đổi màu nền cho body khi vào trang chi tiết
         document.body.style.backgroundColor = "white";
-        document.body.style.width = "1920px";
 
         // Hàm lấy chi tiết bài viết từ API dựa vào postId
         const loadPostContent = async (id) => {
@@ -43,7 +42,6 @@ const BlogDetail = () => {
         return () => {
             // Khôi phục màu nền khi rời khỏi trang chi tiết
             document.body.style.backgroundColor = "";
-            document.body.style.width = "";
         };
     }, [postId]);
 
