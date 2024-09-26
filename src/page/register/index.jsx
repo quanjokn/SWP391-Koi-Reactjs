@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './styles.module.css'; // CSS module cho định kiểu
-import axios from 'axios'; // Import axios để gọi API
+import api from '../../config/axios';
 
 const RegisterForm = () => {
     const navigate = useNavigate();
@@ -70,8 +70,8 @@ const RegisterForm = () => {
         }
 
         try {
-            // Gửi request tới API đăng ký
-            const response = await axios.post('/user/addUser', { // Thay đổi URL cho API
+            // Gửi request tới API đăng ký thông qua api đã cấu hình
+            const response = await api.post('/user/addUser', { // Sử dụng api thay vì axios
                 userName,
                 password,
                 email,
@@ -83,7 +83,12 @@ const RegisterForm = () => {
             navigate('/login');
         } catch (error) {
             console.error('Đăng ký không thành công:', error);
-            setErrors({ ...errors, api: 'Đăng ký không thành công. Vui lòng thử lại.' }); // Thêm thông báo lỗi từ API
+            // Kiểm tra nếu lỗi là do username đã tồn tại
+            if (error.response && error.response.status === 409) { // HTTP 409: Conflict
+                setErrors({ ...errors, userName: 'Tên đăng nhập đã tồn tại!' });
+            } else {
+                setErrors({ ...errors, api: 'Đăng ký không thành công. Vui lòng thử lại.' });
+            }
         }
     };
 
@@ -91,6 +96,7 @@ const RegisterForm = () => {
         <div className={styles.wrapper}>
             <form onSubmit={handleRegister}>
                 <h1>Đăng ký</h1>
+                {errors.userName && <p className={styles.error}>{errors.userName}</p>} {/* Hiển thị lỗi tên đăng nhập trùng */}
                 <div className={styles.inputBox}>
                     <input
                         name='userName' // Sửa name thành 'userName'
