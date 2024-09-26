@@ -1,0 +1,79 @@
+.masthead {
+    position: relative;
+    margin-bottom: 3rem;
+    padding-top: calc(8rem + 57px);
+    padding-bottom: 8rem;
+    background: no-repeat center center;
+    background-color: #6c757d;
+    background-size: cover;
+    width: 100%;
+}
+
+.masthead:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #212529;
+    opacity: 0.5;
+    width: 100%;
+}
+
+.masthead .siteHeading h1 {
+    font-size: 5rem;
+    color: white;
+    font-family: Kadwa;
+    font-weight: bold;
+    text-align: center;
+}
+
+.contactInfo {
+    color: black; /* Màu chữ */
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.contactInfo h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.contactInfo p {
+    margin: 0.5rem 0;
+}
+
+.contactInfo a {
+    color: red; /* Màu đỏ cho liên kết */
+    text-decoration: none;
+}
+
+.mapContainer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.mapContainer h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.mapResponsive {
+    position: relative;
+    overflow: hidden;
+    width: 100%; /* Chiều rộng tự động điều chỉnh theo kích thước parent */
+    padding-top: 56.25%; /* Tỷ lệ 16:9 cho iframe */
+}
+
+.mapResponsive iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
