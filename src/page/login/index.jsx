@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import styles from './login.module.css';
 import { useNavigate } from 'react-router-dom';
-import api from '../../config/axios'
-
+import axios from 'axios';
 export const LoginForm = () => {
     const [userName, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -35,17 +34,18 @@ export const LoginForm = () => {
         const loginValues = { userName, password };
 
         try {
-            // Gửi request đăng nhập bằng api đã cấu hình
-            const response = await api.post(`/user/login/${userName}/${password}`, loginValues);
-            // Kiểm tra response và điều hướng
-            if (response.status === 200 && response.data === 'Login successfully') {
-                localStorage.setItem('token', response.data.token);
-                navigate('/');
+            const response = await axios.post('http://localhost:8080/user/login', loginValues);
+            console.log('Đăng nhập thành công:', response.data);
+
+            // Kiểm tra phản hồi có thông điệp thành công hay không
+            if (response.data != "") {
+                navigate('/'); // Điều hướng đến trang chính
             } else {
-                setErrorMessage("Tài khoản hoặc mật khẩu sai");
+                setErrorMessage(response.data.message || "Tài khoản hoặc mật khẩu sai"); // Cập nhật thông báo lỗi
             }
         } catch (error) {
-            throw error;
+            setErrorMessage("Có lỗi xảy ra. Vui lòng thử lại sau."); // Cập nhật thông báo lỗi từ server
+            console.error('Login error:', error);
         }
     };
 
