@@ -32,6 +32,7 @@ export const UserProvider = ({ children }) => {
                 // Nếu hết hạn, xóa dữ liệu
                 localStorage.removeItem('user');
                 localStorage.removeItem('userExpiration');
+                setUser(null);  // Cập nhật trạng thái user về null
             }
         }
     }, []);

@@ -34,7 +34,6 @@ export const LoginForm = () => {
     const handleLogin = async (e) => {
         e.preventDefault(); // Ngăn chặn reload trang khi submit form
 
-
         if (!userName || !password) {
             setErrorMessage("Cần nhập tài khoản và mật khẩu");
             return;
@@ -60,23 +59,6 @@ export const LoginForm = () => {
                 setErrorMessage("Có lỗi xảy ra. Vui lòng thử lại sau."); // Cập nhật thông báo lỗi từ server
                 console.error('Login error:', error);
             }
-
-        const loginValues = { userName, password };
-
-        try {
-            const response = await axios.post('http://localhost:8080/user/login', loginValues);
-            console.log('Đăng nhập thành công:', response.data);
-
-            // Kiểm tra phản hồi có thông điệp thành công hay không
-            if (response.data != "") {
-                navigate('/'); // Điều hướng đến trang chính
-            } else {
-                setErrorMessage(response.data.message || "Tài khoản hoặc mật khẩu sai"); // Cập nhật thông báo lỗi
-            }
-        } catch (error) {
-            setErrorMessage("Có lỗi xảy ra. Vui lòng thử lại sau."); // Cập nhật thông báo lỗi từ server
-            console.error('Login error:', error);
-
         }
     };
 
