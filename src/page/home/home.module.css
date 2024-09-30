@@ -176,3 +176,19 @@
 .fadeOut {
   opacity: 0;
 }
+
+.productCard .descriptionBox {
+  background-color: #8d8d8d;
+  font-weight: 700;
+  color: black;
+  height: 100px; /* Chiều cao cố định cho khung mô tả */
+  overflow: hidden; /* Ẩn phần nội dung vượt quá */
+  text-overflow: ellipsis; /* Hiển thị dấu '...' nếu mô tả quá dài */
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Số dòng tối đa hiển thị */
+  -webkit-box-orient: vertical;
+  display: flex; /* Sử dụng flexbox để căn giữa */
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  text-align: center; /* Căn giữa văn bản */
+}

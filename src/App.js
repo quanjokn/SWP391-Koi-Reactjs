@@ -10,6 +10,9 @@ import ForgotPassword from './page/forgot';
 import About from './page/about';
 import Contract from './page/contract';
 import ProfilePage from './page/profile';
+import ProductDetail from './page/productDetail';
+import ProductList from './page/productList';
+import Cart from './page/cart';
 
 function App() {
   const router = createBrowserRouter([
@@ -48,6 +51,18 @@ function App() {
     {
       path: 'tai-khoan',
       element: <ProfilePage />
+    },
+    {
+      path: 'fish-detail',
+      element: <ProductDetail />
+    },
+    {
+      path: 'fish/fishes-list',
+      element: <ProductList />
+    },
+    {
+      path: 'cart',
+      element: <Cart /> // Trang giỏ hàng
     },
   ]);
 

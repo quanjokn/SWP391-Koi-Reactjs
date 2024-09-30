@@ -26,6 +26,7 @@ const BlogDetail = () => {
                 }
 
                 const data = response.data; // Lấy dữ liệu từ phản hồi
+                console.log("Dữ liệu bài viết:", data); // Kiểm tra dữ liệu trả về
                 setPost(data); // Lưu nội dung bài viết vào state
             } catch (error) {
                 console.error('Lỗi khi tải nội dung bài viết:', error);
@@ -64,7 +65,7 @@ const BlogDetail = () => {
                             <div className={`${styles.siteHeading}`}>
                                 <h1>{post.title}</h1>
                                 <span className={`${styles.meta}`}>
-                                    Đăng bởi {post.staff.name} ({post.staff.userName}) vào ngày {new Date(post.date).toLocaleDateString()}
+                                    Đăng bởi {post.staff?.name || "Không rõ"} ({post.staff?.userName || "Không rõ"}) vào ngày {new Date(post.date).toLocaleDateString()}
                                 </span>
                             </div>
                         </div>
@@ -77,6 +78,13 @@ const BlogDetail = () => {
                     <div className="row gx-4 gx-lg-5 justify-content-center">
                         <div className="col-md-10 col-lg-8 col-xl-7">
                             <p>{post.description}</p>
+                            {/* Hiển thị title_1 và content_1 */}
+                            {post.title_1 && <h2>{post.title_1}</h2>}
+                            {post.content_1 && <p>{post.content_1}</p>}
+
+                            {/* Hiển thị title_2 và content_2 */}
+                            {post.title_2 && <h2>{post.title_2}</h2>}
+                            {post.content_2 && <p>{post.content_2}</p>}
                         </div>
                     </div>
                 </div>
