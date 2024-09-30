@@ -19,7 +19,7 @@ const Tagbar = () => {
                     <nav>
                         <ul className={styles.navList}>
                             <li><a href="/">Trang chủ</a></li>
-                            <li><a href="/san-pham">Sản phẩm</a></li>
+                            <li><a href="/fish/fishes-list">Sản phẩm</a></li>
                             <li><a href="/giong-ca">Giống cá</a></li>
                             <li><a href="/tin-tuc">Tin tức</a></li>
                             <li><a href="/lien-he">Liên hệ</a></li>

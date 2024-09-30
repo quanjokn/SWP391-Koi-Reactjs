@@ -12,6 +12,7 @@ import Contract from './page/contract';
 import ProfilePage from './page/profile';
 import ProductDetail from './page/productDetail/ProductDetail';
 import ProductList from './page/productList/ProductList';
+import Cart from './page/cart/cart';
 
 function App() {
   const router = createBrowserRouter([
@@ -52,12 +53,16 @@ function App() {
       element: <ProfilePage />
     },
     {
-      path: 'product-detail',
+      path: 'fish-detail',
       element: <ProductDetail />
     },
     {
-      path: 'product-list',
+      path: 'fish/fishes-list',
       element: <ProductList />
+    },
+    {
+      path: 'cart',
+      element: <Cart /> // Trang giỏ hàng
     },
   ]);
 
