@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './styles.module.css'; // CSS module cho định kiểu
-import api from '../../config/axios';
+import axios from 'axios';
 
 const RegisterForm = () => {
     const navigate = useNavigate();
@@ -70,19 +70,25 @@ const RegisterForm = () => {
         }
 
         try {
-            // Gửi request tới API đăng ký thông qua api đã cấu hình
-            const response = await api.post('/user/addUser', { // Sử dụng api thay vì axios
+            // Gửi request tới API đăng ký với dữ liệu JSON
+            const response = await axios.post('http://localhost:8080/user/register', {
                 userName,
                 password,
                 email,
                 phone: phone
+            }, {
+                headers: {
+                    'Content-Type': 'application/json', // Đảm bảo rằng dữ liệu được gửi dưới dạng JSON
+                }
             });
+
             console.log('Đăng ký thành công:', response.data);
 
             // Sau khi đăng ký thành công, chuyển hướng tới trang đăng nhập
             navigate('/login');
         } catch (error) {
             console.error('Đăng ký không thành công:', error);
+
             // Kiểm tra nếu lỗi là do username đã tồn tại
             if (error.response && error.response.status === 409) { // HTTP 409: Conflict
                 setErrors({ ...errors, userName: 'Tên đăng nhập đã tồn tại!' });
@@ -90,6 +96,7 @@ const RegisterForm = () => {
                 setErrors({ ...errors, api: 'Đăng ký không thành công. Vui lòng thử lại.' });
             }
         }
+
     };
 
     return (
