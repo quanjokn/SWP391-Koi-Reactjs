@@ -1,8 +1,6 @@
 import React from 'react';
 import styles from './footer.module.css';
-import { useNavigate } from 'react-router-dom';
 const Footer = () => {
-    const navigate = useNavigate();
 
     return (
         <div className={`row ${styles.footer}`} style={{
@@ -10,7 +8,7 @@ const Footer = () => {
         }}>
             <div className={`col-md-4 ${styles.blackBg}`}>
                 <div style={{ paddingLeft: '30px', textAlign: 'center' }}>
-                    <img src="/imagines/background/logo.jpg" alt="Koi Farm" className={styles.logo} />
+                    <img src="/imagines/logo/koi-farm-shop-logo-3.png" alt="Koi Farm" className={styles.logo} />
                     <p>Koi Farm Shop LLC@, 2024</p>
                     <p>Công Ty TNHH Koi Farm Shop</p>
                     <p>Copyright 2024</p>
@@ -22,21 +20,21 @@ const Footer = () => {
                     <div className="col-md-4">
                         <h5>Koi farm Shop</h5>
                         <ul className="list-unstyled">
-                            <li><a href="" className={styles.textWhite} onClick={() => navigate('/about')}>Về chúng tôi</a></li>
+                            <li><a href="/gioi-thieu" className={styles.textWhite}>Về chúng tôi</a></li>
                             <li><a href="#" className={styles.textWhite}>Đặt hàng online</a></li>
                             <li><a href="#" className={styles.textWhite}>Danh sách mặt hàng</a></li>
-                            <li><a href="#" className={styles.textWhite} onClick={() => navigate('/tin-tuc')}>Tin tức</a></li>
+                            <li><a href="/tin-tuc" className={styles.textWhite}>Tin tức</a></li>
                             <li><a href="#" className={styles.textWhite}>Hỗ trợ kỹ thuật</a></li>
-                            <li><a href="" className={styles.textWhite} onClick={() => navigate('/lien-he')}>Liên hệ</a></li>
+                            <li><a href="/lien-he" className={styles.textWhite}>Liên hệ</a></li>
                         </ul>
                     </div>
                     <div className="col-md-4">
                         <h5>Thông tin cá nhân</h5>
                         <ul className="list-unstyled">
-                            <li><a href="#" className={styles.textWhite} onClick={() => navigate('/login')}>Đăng nhập</a></li>
+                            <li><a href="/login" className={styles.textWhite}>Đăng nhập</a></li>
                             <li><a href="#" className={styles.textWhite}>Quản lý tài khoản</a></li>
                             <li><a href="#" className={styles.textWhite}>Đăng xuất</a></li>
-                            <li><a href="#" className={styles.textWhite}>Thông tin cá nhân</a></li>
+                            <li><a href="/tai-khoan" className={styles.textWhite}>Thông tin cá nhân</a></li>
                             <li><a href="#" className={styles.textWhite}>Hướng dẫn mua bán</a></li>
                         </ul>
                     </div>
