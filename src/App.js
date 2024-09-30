@@ -3,21 +3,19 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import './App.css';
 import LoginForm from './page/login';
 import RegisterForm from './page/register';
-import { Homepage } from './page/home';
+import Home from './page/home';
 import Blog from './page/blog';
 import BlogDetail from './page/blog detail';
 import ForgotPassword from './page/forgot';
 import About from './page/about';
 import Contract from './page/contract';
 import ProfilePage from './page/profile';
-import ProductDetail from './page/productDetail/ProductDetail';
-import ProductList from './page/productList/ProductList';
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Homepage />,  // Trang chủ
+      element: <Home />,  // Trang chủ
     },
     {
       path: "login",
@@ -40,7 +38,7 @@ function App() {
       element: <ForgotPassword />
     },
     {
-      path: 'about',
+      path: 'gioi-thieu',
       element: <About />
     },
     {
@@ -50,14 +48,6 @@ function App() {
     {
       path: 'tai-khoan',
       element: <ProfilePage />
-    },
-    {
-      path: 'product-detail',
-      element: <ProductDetail />
-    },
-    {
-      path: 'product-list',
-      element: <ProductList />
     },
   ]);
 

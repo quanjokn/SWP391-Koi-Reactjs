@@ -1,33 +1,4 @@
-.masthead {
-    position: relative;
-    margin-bottom: 3rem;
-    padding-top: calc(8rem + 57px);
-    padding-bottom: 8rem;
-    background: no-repeat center center;
-    background-color: #6c757d;
-    background-size: cover;
-    width: 100%;
-}
 
-.masthead:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #212529;
-    opacity: 0.5;
-    width: 100%;
-}
-
-.masthead .siteHeading h1 {
-    font-size: 5rem;
-    color: white;
-    font-family: Kadwa;
-    font-weight: bold;
-    text-align: center;
-}
 
 .contactInfo {
     color: black; /* Màu chữ */

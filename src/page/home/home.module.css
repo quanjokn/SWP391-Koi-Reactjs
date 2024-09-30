@@ -1,0 +1,178 @@
+/* src/page/Home.module.css */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.productList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 20px 0;
+  width: 100%;
+}
+
+.productCard {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin: 10px;
+  padding: 10px;
+  width: 200px;
+  text-align: center;
+  background-color: #f9f9f9; /* Màu nền khác cho sản phẩm */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+}
+
+.productCard .description {
+  background-color: #eaeaea; /* Màu nền khác cho khung mô tả */
+  padding: 10px;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #333;
+  border-radius: 5px;
+}
+
+.productCard .rating {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.starIcon {
+  color: gold; /* Màu vàng cho icon sao */
+}
+
+.productCard .rating .reviews {
+  margin-left: 10px;
+  font-size: 12px;
+  color: #888;
+}
+
+.productCard img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.descriptionBox {
+  background-color: #8d8d8d;
+  font-weight: 700;
+  color: black;
+}
+
+.infoImage {
+  width: 100%; /* Điều chỉnh kích thước hình ảnh (bạn có thể tăng/giảm giá trị này) */
+  max-width: 500px; /* Giới hạn kích thước tối đa */
+  height: auto;
+  margin-left: 20px; /* Tạo khoảng cách giữa hình ảnh và văn bản */
+  border-radius: 8px; /* Bo tròn các góc */
+}
+
+.contentText {
+  color: black;
+  font-family: "Calibri";
+  text-align: center;
+  padding-left: 210px;
+  padding-right: 140px;
+  font-weight: 500;
+}
+
+.button {
+  background-color: #0080b3; /* Màu nền */
+  color: black; /* Màu chữ */
+  border: none; /* Không có viền */
+  border-radius: 5px; /* Bo tròn các góc */
+  padding: 10px 20px; /* Khoảng cách trong nút */
+  cursor: pointer; /* Con trỏ khi di chuột */
+  font-size: 16px; /* Kích thước chữ */
+  transition: background-color 0.3s; /* Hiệu ứng chuyển màu */
+  display: block; /* Để button căn giữa */
+  margin: 20px auto; /* Căn giữa */
+  font-family: 'Calibri', sans-serif;
+  font-weight: 700;
+}
+
+.button:hover {
+  background-color: #0056b3; /* Màu nền khi di chuột */
+  color: red;
+}
+
+.deliveryService {
+  margin: 2rem 0; /* Khoảng cách cho toàn bộ khối */
+}
+
+.row {
+  display: flex; /* Sử dụng Flexbox */
+  justify-content: center; /* Căn giữa hàng */
+  margin-bottom: 2rem; /* Khoảng cách giữa các hàng */
+}
+
+.column {
+  flex: 1; /* Chiếm không gian bằng nhau */
+  max-width: 400px; /* Đặt chiều rộng tối đa cho mỗi cột */
+  margin: 0 1rem; /* Khoảng cách giữa các cột */
+}
+
+.textWrapperTitle {
+  font-size: 1.5rem; /* Kích thước chữ tiêu đề */
+  font-weight: bold; /* Đậm */
+  margin: 1rem 0; /* Khoảng cách trên và dưới */
+}
+
+.overlap19, .overlap {
+  display: flex; /* Flexbox cho layout */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  margin-bottom: 1rem; /* Khoảng cách dưới */
+}
+
+.textWrapperText {
+  margin: 0.5rem 0; /* Khoảng cách cho văn bản */
+  color: #333; /* Màu chữ */
+}
+
+.directionsBus, .check {
+  width: 24px; /* Kích thước hình ảnh */
+  height: auto; /* Tự động điều chỉnh chiều cao */
+}
+
+.container .productList button {
+    background-color: #e32c42; /* Màu nền mặc định của nút */
+    color: white; /* Màu chữ */
+    border: none; 
+    padding: 10px 20px; 
+    cursor: pointer; /* Con trỏ khi di chuột vào nút */
+    border-radius: 5px; /* Bo tròn các góc nút */
+    transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu mượt mà */
+    font-family: 'Calibri';
+    font-weight: 600;
+}
+.container .productList button:hover {
+  background-color: gray; /* Màu nền khi di chuột */
+  color: red;
+}
+
+.productList {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.productGroup {
+  display: flex;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.productCard {
+  margin: 0 10px; /* Thêm khoảng cách giữa các sản phẩm */
+}
+
+.fadeIn {
+  opacity: 1;
+}
+
+.fadeOut {
+  opacity: 0;
+}

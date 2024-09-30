@@ -1,11 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styles from './profile.module.css';
 import Footer from '../../component/footer';
 import Header from '../../component/header';
 import Tagbar from '../../component/tagbar';
+import { UserContext } from '../../service/UserContext';
+import axios from 'axios';
 
 const ProfilePage = () => {
     const [containerStyle, setContainerStyle] = useState({});
+    const { user, setUser } = useContext(UserContext); // Lấy user từ context
+    const [userProfile, setUserProfile] = useState({
+        name: '',
+        phone: '',
+        address: '',
+        email: '',
+        role: '',
+    });
 
     useEffect(() => {
         document.body.style.backgroundColor = "white"; // Background màu trắng
@@ -20,13 +30,18 @@ const ProfilePage = () => {
         };
     }, []);
 
-    const [userProfile, setUserProfile] = useState({
-        name: 'John Doe',
-        phone: '123-456-7890',
-        address: '123 Main St',
-        email: 'johndoe@example.com',
-        role: 'Customer',
-    });
+    useEffect(() => {
+        // Nếu có dữ liệu user từ UserContext, cập nhật userProfile
+        if (user) {
+            setUserProfile({
+                name: user.name || '',
+                phone: user.phone || '',
+                address: user.address || '',
+                email: user.email || '',
+                role: user.role || '', // Giá trị mặc định là ''
+            });
+        }
+    }, [user]); // Chạy lại khi giá trị user thay đổi
 
     const [isEditing, setIsEditing] = useState(false);
 
@@ -35,9 +50,22 @@ const ProfilePage = () => {
         setUserProfile({ ...userProfile, [name]: value });
     };
 
-    const handleSaveClick = () => {
-        console.log('Saving profile:', userProfile);
-        setIsEditing(false);
+    const handleSaveClick = async () => {
+        try {
+            console.log(userProfile);
+            // Gọi API để cập nhật thông tin người dùng
+            const response = await axios.put(`/api/users/${userProfile.id}`, userProfile);
+
+            // Cập nhật lại user trong context sau khi cập nhật thành công
+            setUser(response.data);
+
+            // Tắt chế độ chỉnh sửa
+            setIsEditing(false);
+
+            console.log('Profile updated successfully:', response.data);
+        } catch (error) {
+            console.error('Error updating profile:', error);
+        }
     };
 
     return (
