@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import styles from './login.module.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { UserContext } from '../../service/UserContext'; // Nhập UserContext
+
 export const LoginForm = () => {
     const [userName, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState(''); // Thêm state cho thông báo lỗi
 
     const navigate = useNavigate();
+    const { saveUser } = useContext(UserContext); // Lấy setUser từ context
 
     useEffect(() => {
         document.body.style.backgroundImage = "url('/imagines/background/Koi.jpg')";
@@ -31,6 +34,33 @@ export const LoginForm = () => {
     const handleLogin = async (e) => {
         e.preventDefault(); // Ngăn chặn reload trang khi submit form
 
+
+        if (!userName || !password) {
+            setErrorMessage("Cần nhập tài khoản và mật khẩu");
+            return;
+        } else {
+            const loginValues = { userName, password };
+
+            try {
+                const response = await axios.post('http://localhost:8080/user/login', loginValues);
+
+                // Kiểm tra phản hồi có thông điệp thành công hay không
+                if (response.data) {
+                    // Lưu thông tin người dùng vào localStorage
+                    localStorage.setItem('user', JSON.stringify(response.data));
+
+                    // Cập nhật thông tin người dùng trong UserContext
+                    saveUser(response.data); // Gọi setUser từ context
+
+                    navigate('/'); // Điều hướng đến trang chính
+                } else {
+                    setErrorMessage("Tài khoản hoặc mật khẩu sai"); // Cập nhật thông báo lỗi
+                }
+            } catch (error) {
+                setErrorMessage("Có lỗi xảy ra. Vui lòng thử lại sau."); // Cập nhật thông báo lỗi từ server
+                console.error('Login error:', error);
+            }
+
         const loginValues = { userName, password };
 
         try {
@@ -46,6 +76,7 @@ export const LoginForm = () => {
         } catch (error) {
             setErrorMessage("Có lỗi xảy ra. Vui lòng thử lại sau."); // Cập nhật thông báo lỗi từ server
             console.error('Login error:', error);
+
         }
     };
 
