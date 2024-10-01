@@ -42,7 +42,7 @@ export const LoginForm = () => {
 
             try {
                 const response = await axios.post('http://localhost:8080/user/login', loginValues);
-
+                console.log(response);
                 // Kiểm tra phản hồi có thông điệp thành công hay không
                 if (response.data) {
                     // Lưu thông tin người dùng vào localStorage
@@ -56,8 +56,19 @@ export const LoginForm = () => {
                     setErrorMessage("Tài khoản hoặc mật khẩu sai"); // Cập nhật thông báo lỗi
                 }
             } catch (error) {
-                setErrorMessage("Có lỗi xảy ra. Vui lòng thử lại sau."); // Cập nhật thông báo lỗi từ server
-                console.error('Login error:', error);
+                if (error.response) {
+                    // Máy chủ đã phản hồi nhưng có mã trạng thái ngoài phạm vi 2xx
+                    console.error('Server responded with:', error.response.data);
+                    console.error('Status code:', error.response.status);
+                    console.error('Headers:', error.response.headers);
+                } else if (error.request) {
+                    // Yêu cầu đã được gửi đi nhưng không nhận được phản hồi
+                    console.error('No response received:', error.request);
+                } else {
+                    // Lỗi khi thiết lập yêu cầu
+                    console.error('Error during request setup:', error.message);
+                }
+                setErrorMessage("Có lỗi xảy ra. Vui lòng thử lại sau.");
             }
         }
     };

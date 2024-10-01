@@ -67,8 +67,8 @@
   width: 100%; /* Điều chỉnh kích thước hình ảnh (bạn có thể tăng/giảm giá trị này) */
   max-width: 500px; /* Giới hạn kích thước tối đa */
   height: auto;
-  margin-left: 20px; /* Tạo khoảng cách giữa hình ảnh và văn bản */
   border-radius: 8px; /* Bo tròn các góc */
+  display: block;
 }
 
 .contentText {
@@ -171,10 +171,12 @@
 
 .fadeIn {
   opacity: 1;
+  transition: opacity 0.5s ease-in;
 }
 
 .fadeOut {
   opacity: 0;
+  transition: opacity 0.5s ease-out;
 }
 
 .productCard .descriptionBox {

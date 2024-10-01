@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Footer from '../../component/footer';
 import Tagbar from '../../component/tagbar';
 import Header from '../../component/header';
@@ -8,6 +8,27 @@ import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
     const navigate = useNavigate();
+
+    useEffect(() => {
+        // Ghi đè giá trị của --bs-gutter-x
+        const rows = document.querySelectorAll('.row');
+        rows.forEach((row) => {
+            row.style.setProperty('--bs-gutter-x', '0'); // Hoặc bất kỳ giá trị nào bạn muốn
+          });
+        const rootElement = document.getElementById('root');
+        if (rootElement) {
+            rootElement.style.width = 'auto';
+        }
+
+        return () => {
+            rows.forEach((row) => {
+                row.style.removeProperty('--bs-gutter-x'); // Khôi phục giá trị ban đầu
+              });
+            if (rootElement) {
+                rootElement.style.width = ''; // Khôi phục width cho root
+            }
+        };
+    }, []);
 
     const products = [
         {
@@ -77,18 +98,23 @@ const Home = () => {
             <Header />
             <Tagbar />
             <Masthead title="Koi Farm Shop" />
-            <div className={`${styles.fullHeight}`}>
-                <div className="row d-flex align-items-center justify-content-center">
-                    <div className="col-md-8">
-                        <h3 className={styles.contentText} style={{ fontFamily: 'Kadwa' }}>Nhà cung cấp cá Koi uy tín nhất Việt Nam</h3>
-                        <p className={styles.contentText}>
+            <div className="fullHeight">
+                <div className={`row d-flex align-items-center ${styles.customRow}`}>
+                    <div className="col-md-7">
+                        <div className={styles.contentText}>
+                            <h3 style={{ fontFamily: 'Kadwa' }}>Nhà cung cấp cá Koi uy tín nhất Việt Nam</h3>
+                        <p>
                             KoiFarmShop được thành lập với mục tiêu mang đến những sản phẩm và dịch vụ chất lượng trong lĩnh vực nuôi dưỡng và chăm sóc cá Koi.
                             Chúng tôi chuyên cung cấp cá Koi Nhật Bản chính hãng, thiết kế và thi công hồ cá Koi, cùng các giải pháp tối ưu về thiết bị và vật tư cho hồ cá.
                             Với kinh nghiệm nhiều năm, KoiFarmShop tự hào đã và đang đồng hành cùng những người yêu thích cá Koi, lan tỏa niềm đam mê này đến khắp mọi nơi.
                         </p>
-                        <button className={styles.button} onClick={() => navigate('/gioi-thieu')}>Xem thêm</button>
+                        </div>
+                        <div className={styles.contentText}>
+                            <button className={styles.button} onClick={() => navigate('/gioi-thieu')}>Xem thêm</button>
+                        </div>
+                        
                     </div>
-                    <div className="col-md-4">
+                    <div className="col-md-5">
                         <img src="/imagines/background/koi-background-3-1.png" alt="background content" className={styles.infoImage} />
                     </div>
                 </div>
