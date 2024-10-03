@@ -5,7 +5,7 @@ import Footer from '../../component/footer';
 import Header from '../../component/header';
 import Tagbar from '../../component/tagbar';
 import { UserContext } from '../../service/UserContext';
-import axios from 'axios';
+import api from '../../config/axios';
 
 const ProfilePage = () => {
     const navigate = useNavigate();
@@ -60,7 +60,7 @@ const ProfilePage = () => {
         const updatedData = { name, phone, address, email };
         try {
             // Gọi API để cập nhật thông tin người dùng
-            const response = await axios.post(`http://localhost:8080/user/updateUser/${userProfile.id}`, updatedData);
+            const response = await api.post(`/user/updateUser/${userProfile.id}`, updatedData);
 
             // Sử dụng saveUser để cập nhật thông tin người dùng
             saveUser(response.data);

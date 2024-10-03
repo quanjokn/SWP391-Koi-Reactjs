@@ -49,11 +49,7 @@ export const LoginForm = () => {
                 localStorage.setItem('jwt', response.data.jwt);
 
                 // Lấy thông tin người dùng
-                const userResponse = await api.get('/user/profile', {
-                    headers: {
-                        'Authorization': `Bearer ${response.data.jwt}`
-                    }
-                });
+                const userResponse = await api.get('/user/profile');
 
                 // Lưu thông tin người dùng vào context
                 saveUser({ jwt: response.data.jwt, ...userResponse.data });

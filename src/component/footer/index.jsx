@@ -24,7 +24,6 @@ const Footer = () => {
                             <li><a href="#" className={styles.textWhite}>Đặt hàng online</a></li>
                             <li><a href="/fish/fishes-list" className={styles.textWhite}>Danh sách mặt hàng</a></li>
                             <li><a href="/tin-tuc" className={styles.textWhite}>Tin tức</a></li>
-                            <li><a href="#" className={styles.textWhite}>Hỗ trợ kỹ thuật</a></li>
                             <li><a href="/lien-he" className={styles.textWhite}>Liên hệ</a></li>
                         </ul>
                     </div>
@@ -32,7 +31,6 @@ const Footer = () => {
                         <h5>Thông tin cá nhân</h5>
                         <ul className="list-unstyled">
                             <li><a href="/login" className={styles.textWhite}>Đăng nhập</a></li>
-                            <li><a href="#" className={styles.textWhite}>Quản lý tài khoản</a></li>
                             <li><a href="#" className={styles.textWhite}>Đăng xuất</a></li>
                             <li><a href="/tai-khoan" className={styles.textWhite}>Thông tin cá nhân</a></li>
                             <li><a href="#" className={styles.textWhite}>Hướng dẫn mua bán</a></li>

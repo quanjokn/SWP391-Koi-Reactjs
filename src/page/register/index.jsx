@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './styles.module.css'; // CSS module cho định kiểu
-import axios from 'axios';
+import api from '../../config/axios';
 
 const RegisterForm = () => {
     const navigate = useNavigate();
@@ -74,7 +74,7 @@ const RegisterForm = () => {
 
             try {
                 // Gửi request tới API đăng ký với dữ liệu JSON
-                const response = await axios.post('http://localhost:8080/user/register', {
+                const response = await api.post('/user/register', {
                     userName,
                     password,
                     email,

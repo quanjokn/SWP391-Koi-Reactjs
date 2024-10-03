@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../../config/axios";
 import styles from "./productList.module.css";
 import Header from "../../component/header";  // Reused Header from Blog
 import Footer from "../../component/footer";  // Reused Footer from Blog
@@ -12,7 +12,7 @@ const ProductList = () => {
     const navigate = useNavigate();  // useNavigate để điều hướng
 
     useEffect(() => {
-        axios.get("http://localhost:8080/fish/fishes-list")
+        api.get("/fish/fishes-list")
             .then((response) => {
                 setProducts(response.data);
             })
@@ -24,7 +24,7 @@ const ProductList = () => {
     const handleAddToCart = (product) => {
         // Gửi yêu cầu thêm sản phẩm vào giỏ hàng đến backend
         const userId = 1
-        axios.post(`http://localhost:8080/cart/addToCart/${userId}`, {
+        api.post(`/cart/addToCart/${userId}`, {
             fishId: product.id,
             quantity: 1  // Giả sử thêm 1 sản phẩm vào giỏ hàng
         })
