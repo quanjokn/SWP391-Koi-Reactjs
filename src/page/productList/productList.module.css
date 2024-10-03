@@ -1,10 +1,13 @@
 /* General styling for product list page */
 .product-list {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  align-items: flex-start;
   padding: 20px;
   width: 100%;
+}
+.text-wrapper-93 {
+text-align: center;
 }
 
 .overlap-26, .overlap-27, .overlap-28, .overlap-29, .overlap-30 {
@@ -39,11 +42,14 @@
 }
 
 /* Styling for product images */
+/* Styling for product images */
 .product-item img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 10px;
+width: 100%;            /* Chiều rộng của ảnh chiếm toàn bộ chiều rộng của phần tử chứa */
+height: 500px;          /* Đặt chiều cao cố định cho tất cả hình ảnh */
+object-fit: cover;      /* Đảm bảo hình ảnh không bị méo, luôn cắt gọn vừa khung */
+border-radius: 10px;
 }
+
 
 /* Product name styling */
 .product-item h3 {
@@ -132,4 +138,55 @@ footer.footer .footer-links a {
 
 footer.footer .footer-links a:hover {
   text-decoration: underline;
+}
+
+.message-popup {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #28a745;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* Filter container styling */
+.filter-container {
+background-color: #f9f9f9;
+padding: 20px;
+border-radius: 10px;
+margin-bottom: 20px;
+width: 100%;
+max-width: 300px;
+text-align: left;
+}
+
+.filter-container h4 {
+font-size: 18px;
+margin-bottom: 10px;
+}
+
+.filter-container label {
+display: block;
+margin-bottom: 10px;
+font-size: 14px;
+color: #333;
+}
+
+.apply-filter-button {
+background-color: #4CAF50;
+color: white;
+padding: 10px 15px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+font-size: 14px;
+margin-top: 10px;
+}
+
+.apply-filter-button:hover {
+background-color: #45a049;
 }

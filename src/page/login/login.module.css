@@ -179,4 +179,6 @@
     text-align: center; /* Căn giữa nếu cần */
 }
 
-/*#db4437*/
+i.fa-solid.fa-eye-slash {
+    position: absolute;
+}
