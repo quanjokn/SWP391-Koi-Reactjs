@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import styles from './login.module.css';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../config/axios';
 import { UserContext } from '../../service/UserContext'; // Nhập UserContext
 
 export const LoginForm = () => {
@@ -32,46 +32,52 @@ export const LoginForm = () => {
     }, []);
 
     const handleLogin = async (e) => {
-        e.preventDefault(); // Ngăn chặn reload trang khi submit form
+        e.preventDefault();
 
         if (!userName || !password) {
             setErrorMessage("Cần nhập tài khoản và mật khẩu");
             return;
-        } else {
-            const loginValues = { userName, password };
+        }
 
-            try {
-                const response = await axios.post('http://localhost:8080/user/login', loginValues);
-                console.log(response);
-                // Kiểm tra phản hồi có thông điệp thành công hay không
-                if (response.data) {
-                    // Lưu thông tin người dùng vào localStorage
-                    localStorage.setItem('user', JSON.stringify(response.data));
+        const loginValues = { userName, password };
 
-                    // Cập nhật thông tin người dùng trong UserContext
-                    saveUser(response.data); // Gọi setUser từ context
+        try {
+            const response = await api.post('/user/login', loginValues);
 
-                    navigate('/'); // Điều hướng đến trang chính
+            if (response.data && response.data.jwt) {
+                // Lưu JWT token vào localStorage
+                localStorage.setItem('jwt', response.data.jwt);
+
+                // Lấy thông tin người dùng
+                const userResponse = await api.get('/user/profile', {
+                    headers: {
+                        'Authorization': `Bearer ${response.data.jwt}`
+                    }
+                });
+
+                // Lưu thông tin người dùng vào context
+                saveUser({ jwt: response.data.jwt, ...userResponse.data });
+
+                // Điều hướng đến trang chính
+                navigate('/');
+            }
+        } catch (error) {
+            console.error("Error during login:", error);
+            if (error.response) {
+                console.error("Error Response:", error.response);
+                // Kiểm tra nếu có dữ liệu lỗi trong phản hồi
+                if (error.response.status === 400) {
+                    setErrorMessage("Tài khoản hoặc mật khẩu sai");
                 } else {
-                    setErrorMessage("Tài khoản hoặc mật khẩu sai"); // Cập nhật thông báo lỗi
+                    setErrorMessage("Có lỗi xảy ra. Vui lòng thử lại sau.");
                 }
-            } catch (error) {
-                if (error.response) {
-                    // Máy chủ đã phản hồi nhưng có mã trạng thái ngoài phạm vi 2xx
-                    console.error('Server responded with:', error.response.data);
-                    console.error('Status code:', error.response.status);
-                    console.error('Headers:', error.response.headers);
-                } else if (error.request) {
-                    // Yêu cầu đã được gửi đi nhưng không nhận được phản hồi
-                    console.error('No response received:', error.request);
-                } else {
-                    // Lỗi khi thiết lập yêu cầu
-                    console.error('Error during request setup:', error.message);
-                }
-                setErrorMessage("Có lỗi xảy ra. Vui lòng thử lại sau.");
+            } else {
+                // Nếu không có response, có thể là lỗi mạng
+                setErrorMessage("Có lỗi mạng xảy ra. Vui lòng kiểm tra kết nối của bạn.");
             }
         }
     };
+
 
     return (
         <>
@@ -105,7 +111,7 @@ export const LoginForm = () => {
                         <a href="" onClick={() => navigate('/forgot-password')}>Quên mật khẩu</a>
                     </div>
                     <div className={styles.buttonGroup}>
-                        <button type="button" style={{ backgroundColor: 'gray' }} onClick={() => navigate('/')}>Quay lại</button>
+                        <button type="button" style={{ backgroundColor: 'gray' }} onClick={() => navigate('/')}>Trang chủ</button>
                         <button type='submit'>Đăng nhập</button>
                     </div>
 

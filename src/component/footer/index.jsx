@@ -22,7 +22,7 @@ const Footer = () => {
                         <ul className="list-unstyled">
                             <li><a href="/gioi-thieu" className={styles.textWhite}>Về chúng tôi</a></li>
                             <li><a href="#" className={styles.textWhite}>Đặt hàng online</a></li>
-                            <li><a href="#" className={styles.textWhite}>Danh sách mặt hàng</a></li>
+                            <li><a href="/fish/fishes-list" className={styles.textWhite}>Danh sách mặt hàng</a></li>
                             <li><a href="/tin-tuc" className={styles.textWhite}>Tin tức</a></li>
                             <li><a href="#" className={styles.textWhite}>Hỗ trợ kỹ thuật</a></li>
                             <li><a href="/lien-he" className={styles.textWhite}>Liên hệ</a></li>

@@ -7,21 +7,19 @@ const Header = () => {
     const navigate = useNavigate();
     // Lấy thông tin user từ UserContext
     const { user } = useContext(UserContext);
-    console.log(user);
+    console.log("Current user in Header:", user); // Log thông tin người dùng
     // Hàm xử lý sự kiện nhấp chuột vào icon user
     const handleUserClick = () => {
         if (user) {
-            // Nếu đã đăng nhập, điều hướng đến trang khác (thay '#' bằng đường dẫn bạn muốn)
             navigate('/tai-khoan');
         } else {
-            // Nếu chưa đăng nhập, điều hướng đến trang login
             navigate('/login');
         }
     };
     return (
-        <header className={styles.tagbar}>
+        <div className={styles.tagbar}>
             <div className={styles.leftSection}>
-                <img src="/imagines/logo/koi-farm-shop-logo-3.png" alt="Koi farm logo" className={styles.logo} />
+                <img src="/imagines/logo/koi-farm-shop-logo-3.png" alt="Koi farm logo" className={styles.logo} onClick={() => navigate('/')} />
                 <h1 className={styles.siteTitle}>Koi farm Shop</h1>
             </div>
             <div className={styles.rightSection}>
@@ -30,7 +28,7 @@ const Header = () => {
                     {user ? user.name : 'Login'}
                 </span>
             </div>
-        </header>
+        </div>
     );
 };
 

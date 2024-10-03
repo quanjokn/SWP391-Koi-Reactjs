@@ -5,16 +5,29 @@ import Header from '../../component/header';
 import Masthead from '../../component/masthead';
 import styles from './home.module.css';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Home = () => {
     const navigate = useNavigate();
+    const [products, setProducts] = useState([]);
+    const [startIndex, setStartIndex] = useState(0);
+    const [fade, setFade] = useState(false);
 
     useEffect(() => {
+        // Fetch products from API
+        axios.get("http://localhost:8080/fish/fishes-list")
+            .then(response => {
+                setProducts(response.data);  // Assuming the API response contains the product list
+            })
+            .catch(error => {
+                console.error("Error fetching products:", error);
+            });
+
         // Ghi đè giá trị của --bs-gutter-x
         const rows = document.querySelectorAll('.row');
         rows.forEach((row) => {
             row.style.setProperty('--bs-gutter-x', '0'); // Hoặc bất kỳ giá trị nào bạn muốn
-          });
+        });
         const rootElement = document.getElementById('root');
         if (rootElement) {
             rootElement.style.width = 'auto';
@@ -23,58 +36,12 @@ const Home = () => {
         return () => {
             rows.forEach((row) => {
                 row.style.removeProperty('--bs-gutter-x'); // Khôi phục giá trị ban đầu
-              });
+            });
             if (rootElement) {
                 rootElement.style.width = ''; // Khôi phục width cho root
             }
         };
     }, []);
-
-    const products = [
-        {
-            id: 1,
-            name: 'Sản phẩm 1',
-            price: '100.000đ',
-            image: '/imagines/products/asagi-koi-1.png',
-            description: 'Đây là sản phẩm chất lượng cao, phù hợp với mọi người.',
-            rating: 4.5,
-        },
-        {
-            id: 2,
-            name: 'Sản phẩm 2',
-            price: '200.000đ',
-            image: '/imagines/products/asagi-koi-1.png',
-            description: 'Sản phẩm này có nhiều tính năng và công dụng tuyệt vời.',
-            rating: 4.2,
-        },
-        {
-            id: 3,
-            name: 'Sản phẩm 3',
-            price: '300.000đ',
-            image: '/imagines/products/asagi-koi-1.png',
-            description: 'Một lựa chọn hoàn hảo cho những ai yêu thích cá Koi.',
-            rating: 4.8,
-        },
-        {
-            id: 4,
-            name: 'Sản phẩm 4',
-            price: '400.000đ',
-            image: '/imagines/products/asagi-koi-1.png',
-            description: 'Đây là sản phẩm được ưa chuộng nhất trong cửa hàng.',
-            rating: 5.0,
-        },
-        {
-            id: 5,
-            name: 'Sản phẩm 5',
-            price: '500.000đ',
-            image: '/imagines/products/asagi-koi-1.png',
-            description: 'Sản phẩm mới nhất của chúng tôi.',
-            rating: 4.0,
-        },
-    ];
-
-    const [startIndex, setStartIndex] = useState(0);
-    const [fade, setFade] = useState(false);
 
     const nextProduct = () => {
         setFade(true);
@@ -103,16 +70,15 @@ const Home = () => {
                     <div className="col-md-7">
                         <div className={styles.contentText}>
                             <h3 style={{ fontFamily: 'Kadwa' }}>Nhà cung cấp cá Koi uy tín nhất Việt Nam</h3>
-                        <p>
-                            KoiFarmShop được thành lập với mục tiêu mang đến những sản phẩm và dịch vụ chất lượng trong lĩnh vực nuôi dưỡng và chăm sóc cá Koi.
-                            Chúng tôi chuyên cung cấp cá Koi Nhật Bản chính hãng, thiết kế và thi công hồ cá Koi, cùng các giải pháp tối ưu về thiết bị và vật tư cho hồ cá.
-                            Với kinh nghiệm nhiều năm, KoiFarmShop tự hào đã và đang đồng hành cùng những người yêu thích cá Koi, lan tỏa niềm đam mê này đến khắp mọi nơi.
-                        </p>
+                            <p>
+                                KoiFarmShop được thành lập với mục tiêu mang đến những sản phẩm và dịch vụ chất lượng trong lĩnh vực nuôi dưỡng và chăm sóc cá Koi.
+                                Chúng tôi chuyên cung cấp cá Koi Nhật Bản chính hãng, thiết kế và thi công hồ cá Koi, cùng các giải pháp tối ưu về thiết bị và vật tư cho hồ cá.
+                                Với kinh nghiệm nhiều năm, KoiFarmShop tự hào đã và đang đồng hành cùng những người yêu thích cá Koi, lan tỏa niềm đam mê này đến khắp mọi nơi.
+                            </p>
                         </div>
                         <div className={styles.contentText}>
                             <button className={styles.button} onClick={() => navigate('/gioi-thieu')}>Xem thêm</button>
                         </div>
-                        
                     </div>
                     <div className="col-md-5">
                         <img src="/imagines/background/koi-background-3-1.png" alt="background content" className={styles.infoImage} />
@@ -174,15 +140,15 @@ const Home = () => {
                 <div className={`${styles.productGroup} ${fade ? styles.fadeOut : styles.fadeIn}`}>
                     {products.slice(startIndex, startIndex + 4).map((product) => (
                         <div key={product.id} className={styles.productCard}>
-                            <img src={product.image} alt={product.name} />
-                            <h2>{product.name}</h2>
-                            <p>{product.price}</p>
+                            <img src={product.photo.replace(/\\/g, "/")} alt={product.name} />
+                            <h3>{product.name}</h3>
+                            <p>{product.price} đồng</p>
                             <div className={styles.descriptionBox}>
                                 <p>{product.description}</p>
                             </div>
                             <button>Mua ngay</button>
                             <div className={styles.ratingRow}>
-                                <span>{product.rating.toFixed(1)}</span>
+                                <span>{product.rating ? product.rating.toFixed(1) : 'Chưa có đánh giá'}</span>
                                 <svg
                                     width="45"
                                     height="45"

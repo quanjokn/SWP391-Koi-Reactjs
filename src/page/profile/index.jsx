@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './profile.module.css';
 import Footer from '../../component/footer';
 import Header from '../../component/header';
@@ -7,9 +8,11 @@ import { UserContext } from '../../service/UserContext';
 import axios from 'axios';
 
 const ProfilePage = () => {
+    const navigate = useNavigate();
     const [containerStyle, setContainerStyle] = useState({});
-    const { user, setUser } = useContext(UserContext); // Lấy user từ context
+    const { user, saveUser, logout } = useContext(UserContext); // Lấy user từ context
     const [userProfile, setUserProfile] = useState({
+        id: '',
         name: '',
         phone: '',
         address: '',
@@ -34,6 +37,7 @@ const ProfilePage = () => {
         // Nếu có dữ liệu user từ UserContext, cập nhật userProfile
         if (user) {
             setUserProfile({
+                id: user.id || '',
                 name: user.name || '',
                 phone: user.phone || '',
                 address: user.address || '',
@@ -51,21 +55,28 @@ const ProfilePage = () => {
     };
 
     const handleSaveClick = async () => {
+        // Chỉ lấy các trường cần thiết để cập nhật
+        const { id, name, phone, address, email } = userProfile;
+        const updatedData = { name, phone, address, email };
         try {
-            console.log(userProfile);
             // Gọi API để cập nhật thông tin người dùng
-            const response = await axios.put(`/api/users/${userProfile.id}`, userProfile);
+            const response = await axios.post(`http://localhost:8080/user/updateUser/${userProfile.id}`, updatedData);
 
-            // Cập nhật lại user trong context sau khi cập nhật thành công
-            setUser(response.data);
+            // Sử dụng saveUser để cập nhật thông tin người dùng
+            saveUser(response.data);
 
             // Tắt chế độ chỉnh sửa
             setIsEditing(false);
 
-            console.log('Profile updated successfully:', response.data);
+            navigate('/tai-khoan');
         } catch (error) {
             console.error('Error updating profile:', error);
         }
+    };
+
+    const handleLogout = () => {
+        logout(); // Gọi hàm logout
+        navigate('/'); // Chuyển hướng về trang chủ
     };
 
     return (
@@ -77,13 +88,13 @@ const ProfilePage = () => {
                     <div className="col-md-3">
                         <ul className={`${styles.listGroup} list-group`}>
                             <li className={`${styles.listGroupItem} list-group-item`}>
-                                <a href="">Trang tài khoản</a>
+                                <a href="/">Trang chủ</a>
                             </li>
                             <li className={`${styles.listGroupItem} list-group-item`}>
                                 <a href="">Đơn hàng</a>
                             </li>
                             <li className={`${styles.listGroupItem} list-group-item`}>
-                                <a href="">Tài khoản</a>
+                                <a href="/tai-khoan">Trang tài khoản</a>
                             </li>
                             <li className={`${styles.listGroupItem} list-group-item`}>
                                 <a href="">Auctions settings</a>
@@ -92,7 +103,9 @@ const ProfilePage = () => {
                                 <a href="">Thay đổi mật khẩu</a>
                             </li>
                             <li className={`${styles.listGroupItem} list-group-item`}>
-                                <a href="">Thoát</a>
+                                <a href="/" onClick={handleLogout}>
+                                    Đăng xuất
+                                </a>
                             </li>
                         </ul>
                     </div>
