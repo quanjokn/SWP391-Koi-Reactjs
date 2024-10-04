@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './styles.module.css'; // CSS module cho định kiểu
-import axios from 'axios';
+import api from '../../config/axios';
 
 const RegisterForm = () => {
     const navigate = useNavigate();

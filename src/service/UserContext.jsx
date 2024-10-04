@@ -40,12 +40,13 @@ export const UserProvider = ({ children }) => {
         const now = new Date().getTime();
         const expirationTime = now + 15 * 60 * 1000; // 15 phút sau
 
-        // Lưu JWT và thời gian hết hạn
-        localStorage.setItem('jwt', userData.jwt);
+        // Lưu JWT nếu có
+        if (userData.jwt) {
+            localStorage.setItem('jwt', userData.jwt);
+        }
         localStorage.setItem('userExpiration', expirationTime);
-
         // Lưu trữ cả jwt và thông tin người dùng
-        setUser({ ...userData });
+        setUser(userData);
     };
 
     // Hàm đăng xuất
