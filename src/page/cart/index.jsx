@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../../config/axios";
 import Header from "../../component/header";   // Reused Header
 import Footer from "../../component/footer";   // Reused Footer
 import Tagbar from "../../component/tagbar";   // Reused Tagbar
@@ -10,7 +10,7 @@ const Cart = () => {
     const userId = 1; // Giả sử lấy từ login hoặc context
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/cart/${userId}`)
+        api.get(`/cart/${userId}`)
             .then(response => {
                 setCart(response.data);
             })
@@ -20,7 +20,7 @@ const Cart = () => {
     }, [userId]);
 
     const handleRemoveFromCart = (fishId) => {
-        axios.delete(`http://localhost:8080/cart/remove/${fishId}?userId=${userId}`)
+        api.delete(`/cart/remove/${fishId}?userId=${userId}`)
             .then(response => {
                 setCart(response.data);
             })
@@ -34,7 +34,7 @@ const Cart = () => {
             alert("Số lượng phải lớn hơn 0");
             return;
         }
-        axios.put(`http://localhost:8080/cart/update?userId=${userId}`, {
+        api.put(`/cart/update?userId=${userId}`, {
             fishId: fishId,
             quantity: quantity
         })

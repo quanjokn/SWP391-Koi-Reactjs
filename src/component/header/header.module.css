@@ -18,6 +18,7 @@
   width: 50px;
   height: auto;
   border-radius: 50%;
+  cursor: pointer;
 }
 
 .siteTitle {
@@ -25,6 +26,7 @@
   color: red;
   font-weight: bold;
   margin-left: 10px;
+  font-family: 'Calibri', sans-serif;
 }
 
 .rightSection {

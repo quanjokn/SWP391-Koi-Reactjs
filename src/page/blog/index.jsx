@@ -13,12 +13,13 @@ const Blog = () => {
 
     useEffect(() => {
         // Gọi API để lấy dữ liệu
-        // Gọi API để lấy dữ liệu
         api.get('/posts')  // Sử dụng 'api' đã được cấu hình
             .then(response => {
                 // Kiểm tra dữ liệu trả về
                 if (Array.isArray(response.data)) {
-                    setPosts(response.data); // Lưu dữ liệu bài viết vào state
+                    // Sắp xếp bài viết theo ngày giảm dần (mới nhất lên đầu)
+                    const sortedPosts = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    setPosts(sortedPosts); // Lưu dữ liệu bài viết đã sắp xếp vào state
                 } else {
                     console.error("Dữ liệu không phải là mảng:", response.data);
                 }

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import styles from './login.module.css';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../config/axios';
 import { UserContext } from '../../service/UserContext'; // Nhập UserContext
 
 export const LoginForm = () => {
@@ -32,7 +32,12 @@ export const LoginForm = () => {
     }, []);
 
     const handleLogin = async (e) => {
-        e.preventDefault(); // Ngăn chặn reload trang khi submit form
+        e.preventDefault();
+
+        if (!userName || !password) {
+            setErrorMessage("Cần nhập tài khoản và mật khẩu");
+            return;
+        }
 
         if (!userName || !password) {
             setErrorMessage("Cần nhập tài khoản và mật khẩu");
@@ -40,27 +45,37 @@ export const LoginForm = () => {
         } else {
             const loginValues = { userName, password };
 
-            try {
-                const response = await axios.post('http://localhost:8080/user/login', loginValues);
+        try {
+            const response = await api.post('/user/login', loginValues);
 
-                // Kiểm tra phản hồi có thông điệp thành công hay không
-                if (response.data) {
-                    // Lưu thông tin người dùng vào localStorage
-                    localStorage.setItem('user', JSON.stringify(response.data));
+            if (response.data && response.data.jwt) {
+                // Lưu JWT token vào localStorage
+                localStorage.setItem('jwt', response.data.jwt);
 
-                    // Cập nhật thông tin người dùng trong UserContext
-                    saveUser(response.data); // Gọi setUser từ context
+                // Lấy thông tin người dùng
+                const userResponse = await api.get('/user/profile');
 
-                    navigate('/'); // Điều hướng đến trang chính
+                // Lưu thông tin người dùng vào context
+                saveUser({ jwt: response.data.jwt, ...userResponse.data });
+
+                // Điều hướng đến trang chính
+                navigate('/');
+            }
+        } catch (error) {
+            if (error.response) {
+                // Kiểm tra nếu có dữ liệu lỗi trong phản hồi
+                if (error.response.status === 400) {
+                    setErrorMessage("Tài khoản hoặc mật khẩu sai");
                 } else {
-                    setErrorMessage("Tài khoản hoặc mật khẩu sai"); // Cập nhật thông báo lỗi
+                    setErrorMessage("Có lỗi xảy ra. Vui lòng thử lại sau.");
                 }
-            } catch (error) {
-                setErrorMessage("Có lỗi xảy ra. Vui lòng thử lại sau."); // Cập nhật thông báo lỗi từ server
-                console.error('Login error:', error);
+            } else {
+                // Nếu không có response, có thể là lỗi mạng
+                setErrorMessage("Có lỗi mạng xảy ra. Vui lòng kiểm tra kết nối của bạn.");
             }
         }
     };
+
 
     return (
         <>
@@ -94,7 +109,7 @@ export const LoginForm = () => {
                         <a href="" onClick={() => navigate('/forgot-password')}>Quên mật khẩu</a>
                     </div>
                     <div className={styles.buttonGroup}>
-                        <button type="button" style={{ backgroundColor: 'gray' }} onClick={() => navigate('/')}>Quay lại</button>
+                        <button type="button" style={{ backgroundColor: 'gray' }} onClick={() => navigate('/')}>Trang chủ</button>
                         <button type='submit'>Đăng nhập</button>
                     </div>
 
@@ -103,10 +118,7 @@ export const LoginForm = () => {
                     </div>
 
                     <div className={styles.socialLogin}>
-                        <a href="#" className={styles.btnFace} onClick={() => console.log("Đăng nhập bằng Facebook")}>
-                            <i className="fab fa-facebook"></i>Facebook
-                        </a>
-                        <a href="#" className={styles.btnGoogle} onClick={() => console.log("Đăng nhập bằng Google")}>
+                        <a href="http://localhost:8080/oauth2/authorization/google" className={styles.btnGoogle} onClick={() => console.log("Đăng nhập bằng Google")}>
                             <img src="/imagines/icon/icon-google.png" alt="GOOGLE" />
                             Google
                         </a>
@@ -120,5 +132,5 @@ export const LoginForm = () => {
         </>
     );
 };
-
+};
 export default LoginForm;
