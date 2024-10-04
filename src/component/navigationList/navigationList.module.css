@@ -1,0 +1,18 @@
+.listGroup {
+    margin-top: 125px;
+    text-align: center;
+}
+
+.listGroupItem a {
+    color: black; 
+    text-decoration: none; 
+}
+
+.active a {
+    color: red; 
+    font-weight: bold; 
+}
+
+.listGroupItem a:hover {
+    text-decoration: none; /* Bỏ gạch chân khi hover */
+}

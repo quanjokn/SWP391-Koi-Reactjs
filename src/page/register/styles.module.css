@@ -105,6 +105,6 @@ body {
 
 .error {
     color: red;
-    font-size: small;
-    padding-left: 10px;
+    margin-bottom: 15px;
+    text-align: center; /* Căn giữa nếu cần */
 }
