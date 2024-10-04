@@ -7,7 +7,6 @@ const Header = () => {
     const navigate = useNavigate();
     // Lấy thông tin user từ UserContext
     const { user } = useContext(UserContext);
-    console.log("Current user in Header:", user); // Log thông tin người dùng
     // Hàm xử lý sự kiện nhấp chuột vào icon user
     const handleUserClick = () => {
         if (user) {

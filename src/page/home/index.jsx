@@ -5,7 +5,7 @@ import Header from '../../component/header';
 import Masthead from '../../component/masthead';
 import styles from './home.module.css';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../config/axios';
 
 const Home = () => {
     const navigate = useNavigate();
@@ -15,7 +15,7 @@ const Home = () => {
 
     useEffect(() => {
         // Fetch products from API
-        axios.get("http://localhost:8080/fish/fishes-list")
+        api.get("/fish/fishes-list")
             .then(response => {
                 setProducts(response.data);  // Assuming the API response contains the product list
             })
@@ -135,6 +135,9 @@ const Home = () => {
                 </div>
             </div>
 
+            <div className='align-items-center'>
+                <h2>Top dòng cá bán chạy</h2>
+            </div>
             <div className={styles.productList}>
                 <button onClick={prevProduct} className={styles.navButton}>←</button>
                 <div className={`${styles.productGroup} ${fade ? styles.fadeOut : styles.fadeIn}`}>

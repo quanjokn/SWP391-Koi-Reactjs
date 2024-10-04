@@ -58,9 +58,7 @@ export const LoginForm = () => {
                 navigate('/');
             }
         } catch (error) {
-            console.error("Error during login:", error);
             if (error.response) {
-                console.error("Error Response:", error.response);
                 // Kiểm tra nếu có dữ liệu lỗi trong phản hồi
                 if (error.response.status === 400) {
                     setErrorMessage("Tài khoản hoặc mật khẩu sai");
@@ -116,10 +114,7 @@ export const LoginForm = () => {
                     </div>
 
                     <div className={styles.socialLogin}>
-                        <a href="#" className={styles.btnFace} onClick={() => console.log("Đăng nhập bằng Facebook")}>
-                            <i className="fab fa-facebook"></i>Facebook
-                        </a>
-                        <a href="#" className={styles.btnGoogle} onClick={() => console.log("Đăng nhập bằng Google")}>
+                        <a href="http://localhost:8080/oauth2/authorization/google" className={styles.btnGoogle} onClick={() => console.log("Đăng nhập bằng Google")}>
                             <img src="/imagines/icon/icon-google.png" alt="GOOGLE" />
                             Google
                         </a>

@@ -78,15 +78,13 @@ const RegisterForm = () => {
                     userName,
                     password,
                     email,
-                    phone: phone
-                }, {
-                    headers: {
-                        'Content-Type': 'application/json', // Đảm bảo rằng dữ liệu được gửi dưới dạng JSON
-                    }
+                    phone,
                 });
 
-                // Sau khi đăng ký thành công, chuyển hướng tới trang đăng nhập
-                navigate('/login');
+                if (response.status === 200) {
+                    // Sau khi đăng ký thành công, chuyển hướng tới trang đăng nhập
+                    navigate('/login');
+                }
             } catch (error) {
                 console.error('Đăng ký không thành công:', error);
 

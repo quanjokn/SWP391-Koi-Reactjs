@@ -5,10 +5,12 @@ import Footer from '../../component/footer';
 import Header from '../../component/header';
 import Tagbar from '../../component/tagbar';
 import { UserContext } from '../../service/UserContext';
-import axios from 'axios';
+import api from '../../config/axios';
+import NavigationList from '../../component/navigationList';
 
 const ChangePasswordPage = () => {
     const navigate = useNavigate();
+    const [containerStyle, setContainerStyle] = useState({});
     const { user } = useContext(UserContext); // Lấy thông tin user từ context
 
     const [passwordData, setPasswordData] = useState({
@@ -21,67 +23,71 @@ const ChangePasswordPage = () => {
     const [successMessage, setSuccessMessage] = useState('');
 
     useEffect(() => {
-        document.body.style.backgroundColor = "white"; // Đặt màu nền trắng
-        return () => {
-            document.body.style.backgroundColor = "";
-        };
+        setContainerStyle({
+            backgroundColor: '#470101',
+            color: 'white',
+            margin: '0 auto', // Canh giữa trang
+        });
     }, []);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
+        // Đặt lại thông báo khi người dùng nhập lại mật khẩu
+        setErrorMessage('');
+        setSuccessMessage('');
+
         setPasswordData({ ...passwordData, [name]: value });
     };
 
     const handlePasswordChange = async () => {
         const { oldPassword, newPassword, confirmPassword } = passwordData;
 
+        // Đặt lại thông báo khi người dùng nhập lại mật khẩu
+        setErrorMessage('');
+        setSuccessMessage('');
+
+
+        // Kiểm tra mật khẩu mới và xác nhận mật khẩu
         if (newPassword !== confirmPassword) {
             setErrorMessage('Mật khẩu mới và xác nhận mật khẩu không khớp.');
             return;
         }
 
         try {
-            const response = await axios.post(`http://localhost:8080/user/changePassword/${user.id}`, {
+
+            const response = await api.post(`/user/changePassword/${user.id}`, {
                 oldPassword,
-                newPassword
+                newPassword,
+                confirmPassword
             });
 
-            if (response.data.success) {
+            if (response.data && response.data.id) {
                 setSuccessMessage('Mật khẩu đã được thay đổi thành công!');
+                // Reset passwordData về giá trị mặc định
+                setPasswordData({
+                    oldPassword: '',
+                    newPassword: '',
+                    confirmPassword: ''
+                });
                 setErrorMessage('');
             } else {
                 setErrorMessage('Thay đổi mật khẩu thất bại.');
             }
         } catch (error) {
-            setErrorMessage('Có lỗi xảy ra khi thay đổi mật khẩu.');
+            if (error.response) {
+                setErrorMessage('Mật khẩu hiện tại sai' || 'Yêu cầu không hợp lệ.');
+            }
         }
     };
+
 
     return (
         <>
             <Header />
             <Tagbar />
-            <div className={`${styles.container} px-4 px-lg-5`}>
+            <div className={`${styles.container} px-4 px-lg-5`} style={containerStyle}>
                 <div className="row">
-                    <div className="col-md-3">
-                        <ul className={`${styles.listGroup} list-group`}>
-                            <li className={`${styles.listGroupItem} list-group-item`}>
-                                <a href="/">Trang chủ</a>
-                            </li>
-                            <li className={`${styles.listGroupItem} list-group-item`}>
-                                <a href="">Đơn hàng</a>
-                            </li>
-                            <li className={`${styles.listGroupItem} list-group-item`}>
-                                <a href="/tai-khoan">Trang tài khoản</a>
-                            </li>
-                            <li className={`${styles.listGroupItem} list-group-item`}>
-                                <a href="/doi-mat-khau">Thay đổi mật khẩu</a>
-                            </li>
-                            <li className={`${styles.listGroupItem} list-group-item`}>
-                                <a href="/">Đăng xuất</a>
-                            </li>
-                        </ul>
-                    </div>
+                    <NavigationList />
                     <div className="col-md-9">
                         <div className="p-3 py-5">
                             <h4 className="text-right">Đổi mật khẩu</h4>

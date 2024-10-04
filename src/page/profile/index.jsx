@@ -6,6 +6,7 @@ import Header from '../../component/header';
 import Tagbar from '../../component/tagbar';
 import { UserContext } from '../../service/UserContext';
 import api from '../../config/axios';
+import NavigationList from '../../component/navigationList';
 
 const ProfilePage = () => {
     const navigate = useNavigate();
@@ -21,16 +22,11 @@ const ProfilePage = () => {
     });
 
     useEffect(() => {
-        document.body.style.backgroundColor = "white"; // Background màu trắng
         setContainerStyle({
             backgroundColor: '#470101',
             color: 'white',
             margin: '0 auto', // Canh giữa trang
         });
-        return () => {
-            // Reset lại body khi rời khỏi trang
-            document.body.style.backgroundColor = "";
-        };
     }, []);
 
     useEffect(() => {
@@ -85,30 +81,7 @@ const ProfilePage = () => {
             <Tagbar />
             <div className={`${styles.container} px-4 px-lg-5`} style={containerStyle}>
                 <div className="row">
-                    <div className="col-md-3">
-                        <ul className={`${styles.listGroup} list-group`}>
-                            <li className={`${styles.listGroupItem} list-group-item`}>
-                                <a href="/">Trang chủ</a>
-                            </li>
-                            <li className={`${styles.listGroupItem} list-group-item`}>
-                                <a href="">Đơn hàng</a>
-                            </li>
-                            <li className={`${styles.listGroupItem} list-group-item`}>
-                                <a href="/tai-khoan">Trang tài khoản</a>
-                            </li>
-                            <li className={`${styles.listGroupItem} list-group-item`}>
-                                <a href="">Auctions settings</a>
-                            </li>
-                            <li className={`${styles.listGroupItem} list-group-item`}>
-                                <a href="">Thay đổi mật khẩu</a>
-                            </li>
-                            <li className={`${styles.listGroupItem} list-group-item`}>
-                                <a href="/" onClick={handleLogout}>
-                                    Đăng xuất
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                    <NavigationList />
 
                     <div className="col-md-9">
                         <div className="p-3 py-5">

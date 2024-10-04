@@ -54,7 +54,3 @@
     flex-grow: 1; /* Make the right side take the rest of the available space */
 }
 
-.listGroup {
-  margin-top: 125px;
-  text-align: center;
-}
