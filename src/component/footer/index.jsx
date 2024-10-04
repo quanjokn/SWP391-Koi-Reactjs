@@ -24,16 +24,15 @@ const Footer = () => {
                             <li><a href="#" className={styles.textWhite}>Đặt hàng online</a></li>
                             <li><a href="/fish/fishes-list" className={styles.textWhite}>Danh sách mặt hàng</a></li>
                             <li><a href="/tin-tuc" className={styles.textWhite}>Tin tức</a></li>
-                            <li><a href="/lien-he" className={styles.textWhite}>Liên hệ</a></li>
+
                         </ul>
                     </div>
                     <div className="col-md-4">
                         <h5>Thông tin cá nhân</h5>
                         <ul className="list-unstyled">
                             <li><a href="/login" className={styles.textWhite}>Đăng nhập</a></li>
-                            <li><a href="#" className={styles.textWhite}>Đăng xuất</a></li>
                             <li><a href="/tai-khoan" className={styles.textWhite}>Thông tin cá nhân</a></li>
-                            <li><a href="#" className={styles.textWhite}>Hướng dẫn mua bán</a></li>
+                            <li><a href="/lien-he" className={styles.textWhite}>Liên hệ</a></li>
                         </ul>
                     </div>
                     <div className="col-md-4">
@@ -41,14 +40,13 @@ const Footer = () => {
                         <ul className="list-unstyled">
                             <li><a href="#" className={styles.textWhite}>Gói hàng cá online/offline</a></li>
                             <li><a href="#" className={styles.textWhite}>Danh sách điểm giao nhận hàng</a></li>
-                            <li><a href="#" className={styles.textWhite}>Ký gửi chăm sóc</a></li>
-                            <li><a href="#" className={styles.textWhite}>Chính sách bảo mật</a></li>
-                            <li><a href="#" className={styles.textWhite}>Chính sách đổi trả hàng</a></li>
+                            <li><a href="/ki-gui-ban-ca" className={styles.textWhite}>Ký gửi bán cá</a></li>
+                            <li><a href="/ki-gui-ban-ca" className={styles.textWhite}>Ký gửi chăm sóc cá</a></li>
                         </ul>
                     </div>
                 </div>
                 <div className="row">
-                    <p>Thông tin liên hệ: Koifarmshop@gmail.com</p>
+                    <p>Thông tin liên hệ: koifarmshopswp391@gmail.com</p>
                     <p>Sđt liên hệ: 012.345.6789 (+84 23456789)</p>
                 </div>
                 <div className="row">

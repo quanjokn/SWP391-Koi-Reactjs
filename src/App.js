@@ -14,6 +14,7 @@ import ProductDetail from './page/productDetail';
 import ProductList from './page/productList';
 import Cart from './page/cart';
 import ChangePasswordPage from './page/changePassword';
+import ConsignedKoiToSell from './page/consignKoiToSell';
 
 function App() {
   const router = createBrowserRouter([
@@ -68,6 +69,10 @@ function App() {
     {
       path: 'doi-mat-khau',
       element: <ChangePasswordPage />
+    },
+    {
+      path: 'ki-gui-ban-ca',
+      element: <ConsignedKoiToSell />
     },
   ]);
 
