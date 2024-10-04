@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
+import api from '../config/axios';
 
 export const UserContext = createContext(null);
 
@@ -6,48 +7,56 @@ export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const storedUser = localStorage.getItem('user');
+        const jwt = localStorage.getItem('jwt');
         const expirationTime = localStorage.getItem('userExpiration');
 
-        if (storedUser) {
-            try {
-                const parsedUser = JSON.parse(storedUser);
-                setUser(parsedUser);
-            } catch (error) {
-                console.error("Error parsing JSON from localStorage:", error);
-            }
-        }
-
-        // Kiểm tra thời gian hết hạn
-        if (storedUser && expirationTime) {
+        // Kiểm tra nếu JWT tồn tại và chưa hết hạn
+        if (jwt && expirationTime) {
             const now = new Date().getTime();
             if (now < expirationTime) {
-                try {
-                    const parsedUser = JSON.parse(storedUser);
-                    setUser(parsedUser);
-                } catch (error) {
-                    console.error("Error parsing JSON from localStorage:", error);
-                }
+                api.get('/user/profile', {
+                    headers: {
+                        'Authorization': `Bearer ${jwt}`
+                    }
+                })
+                    .then(response => {
+                        // Lưu thông tin người dùng vào state
+                        setUser({ ...response.data, token: jwt });
+                    })
+                    .catch(error => {
+                        console.error("Lỗi khi lấy thông tin người dùng:", error);
+                        setUser(null);
+                    });
             } else {
-                // Nếu hết hạn, xóa dữ liệu
-                localStorage.removeItem('user');
+                // Hết hạn, xóa JWT
+                localStorage.removeItem('jwt');
                 localStorage.removeItem('userExpiration');
-                setUser(null);  // Cập nhật trạng thái user về null
+                setUser(null);
             }
         }
     }, []);
 
     const saveUser = (userData) => {
         const now = new Date().getTime();
-        const expirationTime = now + 5 * 60 * 1000; // 5 phút sau
+        const expirationTime = now + 15 * 60 * 1000; // 15 phút sau
 
-        localStorage.setItem('user', JSON.stringify(userData));
+        // Lưu JWT và thời gian hết hạn
+        localStorage.setItem('jwt', userData.jwt);
         localStorage.setItem('userExpiration', expirationTime);
-        setUser(userData);
+
+        // Lưu trữ cả jwt và thông tin người dùng
+        setUser({ ...userData });
+    };
+
+    // Hàm đăng xuất
+    const logout = () => {
+        localStorage.removeItem('jwt');
+        localStorage.removeItem('userExpiration');
+        setUser(null);
     };
 
     return (
-        <UserContext.Provider value={{ user, saveUser }}>
+        <UserContext.Provider value={{ user, setUser, saveUser, logout }}>
             {children}
         </UserContext.Provider>
     );

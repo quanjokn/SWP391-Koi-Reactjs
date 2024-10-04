@@ -1,24 +1,27 @@
 import axios from "axios";
-const baseUrl = "http://localhost:8080"; // Đảm bảo đúng cổng
 
-const config = {
-    baseUrl: baseUrl,
-};
+// Đảm bảo đúng cổng của API backend
+const baseURL = "http://localhost:8080";
 
-const api = axios.create(config);
+// Tạo instance axios với baseURL
+const api = axios.create({
+    baseURL: baseURL,
+});
 
-api.defaults.baseURL = baseUrl;
-
-// handle before call API
+// Hàm xử lý trước khi gọi API (interceptor)
 const handleBefore = (config) => {
-    // lấy ra cái token và đính kèm vào headers
-    const token = localStorage.getItem("token")?.replaceAll('"', "");
+    // Lấy token từ localStorage và đính kèm vào headers nếu có
+    const token = localStorage.getItem("jwt"); // Loại bỏ dấu ngoặc kép
     if (token) {
         config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;
 };
 
-api.interceptors.request.use(handleBefore, null);
+// Interceptor để đính kèm token vào tất cả các request
+api.interceptors.request.use(handleBefore, (error) => {
+    console.error("Error in request interceptor:", error);
+    return Promise.reject(error);
+});
 
 export default api;

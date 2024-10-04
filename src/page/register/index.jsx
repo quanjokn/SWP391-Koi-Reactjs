@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './styles.module.css'; // CSS module cho định kiểu
-import axios from 'axios';
+import api from '../../config/axios';
 
 const RegisterForm = () => {
     const navigate = useNavigate();
@@ -42,58 +42,58 @@ const RegisterForm = () => {
 
     const handleRegister = async (e) => {
         e.preventDefault();
-
         const { userName, password, email, phone } = registerValues;
 
-        // Regex xác thực email và số điện thoại
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const phoneRegex = /^\d{10}$/;
-
-        const newErrors = {};
-
-        // Xác thực định dạng email
-        if (!emailRegex.test(email)) {
-            newErrors.email = 'Email không hợp lệ!';
-        }
-
-        // Xác thực định dạng số điện thoại
-        if (!phoneRegex.test(phone)) {
-            newErrors.phone = 'Số điện thoại phải có 10 chữ số!';
-        }
-
-        // Cập nhật lỗi
-        setErrors(newErrors);
-
-        // Ngừng gửi nếu có lỗi xác thực
-        if (Object.keys(newErrors).length > 0) {
+        if (!userName || !password || !email || !phone) {
+            setErrors("Cần nhập đầy đủ thông tin đăng kí");
             return;
-        }
+        } else {
+            // Regex xác thực email và số điện thoại
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const phoneRegex = /^\d{10}$/;
 
-        try {
-            // Gửi request tới API đăng ký với dữ liệu JSON
-            const response = await axios.post('http://localhost:8080/user/register', {
-                userName,
-                password,
-                email,
-                phone: phone
-            }, {
-                headers: {
-                    'Content-Type': 'application/json', // Đảm bảo rằng dữ liệu được gửi dưới dạng JSON
+            const newErrors = {};
+
+            // Xác thực định dạng email
+            if (!emailRegex.test(email)) {
+                newErrors.email = 'Email không hợp lệ!';
+            }
+
+            // Xác thực định dạng số điện thoại
+            if (!phoneRegex.test(phone)) {
+                newErrors.phone = 'Số điện thoại phải có 10 chữ số!';
+            }
+
+            // Cập nhật lỗi
+            setErrors(newErrors);
+
+            // Ngừng gửi nếu có lỗi xác thực
+            if (Object.keys(newErrors).length > 0) {
+                return;
+            }
+
+            try {
+                // Gửi request tới API đăng ký với dữ liệu JSON
+                const response = await api.post('/user/register', {
+                    userName,
+                    password,
+                    email,
+                    phone,
+                });
+
+                if (response.status === 200) {
+                    // Sau khi đăng ký thành công, chuyển hướng tới trang đăng nhập
+                    navigate('/login');
                 }
-            });
+            } catch (error) {
+                console.error('Đăng ký không thành công:', error);
 
-            console.log('Đăng ký thành công:', response.data);
-
-            // Sau khi đăng ký thành công, chuyển hướng tới trang đăng nhập
-            navigate('/login');
-        } catch (error) {
-            console.error('Đăng ký không thành công:', error);
-
-            // Kiểm tra nếu lỗi là do username đã tồn tại
-            if (error.response && error.response.status === 409) { // HTTP 409: Conflict
-                setErrors({ ...errors, userName: 'Tên đăng nhập đã tồn tại!' });
-            } else {
-                setErrors({ ...errors, api: 'Đăng ký không thành công. Vui lòng thử lại.' });
+                // Kiểm tra nếu lỗi là do username đã tồn tại
+                if (error.response && error.response.status === 400) {
+                    setErrors({ ...errors, userName: 'Tên đăng nhập đã tồn tại!' });
+                } else {
+                    setErrors({ ...errors, api: 'Đăng ký không thành công. Vui lòng thử lại.' });
+                }
             }
         }
 

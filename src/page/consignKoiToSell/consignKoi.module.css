@@ -1,0 +1,36 @@
+.wrapper {
+    background-color: #f8f9fa;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.wrapper h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #343a40;
+}
+
+.wrapper input, .wrapper textarea {
+    border-radius: 5px;
+    box-shadow: none;
+    border: 1px solid #ced4da;
+    padding: 10px;
+}
+
+.wrapper .form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+.wrapper button {
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 10px;
+}
+
+.submitButton {
+    width: auto;
+    min-width: 150px; /* Giới hạn kích thước nhỏ nhất của nút */
+    padding: 10px 20px; /* Tạo không gian thoải mái cho nút */
+}

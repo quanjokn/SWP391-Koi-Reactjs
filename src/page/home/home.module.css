@@ -22,6 +22,9 @@
   text-align: center;
   background-color: #f9f9f9; /* Màu nền khác cho sản phẩm */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+  display: flex;
+  flex-direction: column; /* Để sắp xếp theo chiều dọc */
+  align-items: center; /* Căn giữa theo chiều ngang */
 }
 
 .productCard .description {
@@ -31,6 +34,10 @@
   font-size: 14px;
   color: #333;
   border-radius: 5px;
+}
+
+.description {
+  margin: 1rem 0;
 }
 
 .productCard .rating {
@@ -53,22 +60,18 @@
 }
 
 .productCard img {
-  max-width: 100%;
-  border-radius: 8px;
-}
-
-.descriptionBox {
-  background-color: #8d8d8d;
-  font-weight: 700;
-  color: black;
+  width: 100%; /* Đảm bảo hình ảnh chiếm 100% chiều rộng */
+  height: 300px; /* Chiều cao cố định cho hình ảnh */
+  object-fit: cover; /* Đảm bảo hình ảnh không bị méo */
+  border-radius: 8px; /* Bo tròn các góc */
 }
 
 .infoImage {
   width: 100%; /* Điều chỉnh kích thước hình ảnh (bạn có thể tăng/giảm giá trị này) */
   max-width: 500px; /* Giới hạn kích thước tối đa */
   height: auto;
-  margin-left: 20px; /* Tạo khoảng cách giữa hình ảnh và văn bản */
   border-radius: 8px; /* Bo tròn các góc */
+  display: block;
 }
 
 .contentText {
@@ -171,13 +174,15 @@
 
 .fadeIn {
   opacity: 1;
+  transition: opacity 0.5s ease-in;
 }
 
 .fadeOut {
   opacity: 0;
+  transition: opacity 0.5s ease-out;
 }
 
-.productCard .descriptionBox {
+.descriptionBox {
   background-color: #8d8d8d;
   font-weight: 700;
   color: black;
@@ -187,8 +192,18 @@
   display: -webkit-box;
   -webkit-line-clamp: 3; /* Số dòng tối đa hiển thị */
   -webkit-box-orient: vertical;
-  display: flex; /* Sử dụng flexbox để căn giữa */
-  justify-content: center; /* Căn giữa theo chiều ngang */
-  align-items: center; /* Căn giữa theo chiều dọc */
-  text-align: center; /* Căn giữa văn bản */
+  margin-top: 10px; /* Khoảng cách giữa mô tả và các phần tử khác */
+  margin-bottom: 10px;
+}
+
+.productCard h3 {
+  margin: 10px 0; /* Khoảng cách giữa tiêu đề và hình ảnh */
+  font-size: 1.2rem; /* Kích thước chữ cho tiêu đề */
+  height: 50px;
+}
+
+.productCard p {
+  margin: 5px 0; /* Khoảng cách giữa các đoạn văn */
+  font-size: 1rem; /* Kích thước chữ cho đoạn văn */
+  height: 25px;
 }
