@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../../config/axios';
 import { UserContext } from '../../service/UserContext'; // Nhập UserContext
 
+// comment to fix bug git
 export const LoginForm = () => {
     const [userName, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -39,11 +40,7 @@ export const LoginForm = () => {
             return;
         }
 
-        if (!userName || !password) {
-            setErrorMessage("Cần nhập tài khoản và mật khẩu");
-            return;
-        } else {
-            const loginValues = { userName, password };
+        const loginValues = { userName, password };
 
         try {
             const response = await api.post('/user/login', loginValues);
@@ -132,5 +129,5 @@ export const LoginForm = () => {
         </>
     );
 };
-};
+
 export default LoginForm;

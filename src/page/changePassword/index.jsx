@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styles from './changePassword.module.css';
 import Footer from '../../component/footer';
 import Header from '../../component/header';
@@ -9,7 +8,6 @@ import api from '../../config/axios';
 import NavigationList from '../../component/navigationList';
 
 const ChangePasswordPage = () => {
-    const navigate = useNavigate();
     const [containerStyle, setContainerStyle] = useState({});
     const { user } = useContext(UserContext); // Lấy thông tin user từ context
 

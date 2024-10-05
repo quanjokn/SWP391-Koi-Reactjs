@@ -7,7 +7,7 @@ import Tagbar from '../../component/tagbar';
 import Masthead from '../../component/masthead';
 import Footer from '../../component/footer';
 
-const ConsignedKoi = () => {
+const ConsignedKoiToSell = () => {
     const [fishData, setFishData] = useState({
         name: '',
         age: '',
@@ -29,12 +29,39 @@ const ConsignedKoi = () => {
         setFishData({ ...fishData, [name]: value });
     };
 
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];  // Lấy file đầu tiên được chọn
+        setFishData({
+            ...fishData,
+            photo: file,  // Cập nhật thuộc tính photo với file được chọn
+            video: file,
+            certificate: file
+        });
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await api.post('/api/consigned-kois', fishData);
+            const formData = new FormData();
+            formData.append('name', fishData.name);
+            formData.append('age', fishData.age);
+            formData.append('price', fishData.price);
+            formData.append('description', fishData.description);
+            formData.append('photo', fishData.photo);
+            formData.append('quantity', fishData.quantity);
+            formData.append('ration', fishData.ration);
+            formData.append('sex', fishData.sex);
+            formData.append('size', fishData.size);
+            formData.append('certificate', fishData.certificate);
+            formData.append('character', fishData.character);
+            formData.append('health_status', fishData.health_status);
+            formData.append('video', fishData.video);
+            await api.post('/api/consign-order', fishData,{
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },});
             alert('Gửi dữ liệu thành công!');
-            setFishData({ name: '', age: '', price: '', description: '', photo: '' });
+            setFishData({ name: '', age: '', price: '', description: '', photo: '', quantity: '', ration: '', sex: '', size: '', certificate: '', character: '', health_status: '', video: '' });
         } catch (error) {
             console.error('Lỗi khi gửi dữ liệu:', error);
         }
@@ -83,12 +110,11 @@ const ConsignedKoi = () => {
                         </div>
                         <div className="col-12 col-md-6 col-lg-3 mb-3">
                             <input
-                                type="text"
+                                type="file"
                                 className="form-control"
                                 name="photo"
                                 placeholder="URL ảnh cá"
-                                value={fishData.photo}
-                                onChange={handleInputChange}
+                                onChange={handleFileChange}
                                 required
                             />
                         </div>
@@ -127,12 +153,11 @@ const ConsignedKoi = () => {
                         </div>
                         <div className="col-12 col-md-6 col-lg-3 mb-3">
                             <input
-                                type="text"
+                                type="file"
                                 className="form-control"
                                 name="certificate"
                                 placeholder="URL ảnh certificate"
-                                value={fishData.certificate}
-                                onChange={handleInputChange}
+                                onChange={handleFileChange}
                                 required
                             />
                         </div>
@@ -160,12 +185,11 @@ const ConsignedKoi = () => {
                         </div>
                         <div className="col-12 col-md-6 col-lg-3 mb-3">
                             <input
-                                type="text"
+                                type="file"
                                 className="form-control"
                                 name="video"
                                 placeholder="URL video về cá"
-                                value={fishData.video}
-                                onChange={handleInputChange}
+                                onChange={handleFileChange}
                             />
                         </div>
                     </div>
@@ -211,4 +235,4 @@ const ConsignedKoi = () => {
     );
 };
 
-export default ConsignedKoi;
+export default ConsignedKoiToSell;

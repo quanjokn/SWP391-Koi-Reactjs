@@ -15,6 +15,9 @@ import ProductList from './page/productList';
 import Cart from './page/cart';
 import ChangePasswordPage from './page/changePassword';
 import ConsignedKoiToSell from './page/consignKoiToSell';
+import ConsignedKoiToCare from './page/consignKoiToCare';
+import Orders from './page/orders';
+import ConsignOrders from './page/consignOrders';
 
 function App() {
   const router = createBrowserRouter([
@@ -73,6 +76,18 @@ function App() {
     {
       path: 'ki-gui-ban-ca',
       element: <ConsignedKoiToSell />
+    },
+    {
+      path: 'ki-gui-cham-soc',
+      element: <ConsignedKoiToCare />
+    },
+    {
+      path: 'consign-order',
+      element: <ConsignOrders />
+    },
+    {
+      path: 'order',
+      element: <Orders /> // Trang giỏ hàng
     },
   ]);
 

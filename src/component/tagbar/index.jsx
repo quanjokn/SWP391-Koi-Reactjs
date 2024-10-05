@@ -24,7 +24,7 @@ const Tagbar = () => {
                     </nav>
                 </div>
                 {/* Cart layout */}
-                <div className={styles.header_cart}>
+                <div onClick={handleGoToCart} className={styles.header_cart}>
                     <i className={`fas fa-shopping-cart ${styles.customCartIcon}`}></i>
                     <span className={styles.cartQuantity}>
                         <sup className={`${styles.cartamount}`}>0</sup>
