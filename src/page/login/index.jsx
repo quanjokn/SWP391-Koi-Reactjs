@@ -10,11 +10,21 @@ export const LoginForm = () => {
     const [userName, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState(''); // Thêm state cho thông báo lỗi
+    const [rememberMe, setRememberMe] = useState(false); // State để quản lý checkbox "Lưu tài khoản"
 
     const navigate = useNavigate();
     const { saveUser } = useContext(UserContext); // Lấy setUser từ context
 
     useEffect(() => {
+        // Kiểm tra và tự động điền thông tin tài khoản nếu có trong localStorage
+        const storedUsername = localStorage.getItem('savedUsername');
+        const storedPassword = localStorage.getItem('savedPassword');
+        const storedRememberMe = localStorage.getItem('rememberMe') === 'true'; // Lấy giá trị rememberMe
+
+        if (storedUsername) setUsername(storedUsername);
+        if (storedPassword) setPassword(storedPassword);
+        setRememberMe(storedRememberMe); // Thiết lập trạng thái rememberMe từ localStorage
+
         document.body.style.backgroundImage = "url('/imagines/background/Koi.jpg')";
         document.body.style.backgroundSize = "cover";
         document.body.style.backgroundPosition = "center";
@@ -54,6 +64,16 @@ export const LoginForm = () => {
 
                 // Lưu thông tin người dùng vào context
                 saveUser({ jwt: response.data.jwt, ...userResponse.data });
+
+                if (rememberMe) {
+                    localStorage.setItem('savedUsername', userName);
+                    localStorage.setItem('savedPassword', password); // Cẩn thận với việc lưu mật khẩu
+                    localStorage.setItem('rememberMe', 'true'); // Lưu trạng thái rememberMe
+                } else {
+                    localStorage.removeItem('savedUsername');
+                    localStorage.removeItem('savedPassword');
+                    localStorage.removeItem('rememberMe'); // Xóa trạng thái rememberMe
+                }
 
                 // Điều hướng đến trang chính
                 navigate('/');
@@ -102,7 +122,10 @@ export const LoginForm = () => {
                         />
                     </div>
                     <div className={styles['remmember-forgot']}>
-                        <label><input type='checkbox' />Lưu tài khoản</label>
+                        <label>
+                            <input type='checkbox' checked={rememberMe} onChange={() => setRememberMe(!rememberMe)} />
+                            Lưu tài khoản
+                        </label>
                         <a href="" onClick={() => navigate('/forgot-password')}>Quên mật khẩu</a>
                     </div>
                     <div className={styles.buttonGroup}>
