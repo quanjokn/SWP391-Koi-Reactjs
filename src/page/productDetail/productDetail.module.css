@@ -1,95 +1,109 @@
 /* General styles */
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-  }
-  
-  .product-detail {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-  
-  header.navbar, footer.footer {
-    background-color: #ff0000; /* Red background */
-    color: white;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  header.navbar .nav-links a, 
-  footer.footer .footer-links a {
-    color: white;
-    text-decoration: none;
-    margin: 0 15px;
-  }
-  
-  header.navbar .nav-links a:hover,
-  footer.footer .footer-links a:hover {
-    text-decoration: underline;
-  }
-  
-  footer.footer {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 20px;
-  }
-  
-  /* Product section */
-  .product-section {
-    flex-grow: 1;
-    padding: 40px;
-  }
-  
-  .breadcrumb {
-    color: #777;
-  }
-  
-  .product-details {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-top: 20px;
-  }
-  
-  .product-image {
-    width: 100%; /* Chiều rộng của hình ảnh */
-    max-width: 400px; /* Chiều rộng tối đa */
-    height: auto; /* Tự động điều chỉnh chiều cao để giữ tỉ lệ */
-    margin-bottom: 20px; /* Khoảng cách phía dưới */
-  }
-  
-  
-  .product-info {
-    flex: 1;
-    margin-left: 20px;
-  }
-  
-  .action-buttons {
-    display: flex;
-    gap: 20px;
-    margin-top: 20px;
-  }
-  
-  .add-to-cart, .buy-now {
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .add-to-cart {
-    background-color: #008000;
-    color: white;
-  }
-  
-  .buy-now {
-    background-color: #ff4500;
-    color: white;
-  }
-  
-  .add-to-cart:hover, .buy-now:hover {
-    opacity: 0.9;
-  }
-  
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.product-detail {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header.navbar, footer.footer {
+  background-color: #ff0000; /* Red background */
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header.navbar .nav-links a, 
+footer.footer .footer-links a {
+  color: white;
+  text-decoration: none;
+  margin: 0 15px;
+}
+
+header.navbar .nav-links a:hover,
+footer.footer .footer-links a:hover {
+  text-decoration: underline;
+}
+
+footer.footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+/* Product section */
+.product-section {
+  flex-grow: 1;
+  padding: 40px;
+}
+
+.breadcrumb {
+  color: #777;
+}
+
+.product-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.product-image {
+  width: 100%; /* Chiều rộng của hình ảnh */
+  max-width: 400px; /* Chiều rộng tối đa */
+  height: auto; /* Tự động điều chỉnh chiều cao để giữ tỉ lệ */
+  margin-bottom: 20px; /* Khoảng cách phía dưới */
+}
+
+
+.product-info {
+  flex: 1;
+  margin-left: 20px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.add-to-cart, .buy-now {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.add-to-cart {
+  background-color: #008000;
+  color: white;
+}
+
+.buy-now {
+  background-color: #ff4500;
+  color: white;
+}
+
+.add-to-cart:hover, .buy-now:hover {
+  opacity: 0.9;
+}
+
+.message-popup {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #28a745;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  transition: opacity 0.5s ease-in-out;
+}
+
+

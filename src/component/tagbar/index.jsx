@@ -5,6 +5,10 @@ import { useNavigate, Link } from 'react-router-dom';
 const Tagbar = () => {
     const navigate = useNavigate();
 
+    const handleGoToCart = () => {
+        navigate('/cart');
+    };
+
     return (
         <>
             <div className={styles.tagbar}>

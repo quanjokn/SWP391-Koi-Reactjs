@@ -11,7 +11,7 @@ import NavigationList from '../../component/navigationList';
 const ProfilePage = () => {
     const navigate = useNavigate();
     const [containerStyle, setContainerStyle] = useState({});
-    const { user, saveUser, logout } = useContext(UserContext); // Lấy user từ context
+    const { user, saveUser } = useContext(UserContext); // Lấy user từ context
     const [userProfile, setUserProfile] = useState({
         id: '',
         name: '',
@@ -59,7 +59,7 @@ const ProfilePage = () => {
             const response = await api.post(`/user/updateUser/${userProfile.id}`, updatedData);
 
             // Sử dụng saveUser để cập nhật thông tin người dùng
-            saveUser(response.data);
+            saveUser(response.data); // Chỉ lưu trữ thông tin người dùng từ response
 
             // Tắt chế độ chỉnh sửa
             setIsEditing(false);
@@ -68,11 +68,6 @@ const ProfilePage = () => {
         } catch (error) {
             console.error('Error updating profile:', error);
         }
-    };
-
-    const handleLogout = () => {
-        logout(); // Gọi hàm logout
-        navigate('/'); // Chuyển hướng về trang chủ
     };
 
     return (

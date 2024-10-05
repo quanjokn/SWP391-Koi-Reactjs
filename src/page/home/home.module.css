@@ -179,13 +179,11 @@
 
 .fadeOut {
   opacity: 0;
-  transition: opacity 0.5s ease-out;
 }
 
 .descriptionBox {
   background-color: #8d8d8d;
   font-weight: 700;
-  color: black;
   height: 100px; /* Chiều cao cố định cho khung mô tả */
   overflow: hidden; /* Ẩn phần nội dung vượt quá */
   text-overflow: ellipsis; /* Hiển thị dấu '...' nếu mô tả quá dài */

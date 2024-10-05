@@ -55,7 +55,7 @@ function App() {
       element: <ProfilePage />
     },
     {
-      path: 'fish-detail',
+      path: 'fish-detail/:productId',
       element: <ProductDetail />
     },
     {
