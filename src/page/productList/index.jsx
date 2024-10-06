@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import axios from "axios";
 import styles from "./productList.module.css";
 import Header from "../../component/header";
 import Footer from "../../component/footer";
 import Tagbar from '../../component/tagbar';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../../service/UserContext';
+
+
 
 const ProductList = () => {
     const [products, setProducts] = useState([]);
@@ -15,9 +18,11 @@ const ProductList = () => {
         f1: false
     });
 
+    const [searchTerm, setSearchTerm] = useState(''); 
     const navigate = useNavigate();
-    const [message, setMessage] = useState([]);
-    const [showMessage, setShowMessage] = useState([]);
+    const [message, setMessage] = useState('');
+    const [showMessage, setShowMessage] = useState(false);
+    const { user } = useContext(UserContext);
 
     useEffect(() => {
         axios.get("http://localhost:8080/fish/fishes-list")
@@ -45,16 +50,26 @@ const ProductList = () => {
             filtered = filtered.filter((product) => product.origin === "Thuần chủng nhập khẩu");
         }
         if (selectedFilters.vietnamese) {
-            filtered = filtered.filter((product) => product.origin === "Thuần Việt");
+            filtered = filtered.filter((product) => product.origin === "Thuần chủng Việt");
         }
         if (selectedFilters.f1) {
-            filtered = filtered.filter((product) => product.origin === "F1");
+            filtered = filtered.filter((product) => product.origin === "Lai F1");
         }
         setFilteredProducts(filtered);
     };
 
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+    };
+
     const handleAddToCart = (product) => {
-        const userId = 1;
+        
+        const userId = user ? user.id : null;
+    
+        if (!userId) {
+            console.error("User not logged in!");            
+            return ;
+        }
         axios.post(`http://localhost:8080/cart/addToCart/${userId}`, {
             fishId: product.id,
             quantity: 1
@@ -75,6 +90,7 @@ const ProductList = () => {
         navigate(`/fish-detail/${productId}`);
     };
 
+
     return (
         <>
             <Header />
@@ -83,39 +99,50 @@ const ProductList = () => {
 
             <div className={styles['product-list']}>
                 
-                {/* Filter Section */}
-                <div className={styles['filter-container']}>
-                    <h4>Bộ lọc:</h4>
-                    <label>
-                        <input
-                            type="checkbox"
-                            name="import"
-                            checked={selectedFilters.import}
-                            onChange={handleFilterChange}
-                        />
-                        Thuần chủng nhập khẩu
-                    </label>
-                    <label>
-                        <input
-                            type="checkbox"
-                            name="vietnamese"
-                            checked={selectedFilters.vietnamese}
-                            onChange={handleFilterChange}
-                        />
-                        Thuần Việt
-                    </label>
-                    <label>
-                        <input
-                            type="checkbox"
-                            name="f1"
-                            checked={selectedFilters.f1}
-                            onChange={handleFilterChange}
-                        />
-                        F1
-                    </label>
-                    <button className={styles['apply-filter-button']} onClick={applyFilters}>
-                        Áp dụng
-                    </button>
+            <div className={styles['search-filter-container']}>
+                    {/* Search bar */}
+                    <input
+                        type="text"
+                        className={styles['search-bar']}
+                        placeholder="Tìm kiếm sản phẩm..."
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                    />
+
+                    {/* Filter Section */}
+                    <div className={styles['filter-container']}>
+                        <h4>Bộ lọc:</h4>
+                        <label>
+                            <input
+                                type="checkbox"
+                                name="import"
+                                checked={selectedFilters.import}
+                                onChange={handleFilterChange}
+                            />
+                            Thuần chủng nhập khẩu
+                        </label>
+                        <label>
+                            <input
+                                type="checkbox"
+                                name="vietnamese"
+                                checked={selectedFilters.vietnamese}
+                                onChange={handleFilterChange}
+                            />
+                            Thuần Việt
+                        </label>
+                        <label>
+                            <input
+                                type="checkbox"
+                                name="f1"
+                                checked={selectedFilters.f1}
+                                onChange={handleFilterChange}
+                            />
+                            F1
+                        </label>
+                        <button className={styles['apply-filter-button']} onClick={applyFilters}>
+                            Áp dụng
+                        </button>
+                    </div>
                 </div>
 
                 
@@ -130,7 +157,9 @@ const ProductList = () => {
                                 <p>Giá: {product.price} VND</p>
 
                                 <div className={styles['button-group']}>
-                                    <button className={styles['order-button']}>Đặt hàng</button>
+                                    <button className={styles['compare-button']}>
+                                        So sánh
+                                        </button>
                                     <button
                                         className={styles['add-to-cart-button']}
                                         onClick={() => handleAddToCart(product)}

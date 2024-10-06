@@ -41,7 +41,7 @@ const Footer = () => {
                             <li><a href="#" className={styles.textWhite}>Gói hàng cá online/offline</a></li>
                             <li><a href="#" className={styles.textWhite}>Danh sách điểm giao nhận hàng</a></li>
                             <li><a href="/ki-gui-ban-ca" className={styles.textWhite}>Ký gửi bán cá</a></li>
-                            <li><a href="/ki-gui-ban-ca" className={styles.textWhite}>Ký gửi chăm sóc cá</a></li>
+                            <li><a href="/ki-gui-cham-soc" className={styles.textWhite}>Ký gửi chăm sóc cá</a></li>
                         </ul>
                     </div>
                 </div>
