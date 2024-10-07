@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext} from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import styles from "./productDetail.module.css"; // Sử dụng CSS module
@@ -7,23 +7,24 @@ import Footer from "../../component/footer";
 import Tagbar from '../../component/tagbar';
 import Masthead from '../../component/masthead';
 import { UserContext } from '../../service/UserContext';
-import { useNavigate } from "react-router-dom";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Thumbs } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/thumbs';
 
 const ProductDetail = () => {
     const { productId } = useParams(); // Lấy productId từ URL
     const [product, setProduct] = useState(null);
     const [message, setMessage] = useState('');
     const [showMessage, setShowMessage] = useState(false);
-    const navigate = useNavigate();
     const [feedbacks, setFeedbacks] = useState([]);
-    const [userRating, setUserRating] = useState(0); // Default rating state
-    const [userComment, setUserComment] = useState(''); // User comment state
     const { user } = useContext(UserContext);
-
+    const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
     useEffect(() => {
         // Fetch product details từ API dựa vào productId
-        axios.get(`http://localhost:8080/fish/fish-detail/${productId}`)
+        axios.post(`http://localhost:8080/fish/fish-detail/${productId}`)
             .then((response) => {
                 setProduct(response.data);
             })
@@ -44,32 +45,11 @@ const ProductDetail = () => {
         return <p>No fish found</p>;
     }
 
-    const handleFeedbackSubmit = (e) => {
-        e.preventDefault();
-        const feedbackData = {
-            productId: product.id,
-            userEmail: 'user@example.com', // Change this to dynamic user email
-            rating: userRating,
-            comment: userComment,
-        };
-
-        axios.post('http://localhost:8080/api/feedback', feedbackData)
-            .then((response) => {
-                setFeedbacks([...feedbacks, response.data]); // Add the new feedback to the state
-                setUserRating(0); // Reset rating
-                setUserComment(''); // Reset comment
-            })
-            .catch((error) => {
-                console.error("Error submitting feedback!", error);
-            });
-    };
-
-
     const handleAddToCart = (product) => {
-        const userId = user ? user.id : null;   
+        const userId = user ? user.id : null;
         if (!userId) {
-            console.error("User not logged in!");           
-            return ;
+            console.error("User not logged in!");
+            return;
         }
 
         axios.post(`http://localhost:8080/cart/addToCart/${userId}`, {
@@ -93,108 +73,166 @@ const ProductDetail = () => {
         const matches = url.match(regex);
         return matches ? matches[1] : null;
     };
+    const images = [];
+    if (product.photo) {
+        images.push(product.photo.replace(/\\/g, "/"));
+    }
+    if (product.certificate) {
+        images.push(product.certificate.replace(/\\/g, "/"));
+    }
 
     // Tính giá khuyến mãi nếu có
     const promotionPrice = product.price * (1 - product.discount);
 
     return (
-        <div className={styles["product-detail"]}>
+        <div className={styles["product-detail"]} >
             {/* Header */}
             <Header />
             <Tagbar />
             <Masthead title="Chi tiết sản phẩm" />
             {/* Product Section */}
             <main className={styles["product-section"]}>
-                <h2>Chi tiết sản phẩm - {product.name}</h2>
+                <h2 className={styles["title"]}>Chi tiết sản phẩm - {product.name}</h2>
                 <p className={styles["breadcrumb"]}>Trang chủ &gt; Danh sách sản phẩm &gt; {product.name}</p>
-                <div className={styles["product-details"]}>
-                    <img className={styles["product-image"]} alt={product.name} src={product.photo.replace(/\\/g, "/")} />
-                    <div className={styles["product-info"]}>
-                        <p>{product.description}</p>
-                        <p>Giá bán: {product.price} VND</p>
-                        {product.discount > 0 && (
-                            <p>Giá khuyến mãi: {promotionPrice.toFixed(2)} VND</p>
-                        )}
-                        <p>Chiều dài: {product.size}</p>
-                        <p>Tuổi: {product.age}</p>
-                        <p>Trạng thái sức khỏe: {product.healthStatus}</p>
-                        <p>Giống cá: {product.category}</p>
-                        <p>Số lượng đang bán: {product.quantity}</p>
-                        <p>Nguồn gốc: {product.origin}</p>
-                        <p>Tính cách: {product.character}</p>
-                        <p>Khẩu phần ăn: {product.ration}</p>
-                        <img className={styles["product-image"]} src={product.certificate.replace(/\\/g, "/")} alt="Giấy chứng nhận" />
-                        {product.video && (
-                            <div className={styles["video-container"]}>
-                                <h3>Xem Video</h3>
-                                <iframe
-                                    width="600"
-                                    height="400"
-                                    src={`https://www.youtube.com/embed/${getYouTubeVideoId(product.video)}`} // Giải mã ID video
-                                    title={product.name}
-                                    frameBorder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowFullScreen
-                                ></iframe>
+                <div className={styles["product-details"]} class="row">
+                    <div class="col-md-9 row" >
+                        {/* Swiper Gallery */}
+                        <div class="col-md-5">
+                            {images.length > 0 && (
+                                <>
+                                    <Swiper
+                                        style={{
+                                            '--swiper-navigation-color': '#fff',
+                                            '--swiper-pagination-color': '#fff',
+                                        }}
+                                        spaceBetween={10}
+                                        navigation={true}
+                                        // thumbs={{ swiper: thumbsSwiper }}
+                                        thumbs={{swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null}}
+                                        modules={[Navigation, Thumbs]}
+                                        className={styles['gallery-top']}
+                                    >
+                                        {images.map((image, index) => (
+                                            <SwiperSlide key={index}>
+                                                <img
+                                                    className={styles["product-image"]}
+                                                    src={image}
+                                                    alt={`Product Image ${index + 1}`}
+                                                />
+                                            </SwiperSlide>
+                                        ))}
+
+                                        {/* Hiển thị video nếu có */}
+                                        {product.video && (
+                                            <SwiperSlide>
+                                                <div className={styles["video-container"]}>
+                                                    
+                                                    <iframe
+                                                        width="600"
+                                                        height="400"
+                                                        src={`https://www.youtube.com/embed/${getYouTubeVideoId(product.video)}`}
+                                                        title={product.name}
+                                                        frameBorder="0"
+                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                        allowFullScreen
+                                                    ></iframe>
+                                                </div>
+                                            </SwiperSlide>
+                                        )}
+                                    </Swiper>
+
+                                    {/* Thumbnails */}
+                                    <Swiper
+                                        onSwiper={setThumbsSwiper}
+                                        spaceBetween={10}
+                                        slidesPerView={4}
+                                        freeMode={true}
+                                        watchSlidesProgress={true}
+                                        modules={[Thumbs]}
+                                        className={styles['gallery-thumbs']}
+                                    >
+                                        {images.map((image, index) => (
+                                            <SwiperSlide key={index}>
+                                                <img
+                                                    className={styles["thumb-image"]}
+                                                    src={image}
+                                                    alt={`Thumbnail ${index + 1}`}
+                                                />
+                                            </SwiperSlide>
+                                        ))}
+                                        {product.video && (
+                                            <SwiperSlide>
+                                                <img
+                                                    className={styles["thumb-image"]}
+                                                    src="https://img.icons8.com/ios-filled/50/000000/video.png"
+                                                    alt="Video Thumbnail"
+                                                />
+                                            </SwiperSlide>
+                                        )}
+                                    </Swiper>
+                                </>
+                            )}
+                        </div>
+
+                        <div className={styles["product-info "]} class="col-md-7">
+                            <p className={styles['price']}>Giá bán: {product.price} VND</p>
+                            {product.discount > 0 && (
+                                <p>Giá khuyến mãi: {promotionPrice.toFixed(2)} VND</p>
+                            )}
+                            <p>{product.description}</p>
+                            <p>Chiều dài: {product.size}</p>
+                            <p>Tuổi: {product.age}</p>
+                            <p>Trạng thái sức khỏe: {product.healthStatus}</p>
+                            <p>Giống cá: {product.category}</p>
+                            <p>Số lượng đang bán: {product.quantity}</p>
+                            <p>Nguồn gốc: {product.origin}</p>
+                            <p>Tính cách: {product.character}</p>
+                            <p>Khẩu phần ăn: {product.ration}</p>
+
+                            <div className={styles["action-buttons"]}>
+                                <button className={styles["add-to-cart"]}
+                                    onClick={() => handleAddToCart(product)}>Thêm vào giỏ hàng</button>
+                                <button className={styles["buy-now"]}>Đặt hàng</button>
                             </div>
-                        )}
-                        <div className={styles["action-buttons"]}>
-                            <button className={styles["add-to-cart"]}
-                                onClick={() => handleAddToCart(product)}>Thêm vào giỏ hàng</button>
-                            <button className={styles["buy-now"]}>Đặt hàng</button>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        link blog
+                    </div>
                 </div>
-                <div className={styles['feedback-section']}>
-                    <h3>Khách hàng đánh giá và nhận xét</h3>
-                    {feedbacks.length > 0 ? (
-                        <div className={styles['feedback-list']}>
-                            {feedbacks.map((feedback, index) => (
-                                <div key={index} className={styles['feedback-item']}>
-                                    <div className={styles['feedback-rating']}>
-                                        {Array.from({ length: 5 }, (_, i) => (
-                                            <span key={i} className={i < feedback.rating ? styles['star-filled'] : styles['star-empty']}>★</span>
-                                        ))}
-                                    </div>
-                                    <p>{feedback.comment}</p>
-                                    <small>{feedback.userEmail} - {new Date(feedback.created_at).toLocaleString()}</small>
+
+            </main >
+            <div className={styles['feedback-section']}>
+                <h3>Khách hàng đánh giá và nhận xét</h3>
+                {feedbacks.length > 0 ? (
+                    <div className={styles['feedback-list']}>
+                        {feedbacks.map((feedback, index) => (
+                            <div key={index} className={styles['feedback-item']}>
+                                <div className={styles['feedback-rating']}>
+                                    {Array.from({ length: 5 }, (_, i) => (
+                                        <span key={i} className={i < feedback.rating ? styles['star-filled'] : styles['star-empty']}>★</span>
+                                    ))}
                                 </div>
-                            ))}
-                        </div>
-                    ) : (
-                        <p>Chưa có đánh giá nào.</p>
-                    )}
-
-                    <h4>Để lại bình luận</h4>
-                    <form onSubmit={handleFeedbackSubmit}>
-                        <div className={styles['rating-input']}>
-                            {[1, 2, 3, 4, 5].map((star) => (
-                                <span key={star} onClick={() => setUserRating(star)} className={userRating >= star ? styles['star-filled'] : styles['star-empty']}>
-                                    ★
-                                </span>
-                            ))}
-                        </div>
-                        <textarea
-                            value={userComment}
-                            onChange={(e) => setUserComment(e.target.value)}
-                            placeholder="Leave your comment"
-                            minLength={15}
-                            required
-                        />
-                        <button type="submit">Submit</button>
-                    </form>
-                </div>
-
-            </main>
+                                <p>{feedback.comment}</p>
+                                <small>{feedback.userEmail} - {new Date(feedback.created_at).toLocaleString()}</small>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p>Chưa có đánh giá nào.</p>
+                )}
+            </div>
 
             {/* Footer */}
             <Footer />
-            {showMessage && (
-                <div className={styles['message-popup']}>
-                    {message}
-                </div>
-            )}
-        </div>
+            {
+                showMessage && (
+                    <div className={styles['message-popup']}>
+                        {message}
+                    </div>
+                )
+            }
+        </div >
     );
 };
 
