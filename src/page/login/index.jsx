@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import styles from './login.module.css';
 import { useNavigate } from 'react-router-dom';
 import api from '../../config/axios';
 import { UserContext } from '../../service/UserContext'; // Nhập UserContext
+import ReCAPTCHA from 'react-google-recaptcha';
 
 // comment to fix bug git
 export const LoginForm = () => {
@@ -11,9 +12,10 @@ export const LoginForm = () => {
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState(''); // Thêm state cho thông báo lỗi
     const [rememberMe, setRememberMe] = useState(false); // State để quản lý checkbox "Lưu tài khoản"
-
+    const [recaptchaToken, setRecaptchaToken] = useState('');
     const navigate = useNavigate();
     const { saveUser } = useContext(UserContext); // Lấy setUser từ context
+    const recaptchaRef = useRef(null);
 
     useEffect(() => {
         // Kiểm tra và tự động điền thông tin tài khoản nếu có trong localStorage
@@ -52,7 +54,12 @@ export const LoginForm = () => {
             return;
         }
 
-        const loginValues = { userName, password };
+        if (!recaptchaToken) {
+            setErrorMessage("Vui lòng hoàn thành reCAPTCHA");
+            return;
+        }
+
+        const loginValues = { userName, password, recaptchaToken };
 
         try {
             const response = await api.post('/user/login', loginValues);
@@ -130,6 +137,12 @@ export const LoginForm = () => {
                             required
                         />
                     </div>
+                    {/* ReCAPTCHA */}
+                    <ReCAPTCHA
+                        ref={recaptchaRef}
+                        sitekey="6LdYcFoqAAAAAGUFx1IxYIoAwjLZj2NrLSTuin79"
+                        onChange={(token) => setRecaptchaToken(token)}
+                    />
                     <div className={styles['remmember-forgot']}>
                         <label>
                             <input type='checkbox' checked={rememberMe} onChange={() => setRememberMe(!rememberMe)} />
