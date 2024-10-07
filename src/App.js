@@ -18,8 +18,12 @@ import ConsignedKoiToSell from './page/consignKoiToSell';
 import ConsignedKoiToCare from './page/consignKoiToCare';
 import Orders from './page/orders';
 import ConsignOrders from './page/consignOrders';
+
+import ComparePage from './page/compare';
+
 import OrderDetail from './page/orderInformation';
 import AdminDashboard from './page/staffHome';
+
 
 function App() {
   const router = createBrowserRouter([
@@ -69,7 +73,7 @@ function App() {
     },
     {
       path: 'cart',
-      element: <Cart /> // Trang giỏ hàng
+      element: <Cart /> 
     },
     {
       path: 'doi-mat-khau',
@@ -88,8 +92,12 @@ function App() {
       element: <ConsignOrders />
     },
     {
-      path: 'order',
-      element: <Orders /> // Trang giỏ hàng
+      path: 'orders/:orderId',
+      element: <Orders />
+    },
+    {
+      path: 'compare',
+      element: <ComparePage /> 
     },
     {
       path: 'order-detail',
