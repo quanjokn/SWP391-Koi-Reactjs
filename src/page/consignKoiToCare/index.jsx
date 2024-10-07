@@ -20,6 +20,19 @@ const ConsignedKoiToCare = () => {
         video: ''
     });
 
+    const [startDate, setStartDate] = useState(""); 
+    const [endDate, setEndDate] = useState("");
+
+    const handleStartDateChange = (event) => {
+        const newDate = event.target.value;
+        setStartDate(newDate);
+    };   
+    const handleEndDateChange = (event) => {
+        const newDate = event.target.value;
+        setEndDate(newDate);
+    };   
+    
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFishData({ ...fishData, [name]: value });
@@ -34,7 +47,7 @@ const ConsignedKoiToCare = () => {
             certificate: file
         });
     };
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -48,23 +61,49 @@ const ConsignedKoiToCare = () => {
             formData.append('certificate', fishData.certificate);
             formData.append('health_status', fishData.health_status);
             formData.append('video', fishData.video);
-            await api.post('/api/consign-order', fishData,{
+            await api.post('/api/consign-order', fishData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                },});
+                },
+            });
             alert('Gửi dữ liệu thành công!');
             setFishData({ name: '', age: '', price: '', description: '', photo: '', quantity: '', ration: '', sex: '', size: '', certificate: '', character: '', health_status: '', video: '' });
         } catch (error) {
             console.error('Lỗi khi gửi dữ liệu:', error);
         }
     };
+    
 
     return (
         <>
             <Header />
             <Tagbar />
-            <Masthead title="Kí gửi để chăm sóc" />
+            <Masthead title="Kí gửi để chăm sóc" />  
+                  
             <div className={`container ${styles.wrapper}`}>
+                <h1> Kí gửi để chăm sóc </h1>
+                <form onSubmit={handleSubmit} className={styles['date-form']}>
+                    <label htmlFor="startDate">Ngày bắt đầu:  </label>
+                    <input
+                        type="date"
+                        id="startDate"
+                        value={startDate}
+                        onChange={handleStartDateChange}
+                        required // Bắt buộc chọn ngày
+                    />
+                    
+                </form>
+                <form onSubmit={handleSubmit} className={styles['date-form']}>
+                    <label htmlFor="endDate">Ngày kết thúc:  </label>
+                    <input
+                        type="date"
+                        id="endDate"
+                        value={endDate}
+                        onChange={handleEndDateChange}
+                        required // Bắt buộc chọn ngày
+                    />
+                    
+                </form>
                 <form onSubmit={handleSubmit}>
                     <div className="row mb-3">
                         <div className="col-12 col-md-6 col-lg-3 mb-3">
@@ -94,7 +133,7 @@ const ConsignedKoiToCare = () => {
                                 type="file"
                                 className="form-control"
                                 name="photo"
-                                placeholder="URL ảnh cá"                       
+                                placeholder="URL ảnh cá"
                                 onChange={handleFileChange}
                                 required
                             />
