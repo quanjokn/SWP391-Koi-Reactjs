@@ -39,7 +39,7 @@ const OrderDetail = () => {
         };
     }, []);
 
-    if (!order || !orderItems) {
+    if (!order || !orderItems.length) {
         return <div>Loading...</div>;
     }
 
@@ -48,24 +48,31 @@ const OrderDetail = () => {
             <Header />
             <Tagbar />
             <div className="container mt-5" ref={containerRef}>
+                <OrderStatus orderId={order.orderId} date={order.date} status={order.status} /> {/* Thêm OrderStatus */}
 
-                <OrderStatus orderId={order.id} date={order.date} status={order.status} /> {/* Thêm OrderStatus */}
+                {/* Bảng thông tin khách hàng và tổng quan đơn hàng */}
                 <table className="table table-striped table-bordered mt-4">
                     <thead>
                         <tr>
                             <th>Customer Name</th>
+                            <th>Phone</th>
+                            <th>Address</th>
                             <th>Total Quantity</th>
                             <th>Total Price</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>{order.customerName}</td>
+                            <td>{order.users?.name}</td>
+                            <td>{order.users?.phone}</td>
+                            <td>{order.users?.address || 'N/A'}</td> {/* Kiểm tra nếu không có address */}
                             <td>{order.totalQuantity}</td>
-                            <td>${order.totalOrderPrice ? order.totalOrderPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 0}</td>
+                            <td>{order.totalOrderPrice ? order.totalOrderPrice.toLocaleString('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 0} đồng</td>
                         </tr>
                     </tbody>
                 </table>
+
+                {/* Bảng chi tiết các sản phẩm trong đơn hàng */}
                 <h3>Order Items</h3>
                 <table className="table table-striped table-bordered">
                     <thead>
@@ -81,8 +88,8 @@ const OrderDetail = () => {
                             <tr key={item.fishId}>
                                 <td>{item.fishName}</td>
                                 <td>{item.quantity}</td>
-                                <td>${item.unitPrice ? item.unitPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 0}</td>
-                                <td>${item.totalPrice ? item.totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 0}</td>
+                                <td>{item.unitPrice ? item.unitPrice.toLocaleString('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 0} đồng</td>
+                                <td>{item.totalPrice ? item.totalPrice.toLocaleString('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 0} đồng</td>
                             </tr>
                         ))}
                     </tbody>
