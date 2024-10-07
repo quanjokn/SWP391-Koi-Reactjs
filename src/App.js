@@ -18,6 +18,8 @@ import ConsignedKoiToSell from './page/consignKoiToSell';
 import ConsignedKoiToCare from './page/consignKoiToCare';
 import Orders from './page/orders';
 import ConsignOrders from './page/consignOrders';
+import OrderDetail from './page/orderInformation';
+import AdminDashboard from './page/staffHome';
 
 function App() {
   const router = createBrowserRouter([
@@ -88,6 +90,14 @@ function App() {
     {
       path: 'order',
       element: <Orders /> // Trang giỏ hàng
+    },
+    {
+      path: 'order-detail',
+      element: <OrderDetail />
+    },
+    {
+      path: 'admin-dashboard',
+      element: <AdminDashboard />
     },
   ]);
 

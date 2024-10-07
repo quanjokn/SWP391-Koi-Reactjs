@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import api from "../../config/axios";
 import Header from "../../component/header";
 import Footer from "../../component/footer";
@@ -11,7 +11,7 @@ const Orders = () => {
     const [orders, setOrders] = useState([]);
 
     const { user } = useContext(UserContext);
-    const userId = user ? user.id : null; 
+    const userId = user ? user.id : null;
 
     useEffect(() => {
         api.get(`/order/${userId}`)
@@ -26,8 +26,8 @@ const Orders = () => {
     return (
         <>
             <Header />
-            <Tagbar/>
-            <Masthead title={"Đơn hàng của tôi"}/>
+            <Tagbar />
+            <Masthead title={"Đơn hàng của tôi"} />
 
             <div className={styles["orders-page"]}>
                 <h2 className={styles["orders-title"]}>Đơn hàng của bạn</h2>

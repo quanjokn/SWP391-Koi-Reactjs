@@ -142,18 +142,18 @@
 }
 
 .container .productList button {
-    background-color: #e32c42; /* Màu nền mặc định của nút */
-    color: white; /* Màu chữ */
+    background-color: #0080b3; /* Màu nền */
+    color: black; /* Màu chữ */
     border: none; 
     padding: 10px 20px; 
     cursor: pointer; /* Con trỏ khi di chuột vào nút */
     border-radius: 5px; /* Bo tròn các góc nút */
     transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu mượt mà */
     font-family: 'Calibri';
-    font-weight: 600;
+    font-weight: 700;
 }
 .container .productList button:hover {
-  background-color: gray; /* Màu nền khi di chuột */
+  background-color: #0056b3; /* Màu nền khi di chuột */
   color: red;
 }
 

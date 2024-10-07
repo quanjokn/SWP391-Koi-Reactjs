@@ -36,6 +36,8 @@ export const LoginForm = () => {
 
         return () => {
             document.body.style.backgroundImage = ""; // Khôi phục khi rời khỏi trang
+            document.body.style.backgroundSize = "";
+            document.body.style.backgroundPosition = "";
             if (rootElement) {
                 rootElement.style.width = ''; // Khôi phục width cho root
             }
@@ -63,7 +65,8 @@ export const LoginForm = () => {
                 const userResponse = await api.get('/user/profile');
 
                 // Lưu thông tin người dùng vào context
-                saveUser({ jwt: response.data.jwt, ...userResponse.data });
+                const user = { jwt: response.data.jwt, ...userResponse.data };
+                saveUser(user);
 
                 if (rememberMe) {
                     localStorage.setItem('savedUsername', userName);
@@ -75,8 +78,14 @@ export const LoginForm = () => {
                     localStorage.removeItem('rememberMe'); // Xóa trạng thái rememberMe
                 }
 
-                // Điều hướng đến trang chính
-                navigate('/');
+                // Điều hướng dựa trên vai trò của người dùng
+                if (user.role === 'Customer') {
+                    navigate('/'); // Điều hướng về trang chủ
+                } else if (user.role === 'Manager' || user.role === 'Staff') {
+                    navigate('/admin-dashboard'); // Điều hướng về trang quản lý
+                } else {
+                    setErrorMessage("Vai trò của bạn không được phân quyền");
+                }
             }
         } catch (error) {
             if (error.response) {
