@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext} from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import styles from "./productDetail.module.css"; // Sử dụng CSS module
@@ -23,7 +23,7 @@ const ProductDetail = () => {
 
     useEffect(() => {
         // Fetch product details từ API dựa vào productId
-        axios.get(`http://localhost:8080/fish/fish-detail/${productId}`)
+        axios.post(`http://localhost:8080/fish/fish-detail/${productId}`)
             .then((response) => {
                 setProduct(response.data);
             })
@@ -31,7 +31,7 @@ const ProductDetail = () => {
                 console.error("Error fetching product details:", error);
             });
         // Fetch feedback for the product
-        axios.get(`http://localhost:8080/api/feedback/${productId}`)
+        axios.post(`http://localhost:8080/api/feedback/${productId}`)
             .then((response) => {
                 setFeedbacks(response.data);
             })
@@ -66,10 +66,10 @@ const ProductDetail = () => {
 
 
     const handleAddToCart = (product) => {
-        const userId = user ? user.id : null;   
+        const userId = user ? user.id : null;
         if (!userId) {
-            console.error("User not logged in!");           
-            return ;
+            console.error("User not logged in!");
+            return;
         }
 
         axios.post(`http://localhost:8080/cart/addToCart/${userId}`, {

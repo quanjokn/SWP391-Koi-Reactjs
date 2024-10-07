@@ -1,20 +1,20 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import api from "../../config/axios";
 import Header from "../../component/header";   // Reused Header
 import Footer from "../../component/footer";   // Reused Footer
 import Tagbar from "../../component/tagbar";   // Reused Tagbar
-import styles from "./cart.module.css";  
+import styles from "./cart.module.css";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../service/UserContext";
 
 const Cart = () => {
     const [cart, setCart] = useState(null);
     const { user } = useContext(UserContext);
-    const userId = user ? user.id : null; 
+    const userId = user ? user.id : null;
     const navigate = useNavigate();
-    
+
     useEffect(() => {
-        api.get(`/cart/${userId}`)
+        api.post(`/cart/${userId}`)
             .then(response => {
                 setCart(response.data);
             })
@@ -54,7 +54,7 @@ const Cart = () => {
         if (cart && cart.cartItems.length > 0) {
             // Chuyển hướng sang trang xác nhận đơn hàng và truyền dữ liệu giỏ hàng
             navigate('/order', {
-                state: { 
+                state: {
                     cartItems: cart.cartItems,  // Truyền sản phẩm trong giỏ hàng
                     totalPrice: cart.totalPrice // Truyền tổng giá
                 }
@@ -63,7 +63,7 @@ const Cart = () => {
             alert("Giỏ hàng của bạn trống.");
         }
     };
-    
+
     return (
         <>
             <Header /> {/* Included Header */}
@@ -104,8 +104,8 @@ const Cart = () => {
                 {cart && cart.cartItems.length > 0 && (
                     <div className={styles["cart-total"]}>
                         <h3>Tổng tiền: {cart.totalPrice} VND</h3>
-                        <button 
-                            className={styles["place-order-button"]} 
+                        <button
+                            className={styles["place-order-button"]}
                             onClick={handlePlaceOrder}
                         >
                             Đặt hàng

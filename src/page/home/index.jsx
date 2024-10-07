@@ -149,7 +149,7 @@ const Home = () => {
                             <div className={styles.descriptionBox}>
                                 <p>{product.description}</p>
                             </div>
-                            <button>Mua ngay</button>
+                            <button onClick={() => navigate(`/fish-detail/${product.id}`)}>Chi tiết</button>
                             <div className={styles.ratingRow}>
                                 <span>{product.rating ? product.rating.toFixed(1) : 'Chưa có đánh giá'}</span>
                                 <svg
