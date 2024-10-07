@@ -14,6 +14,7 @@ const Orders = () => {
     const userId = user ? user.id : null;
     const { orderId } = useParams();
 
+
     useEffect(() => {
         if (orderId) { // Kiểm tra nếu orderIdFromState không phải là null
             // Gọi API để lấy chi tiết đơn hàng bằng orderId được truyền từ state

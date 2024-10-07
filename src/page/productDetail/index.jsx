@@ -32,7 +32,7 @@ const ProductDetail = () => {
                 console.error("Error fetching product details:", error);
             });
         // Fetch feedback for the product
-        axios.get(`http://localhost:8080/api/feedback/${productId}`)
+        axios.post(`http://localhost:8080/api/feedback/${productId}`)
             .then((response) => {
                 setFeedbacks(response.data);
             })

@@ -18,7 +18,11 @@ import ConsignedKoiToSell from './page/consignKoiToSell';
 import ConsignedKoiToCare from './page/consignKoiToCare';
 import Orders from './page/orders';
 import ConsignOrders from './page/consignOrders';
+
 import ComparePage from './page/compare';
+
+import OrderDetail from './page/orderInformation';
+import AdminDashboard from './page/staffHome';
 
 
 function App() {
@@ -94,6 +98,14 @@ function App() {
     {
       path: 'compare',
       element: <ComparePage /> 
+    },
+    {
+      path: 'order-detail',
+      element: <OrderDetail />
+    },
+    {
+      path: 'admin-dashboard',
+      element: <AdminDashboard />
     },
   ]);
 
