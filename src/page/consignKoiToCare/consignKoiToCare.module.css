@@ -34,3 +34,9 @@
     height: 100px;
     align-items: center;
 }
+
+.submitButton{
+    width: auto;
+    min-width: 150px; /* Giới hạn kích thước nhỏ nhất của nút */
+    padding: 10px 20px;
+}

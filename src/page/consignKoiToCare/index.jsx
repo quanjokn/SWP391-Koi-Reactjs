@@ -11,14 +11,13 @@ import { UserContext } from '../../service/UserContext';
 import { useNavigate } from 'react-router-dom';
 
 const ConsignedKoiToCare = () => {
-    const [fishForm, setFishForm] = useState([
-        {
+    const [fishForm, setFishForm] = useState([{
             name: '',
             sex: '',
             age: '',
             size: '',
             ration: '',
-            health_status: '',
+            healthStatus: '',
             photo: ''
         }
     ]);
@@ -69,7 +68,7 @@ const ConsignedKoiToCare = () => {
                     age: fishData.age,
                     size: fishData.size,
                     ration: fishData.ration,
-                    health_status: fishData.health_status,
+                    healthStatus: fishData.healthStatus,
                     photo: fishData.photo ? fishData.photo.name : '' // Chỉ gửi tên tệp
                 }))
             };
@@ -79,14 +78,14 @@ const ConsignedKoiToCare = () => {
                 },
             });
             alert('Gửi dữ liệu thành công!');
-            setFishForm([{ name: '', sex: '', age: '', size: '', ration: '', health_status: '', photo: '' }]);
+            setFishForm([{ name: '', sex: '', age: '', size: '', ration: '', healthStatus: '', photo: '' }]);
         } catch (error) {
             console.error('Lỗi khi gửi dữ liệu:', error);
         }
     };
     const handleAddNewForm = () => {
         setFishForm([...fishForm, {
-            name: '', sex: '', age: '', size: '', ration: '', health_status: '', photo: ''
+            name: '', sex: '', age: '', size: '', ration: '', healthStatus: '', photo: ''
         }]);
     };
     const handleRemoveForm = (index) => {
@@ -211,9 +210,9 @@ const ConsignedKoiToCare = () => {
                                         <input
                                             type="text"
                                             className="form-control"
-                                            name="health_status"
+                                            name="healthStatus"
                                             placeholder="Tình trạng sức khoẻ"
-                                            value={fishData.health_status}
+                                            value={fishData.healthStatus}
                                             onChange={(e) => handleInputChange(index, e)}
                                             required
                                         />
