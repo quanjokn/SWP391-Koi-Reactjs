@@ -18,11 +18,11 @@ import ConsignedKoiToSell from './page/consignKoiToSell';
 import ConsignedKoiToCare from './page/consignKoiToCare';
 import Orders from './page/orders';
 import ConsignOrders from './page/consignOrders';
-
+import ErrorPage from './page/error';
 import ComparePage from './page/compare';
-
 import OrderDetail from './page/orderInformation';
-import AdminDashboard from './page/staffHome';
+import ManageOrder from './page/manageOrder';
+import ManageOrderDetail from './page/manageOrderDetail';
 
 
 function App() {
@@ -104,8 +104,16 @@ function App() {
       element: <OrderDetail />
     },
     {
-      path: 'admin-dashboard',
-      element: <AdminDashboard />
+      path: 'manage-orders',
+      element: <ManageOrder />
+    },
+    {
+      path: 'manage-orders/:orderId',
+      element: <ManageOrderDetail />
+    },
+    {
+      path: 'error',
+      element: <ErrorPage />
     },
   ]);
 
