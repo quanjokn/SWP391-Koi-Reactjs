@@ -20,19 +20,19 @@ const NavigationList = () => {
         <div className="col-md-3">
             <ul className={`${styles.listGroup} list-group`}>
                 <li className={`${styles.listGroupItem} list-group-item`}>
-                    <Link to="/">Trang chủ</Link> {/* Chuyển từ a href sang Link */}
+                    <Link to="/">Trang chủ</Link> 
                 </li>
                 <li className={`${styles.listGroupItem} list-group-item`}>
-                    <Link to="">Đơn hàng</Link> {/* Chuyển từ a href sang Link */}
+                    <Link to="">Đơn hàng</Link> 
                 </li>
                 <li className={`${styles.listGroupItem} list-group-item ${isActive('/tai-khoan')}`}>
-                    <Link to="/tai-khoan">Trang tài khoản</Link> {/* Chuyển từ a href sang Link */}
+                    <Link to="/tai-khoan">Trang tài khoản</Link> 
                 </li>
                 <li className={`${styles.listGroupItem} list-group-item ${isActive('/doi-mat-khau')}`}>
-                    <Link to="/doi-mat-khau">Thay đổi mật khẩu</Link> {/* Chuyển từ a href sang Link */}
+                    <Link to="/doi-mat-khau">Thay đổi mật khẩu</Link> 
                 </li>
                 <li className={`${styles.listGroupItem} list-group-item`}>
-                    <Link to="" onClick={handleLogout}>Đăng xuất</Link> {/* Chuyển từ a href sang Link */}
+                    <Link to="" onClick={handleLogout}>Đăng xuất</Link> 
                 </li>
             </ul>
         </div>

@@ -1,0 +1,40 @@
+.errorContainer {
+    display: flex;
+    align-items: center;
+    height: 100vh;
+    padding: 16px;
+    background-color: white; 
+    color: black; 
+}
+
+.errorTitle {
+    font-size: 6rem;
+    font-weight: 900;
+    color: black; 
+    margin-bottom: 2rem;
+}
+
+.errorText {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.errorDescription {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    color: black; 
+}
+
+.errorLink {
+    padding: 0.75rem 2rem;
+    background-color: #0080b3; 
+    color: white; 
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.errorLink:hover {
+    background-color: #0056b3; 
+    color: red; 
+}

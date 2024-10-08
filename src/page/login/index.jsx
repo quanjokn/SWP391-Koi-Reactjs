@@ -85,14 +85,7 @@ export const LoginForm = () => {
                     localStorage.removeItem('rememberMe'); // Xóa trạng thái rememberMe
                 }
 
-                // Điều hướng dựa trên vai trò của người dùng
-                if (user.role === 'Customer') {
-                    navigate('/'); // Điều hướng về trang chủ
-                } else if (user.role === 'Manager' || user.role === 'Staff') {
-                    navigate('/admin-dashboard'); // Điều hướng về trang quản lý
-                } else {
-                    setErrorMessage("Vai trò của bạn không được phân quyền");
-                }
+                navigate('/');
             }
         } catch (error) {
             if (error.response) {
