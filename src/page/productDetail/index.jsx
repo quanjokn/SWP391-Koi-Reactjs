@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import styles from "./productDetail.module.css"; // Sử dụng CSS module
 import Header from "../../component/header";
 import Footer from "../../component/footer";
@@ -12,6 +11,8 @@ import { Navigation, Thumbs } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
+import api from "../../config/axios";
+import { useNavigate } from 'react-router-dom';
 
 const ProductDetail = () => {
     const { productId } = useParams(); // Lấy productId từ URL
@@ -21,10 +22,11 @@ const ProductDetail = () => {
     const [feedbacks, setFeedbacks] = useState([]);
     const { user } = useContext(UserContext);
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         // Fetch product details từ API dựa vào productId
-        axios.post(`http://localhost:8080/fish/fish-detail/${productId}`)
+        api.post(`/fish/fish-detail/${productId}`)
             .then((response) => {
                 setProduct(response.data);
             })
@@ -32,7 +34,7 @@ const ProductDetail = () => {
                 console.error("Error fetching product details:", error);
             });
         // Fetch feedback for the product
-        axios.post(`http://localhost:8080/api/feedback/${productId}`)
+        api.post(`/feedback/${productId}`)
             .then((response) => {
                 setFeedbacks(response.data);
             })
@@ -49,10 +51,10 @@ const ProductDetail = () => {
         const userId = user ? user.id : null;
         if (!userId) {
             console.error("User not logged in!");
-            return;
+            return navigate('/login');
         }
 
-        axios.post(`http://localhost:8080/cart/addToCart/${userId}`, {
+        api.post(`/cart/addToCart/${userId}`, {
             fishId: product.id,
             quantity: 1
         })
@@ -91,8 +93,9 @@ const ProductDetail = () => {
             <Tagbar />
             <Masthead title="Chi tiết sản phẩm" />
             {/* Product Section */}
+            
             <main className={styles["product-section"]}>
-                <h2 className={styles["title"]}>Chi tiết sản phẩm - {product.name}</h2>
+                <h1 className={styles["title"]}>Chi tiết sản phẩm - {product.name}</h1>
                 <p className={styles["breadcrumb"]}>Trang chủ &gt; Danh sách sản phẩm &gt; {product.name}</p>
                 <div className={styles["product-details"]} class="row">
                     <div class="col-md-9 row" >

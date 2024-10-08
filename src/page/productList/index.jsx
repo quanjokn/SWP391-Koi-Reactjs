@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
+import api from "../../config/axios";
 import styles from "./productList.module.css";
 import Header from "../../component/header";
 import Footer from "../../component/footer";
@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../service/UserContext';
 import Masthead from "../../component/masthead";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faBalanceScale } from '@fortawesome/free-solid-svg-icons';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 
 
@@ -30,7 +30,7 @@ const ProductList = () => {
     const [showCompareBox, setShowCompareBox] = useState(false);
 
     useEffect(() => {
-        axios.get("http://localhost:8080/fish/fishes-list")
+        api.get('/fish/fishes-list')
             .then((response) => {
                 setProducts(response.data);
                 setFilteredProducts(response.data);
@@ -102,14 +102,12 @@ const ProductList = () => {
     };
 
     const handleAddToCart = (product) => {
-
         const userId = user ? user.id : null;
-
         if (!userId) {
             console.error("User not logged in!");
-            return navigate(`/login`);
+            return navigate('/login');
         }
-        axios.post(`http://localhost:8080/cart/addToCart/${userId}`, {
+        api.post(`/cart/addToCart/${userId}`, {
             fishId: product.id,
             quantity: 1
         })
