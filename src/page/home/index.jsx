@@ -69,7 +69,7 @@ const Home = () => {
                 <div className={`row d-flex align-items-center ${styles.customRow}`}>
                     <div className="col-md-7">
                         <div className={styles.contentText}>
-                            <h3 style={{ fontFamily: 'Kadwa' }}>Nhà cung cấp cá Koi uy tín nhất Việt Nam</h3>
+                            <h3 style={{ fontWeight: "bold" }}>Nhà cung cấp cá Koi uy tín nhất Việt Nam</h3>
                             <p>
                                 KoiFarmShop được thành lập với mục tiêu mang đến những sản phẩm và dịch vụ chất lượng trong lĩnh vực nuôi dưỡng và chăm sóc cá Koi.
                                 Chúng tôi chuyên cung cấp cá Koi Nhật Bản chính hãng, thiết kế và thi công hồ cá Koi, cùng các giải pháp tối ưu về thiết bị và vật tư cho hồ cá.
@@ -149,7 +149,7 @@ const Home = () => {
                             <div className={styles.descriptionBox}>
                                 <p>{product.description}</p>
                             </div>
-                            <button>Mua ngay</button>
+                            <button onClick={() => navigate(`/fish-detail/${product.id}`)}>Chi tiết</button>
                             <div className={styles.ratingRow}>
                                 <span>{product.rating ? product.rating.toFixed(1) : 'Chưa có đánh giá'}</span>
                                 <svg

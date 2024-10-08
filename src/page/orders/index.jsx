@@ -52,8 +52,8 @@ const Orders = () => {
 
                 {orders.length > 0 ? (
                     orders.map(order => (
-                        <div key={order.id} className={styles["order-item"]}>
-                            <h3>Đơn hàng #{order.id}</h3>
+                        <div key={order.orderId} className={styles["order-item"]}>
+                            <h3>Đơn hàng #{order.orderId}</h3>
                             <p><strong>Ngày mua:</strong> {new Date(order.date).toLocaleDateString()}</p>
                             <p><strong>Trạng thái:</strong> {order.status}</p>
 
