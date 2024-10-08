@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import styles from './tagbar.module.css';
 import { useNavigate, Link } from 'react-router-dom';
 import { UserContext } from '../../service/UserContext'; // Import UserContext
@@ -11,13 +11,13 @@ const Tagbar = () => {
         navigate('/cart');
     };
 
-    
+
 
     return (
         <>
             <div className={styles.tagbar}>
                 {/* Hiển thị menu và giỏ hàng cho Customer */}
-                {user?.role === 'Customer' ||  !user && (
+                {user?.role === 'Customer' || !user && (
                     <>
                         <div className={styles.navContainer}>
                             <nav>
@@ -43,31 +43,32 @@ const Tagbar = () => {
                 {/* Hiển thị menu cho Staff*/}
                 {(user?.role === 'Staff') && (
                     <div className={styles.navContainer}>
-                            <nav>
-                                <ul className={styles.navList}>
+                        <nav>
+                            <ul className={styles.navList}>
                                 <li><Link to="/manage-orders">Đơn hàng</Link></li>
                                 <li><Link to="/inventory">Ký gửi chăm sóc</Link></li>
                                 <li><Link to="/">Ký gửi bán</Link></li>
+                                <li><Link to="/">Tạo tin tức</Link></li>
                                 <li><Link to="/">Đang xử lý</Link></li>
                                 <li><Link to="/">Lịch sử</Link></li>
-                                </ul>
-                            </nav>
-                        </div>
+                            </ul>
+                        </nav>
+                    </div>
                 )}
 
                 {/* Hiển thị menu cho Manager*/}
-                    {(user?.role === 'Manager') && (
+                {(user?.role === 'Manager') && (
                     <div className={styles.navContainer}>
-                            <nav>
-                                <ul className={styles.navList}>
+                        <nav>
+                            <ul className={styles.navList}>
                                 <li><Link to="/orders">Dash board</Link></li>
                                 <li><Link to="/inventory">Nhân viên</Link></li>
                                 <li><Link to="/">Khách hàng</Link></li>
                                 <li><Link to="/">Hàng tồn kho</Link></li>
                                 <li><Link to="/">Tin tức</Link></li>
-                                </ul>
-                            </nav>
-                        </div>
+                            </ul>
+                        </nav>
+                    </div>
                 )}
             </div>
         </>

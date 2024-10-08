@@ -12,14 +12,12 @@ const ManageOrder = () => {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
     const [orders, setOrders] = useState([]);
-    const [timeoutMessage, setTimeoutMessage] = useState(''); // Thêm state cho thông báo
 
     useEffect(() => {
         // Kiểm tra token (hoặc user) có hết hạn không
         const tokenExpiryTime = localStorage.getItem('tokenExpiryTime'); // Giả định bạn lưu thời gian hết hạn
         if (tokenExpiryTime && Date.now() > tokenExpiryTime) {
             setUser(null); // Đặt lại user về null
-            setTimeoutMessage('Session expired. Redirecting to login...'); // Cập nhật thông báo
             setTimeout(() => {
                 navigate('/login'); // Chuyển hướng đến trang đăng nhập
             }, 3000); // Thời gian đếm ngược 3 giây trước khi chuyển hướng
@@ -42,13 +40,14 @@ const ManageOrder = () => {
         } else {
             axios.get('https://dummyjson.com/carts')
                 .then(response => {
+                    console.log(response);
                     const ordersData = response.data.carts.map(cart => ({
                         id: cart.id,
                         customerName: `Customer ${cart.userId}`,
                         address: `Address ${cart.userId}`,
                         status: cart.isDeleted ? 'Cancelled' : 'Pending',
-                        totalPrice: cart.total, // Thêm Total Price
-                        totalQuantity: cart.totalQuantity
+                        totalPrice: cart.total,
+                        orderDate: new Date(cart.date).toLocaleDateString()
                     }));
                     setOrders(ordersData);
                 })
@@ -70,16 +69,15 @@ const ManageOrder = () => {
             <Tagbar />
             <div className={styles.container}>
                 <h1>Danh sách đơn hàng</h1>
-                {timeoutMessage && <div className={styles.timeoutMessage}>{timeoutMessage}</div>} {/* Hiển thị thông báo timeout */}
                 <table className={styles.table}>
                     <thead>
                         <tr>
-                            <th>Order ID</th>
-                            <th>Customer Name</th>
-                            <th>Address</th>
-                            <th>Status</th>
-                            <th>Total Price</th>
-                            <th>Total Quantity</th>
+                            <th>ID</th>
+                            <th>Ngày đặt hàng</th>
+                            <th>Tên khách hàng</th>
+                            <th>Địa chỉ nhận hàng</th>
+                            <th>Trạng thái</th>
+                            <th>Thành tiền</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -87,13 +85,13 @@ const ManageOrder = () => {
                         {orders.map(order => (
                             <tr key={order.id} className={styles.row}>
                                 <td>{order.id}</td>
+                                <td>{order.orderDate}</td>
                                 <td>{order.customerName}</td>
                                 <td>{order.address}</td>
                                 <td>{order.status}</td>
                                 <td>{order.totalPrice} VND</td>
-                                <td className={styles.shortQuantity}>{order.totalQuantity}</td>
                                 <td>
-                                    <button 
+                                    <button
                                         className={styles.button1}
                                         onClick={() => handleOrderClick(order.id)}
                                     >

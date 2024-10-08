@@ -14,14 +14,12 @@ const ManageOrderDetail = () => {
     const [order, setOrder] = useState(null);
     const [status, setStatus] = useState('');
     const [isLoading, setIsLoading] = useState(true);
-    const [timeoutMessage, setTimeoutMessage] = useState('');
 
     useEffect(() => {
         // Kiểm tra token (hoặc user) có hết hạn không
         const tokenExpiryTime = localStorage.getItem('tokenExpiryTime'); // Giả định bạn lưu thời gian hết hạn
         if (tokenExpiryTime && Date.now() > tokenExpiryTime) {
             setUser(null); // Đặt lại user về null
-            setTimeoutMessage('Session expired. Redirecting to login...'); // Cập nhật thông báo
             setTimeout(() => {
                 navigate('/login'); // Chuyển hướng đến trang đăng nhập
             }, 3000); // Thời gian đếm ngược 3 giây trước khi chuyển hướng
@@ -37,11 +35,13 @@ const ManageOrderDetail = () => {
     }, []);
 
     useEffect(() => {
+
         if (isLoading) return;
 
         // Kiểm tra phân quyền người dùng
         if (!user || user.role !== 'Staff') {
             navigate('/error');
+            return;
         } else {
             // Fetch chi tiết đơn hàng dựa trên orderId từ dummyjson
             axios.get(`https://dummyjson.com/carts/${orderId}`)
@@ -75,13 +75,13 @@ const ManageOrderDetail = () => {
             <Tagbar />
             <div className={styles.container}>
                 <h1>Order Details for {order.id}</h1>
+                <h2>Ngày đặt hàng: {order.orderDate}</h2>
                 <div className={styles.customerInfo}>
                     <h2>Thông tin khách hàng:</h2>
                     <p>Tên: {order.customerName}</p> {/* Hiển thị tên khách hàng */}
                     <p>Số điện thoại: {order.customerPhone}</p> {/* Hiển thị số điện thoại */}
                     <p>Địa chỉ: {order.customerAddress}</p> {/* Hiển thị địa chỉ */}
                 </div>
-
                 <h2>Sản phẩm:</h2>
                 <table className={styles.table}>
                     <thead>
