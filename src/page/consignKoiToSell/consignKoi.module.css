@@ -34,6 +34,11 @@
     min-width: 150px; /* Giới hạn kích thước nhỏ nhất của nút */
     padding: 10px 20px; /* Tạo không gian thoải mái cho nút */
 }
+.closeButton{
+    color: black;
+    background-color: rgb(224, 213, 213);
+    margin-left: 520px;
+}
 .btAdd{
     border-radius: 10px;
     background-color: rgb(54, 26, 212);

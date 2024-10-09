@@ -26,21 +26,16 @@ const ConsignedKoiToSell = () => {
         certificate: '',
         category: '',
         origin: '',
-        species: ''
+        species: [],
+        otherSpecies: ''
     }]);
 
-    const [date, setDate] = useState("");
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
 
-    const handleDateChange = (event) => {
-        const newDate = event.target.value;
-        setDate(newDate);
-    };
-
     const handleAddNewForm = () => {
         setFishForm([...fishForm, {
-            name: '', sex: '', age: '', size: '', ration: '', healthStatus: '', photo: ''
+            name: '', quantity: '', description: '', sex: '', age: '', character: '', size: '', price: '', healthStatus: '', ration: '', photo: '', video: '', certificate: '', category: '', origin: '', species: [], otherSpecies: ''
         }]);
     };
     const handleRemoveForm = (index) => {
@@ -51,9 +46,23 @@ const ConsignedKoiToSell = () => {
     };
 
     const handleInputChange = (index, e) => {
-        const { name, value } = e.target;
+        const { name, type, value, options } = e.target;
         const updatedForms = [...fishForm];
-        updatedForms[index][name] = value;
+
+        if (type === 'select-multiple') {
+            // Handle multi-select input
+            const selectedValues = Array.from(options)
+                .filter(option => option.selected)
+                .map(option => option.value);
+            updatedForms[index][name] = selectedValues; // Store as an array
+            // Xóa giá trị khác nếu chọn "Khác"
+            if (selectedValues.includes('other')) {
+                updatedForms[index].otherSpecies = ''; // Reset otherSpecies
+            }
+        } else {
+            // Handle other input types (e.g., text, number)
+            updatedForms[index][name] = value;
+        }
         setFishForm(updatedForms);
     };
 
@@ -65,7 +74,6 @@ const ConsignedKoiToSell = () => {
         setFishForm(updatedForms);
     };
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         const userId = user ? user.id : null;
@@ -74,28 +82,38 @@ const ConsignedKoiToSell = () => {
             return navigate('/login');
         }
         try {
+            const totalPrice = fishForm.reduce((total, fishData) => total + (fishData.price * fishData.quantity), 0);
+            const commission = totalPrice * 0.1;
             const fishData = {
-                date: date,
-                totalPrice: 0,
-                commission: 0,
-                ConsignList: fishForm.map(fishData => ({
-                    name: fishData.name,
-                    quantity: fishData.quantity,
-                    description: fishData.description,
-                    sex: fishData.sex,
-                    age: fishData.age,
-                    character: fishData.character,
-                    size: fishData.size,
-                    price: fishData.price,
-                    healthStatus: fishData.healthStatus,
-                    ration: fishData.ration,
-                    photo: fishData.photo ? fishData.photo.name : '',
-                    video: fishData.video ? fishData.video.name : '',
-                    certificate: fishData.certificate ? fishData.certificate.name : '',
-                    category: fishData.category,
-                    origin: fishData.origin,
-                    species: [fishData.species]
-                }))
+                totalPrice: totalPrice,
+                commission: commission,
+                ConsignList: fishForm.map(fishData => {
+                    // Tạo mảng species mới bao gồm giá trị của otherSpecies (nếu có)
+                    const combinedSpecies = [...fishData.species];
+
+                    // Nếu người dùng đã nhập giống loài khác, thêm nó vào mảng species
+                    if (fishData.otherSpecies) {
+                        combinedSpecies.push(fishData.otherSpecies);
+                    } 
+                    return {
+                        name: fishData.name,
+                        quantity: fishData.quantity,
+                        description: fishData.description,
+                        sex: fishData.sex,
+                        age: fishData.age,
+                        character: fishData.character,
+                        size: fishData.size,
+                        price: fishData.price,
+                        healthStatus: fishData.healthStatus,
+                        ration: fishData.ration,
+                        photo: fishData.photo ? fishData.photo.name : '',
+                        video: fishData.video ? fishData.video.name : '',
+                        certificate: fishData.certificate ? fishData.certificate.name : '',
+                        category: fishData.category,
+                        origin: fishData.origin,
+                        species: combinedSpecies
+                    };
+                })
             };
             console.log("Fish data being sent:", JSON.stringify(fishData, null, 2));
             await api.post(`/consignOrder/add/${userId}`, fishData, {
@@ -104,7 +122,7 @@ const ConsignedKoiToSell = () => {
                 },
             });
             alert('Gửi dữ liệu thành công!');
-            setFishForm([{ name: '', quantity: '', description: '', sex: '', age: '', character: '', size: '', price: '', healthStatus: '', ration: '', photo: '', video: '', certificate: '', category: '', origin: '', species: '' }]);
+            setFishForm([{ name: '', quantity: '', description: '', sex: '', age: '', character: '', size: '', price: '', healthStatus: '', ration: '', photo: '', video: '', certificate: '', category: '', origin: '', species: [],otherSpecies: '' }]);
         } catch (error) {
             console.error('Lỗi khi gửi dữ liệu:', error);
         }
@@ -117,16 +135,6 @@ const ConsignedKoiToSell = () => {
             <Masthead title="Kí gửi để bán" />
             <div className={`container ${styles.wrapper}`}>
                 <h1> Kí gửi để bán </h1>
-                <form onSubmit={handleSubmit} className={styles['date-form']}>
-                    <label htmlFor="date">Ngày bắt đầu:  </label>
-                    <input
-                        type="date"
-                        id="date"
-                        value={date}
-                        onChange={handleDateChange}
-                        required // Bắt buộc chọn ngày
-                    />
-                </form>
                 <div >
                     {fishForm.map((fishData, index) => (
                         <form onSubmit={handleSubmit} className={styles['fish-form']}>
@@ -215,7 +223,7 @@ const ConsignedKoiToSell = () => {
                                             type="text"
                                             className="form-control"
                                             name="size"
-                                            placeholder="Size"
+                                            placeholder="Size (cm)"
                                             value={fishData.size}
                                             onChange={(e) => handleInputChange(index, e)}
                                             required
@@ -263,37 +271,36 @@ const ConsignedKoiToSell = () => {
                                         />
                                     </div>
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
-                                        <input
-                                            type="number"
+                                        <select
                                             className="form-control"
                                             name="origin"
-                                            placeholder="Nguồn gốc"
                                             value={fishData.origin}
                                             onChange={(e) => handleInputChange(index, e)}
                                             required
-                                        />
+                                        >
+                                            <option value="" disabled>
+                                                Chọn nguồn gốc
+                                            </option>
+                                            <option value="1">Thuần chủng nhập khẩu</option>
+                                            <option value="2">Thuần chủng Việt</option>
+                                            <option value="3">Lai F1</option>
+                                        </select>
                                     </div>
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            name="species"
-                                            placeholder="Giống loài"
-                                            value={fishData.species}
-                                            onChange={(e) => handleInputChange(index, e)}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="col-12 col-md-6 col-lg-3 mb-3">
-                                        <input
-                                            type="text"
+                                        <select
                                             className="form-control"
                                             name="category"
-                                            placeholder="Loại cá"
                                             value={fishData.category}
                                             onChange={(e) => handleInputChange(index, e)}
                                             required
-                                        />
+                                        >
+                                            <option value="" disabled>
+                                                Chọn loại
+                                            </option>
+                                            <option value="Cá thể">Cá thể</option>
+                                            <option value="Lô">Lô</option>
+
+                                        </select>
                                     </div>
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
                                         <input
@@ -305,6 +312,39 @@ const ConsignedKoiToSell = () => {
                                             required
                                         />
                                     </div>
+                                    <div className="col-12 col-md-6 col-lg-3 mb-3">
+                                        <select
+                                            className="form-control"
+                                            name="species"
+                                            value={fishData.species}
+                                            onChange={(e) => handleInputChange(index, e)}
+                                            multiple={true}
+                                            required
+                                        >
+                                            <option value="" disabled>
+                                                Chọn giống loài
+                                            </option>
+                                            <option value="Koi Ogon">Koi Ogon</option>
+                                            <option value="Koi Showa">Koi Showa</option>
+                                            <option value="Koi Tancho">Koi Tancho</option>
+                                            <option value="Koi Bekko">Koi Bekko</option>
+                                            <option value="Koi Kohaku">Koi Kohaku</option>
+                                            <option value="Koi Platinum">Koi Platinum</option>
+                                            <option value="other">Khác</option>
+                                        </select>
+                                    </div>
+                                    {fishData.species.includes('other') && (
+                                        <div>
+                                            <label>Nhập giống loài khác:</label>
+                                            <input
+                                                type="text"
+                                                name="otherSpecies"
+                                                value={fishData.otherSpecies}
+                                                onChange={(e) => handleInputChange(index, e)}
+                                            />
+                                        </div>
+                                    )}
+
                                 </div>
                                 <div className="row mb-3">
                                     <div className="col-12">
