@@ -20,9 +20,10 @@ import Orders from './page/orders';
 import ConsignOrders from './page/consignOrders';
 import ErrorPage from './page/error';
 import ComparePage from './page/compare';
-import OrderDetail from './page/orderInformation';
+import OrderDetail from './page/orderDetail';
 import ManageOrder from './page/manageOrder';
 import ManageOrderDetail from './page/manageOrderDetail';
+import OrderList from './page/orderList';
 
 function App() {
   const router = createBrowserRouter([
@@ -99,8 +100,12 @@ function App() {
       element: <ComparePage /> 
     },
     {
+      path: 'order-list',
+      element: <OrderList />  //dang doi
+    },
+    {
       path: 'order-detail',
-      element: <OrderDetail />
+      element: <OrderDetail />  //dang doi
     },
     {
       path: 'manage-orders',

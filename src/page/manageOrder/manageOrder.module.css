@@ -47,11 +47,3 @@ tr:hover {
 .button1:hover {
     background-color: #2b6cb0;
 }
-
-.shortQuantity {
-    width: 80px; /* Điều chỉnh độ rộng cho Total Quantity */
-}
-
-th:nth-child(3), td:nth-child(3) {
-    width: 300px;  /* Đặt độ rộng lớn hơn cho cột Address */
-}

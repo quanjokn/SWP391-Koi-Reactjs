@@ -6,7 +6,7 @@ import { UserContext } from '../../service/UserContext';
 const NavigationList = () => {
     const navigate = useNavigate();
     const { logout } = useContext(UserContext);
-    const location = useLocation(); // Lấy thông tin về địa chỉ URL hiện tại
+    const location = useLocation();
 
     const handleLogout = () => {
         logout(); // Gọi hàm logout
@@ -20,19 +20,19 @@ const NavigationList = () => {
         <div className="col-md-3">
             <ul className={`${styles.listGroup} list-group`}>
                 <li className={`${styles.listGroupItem} list-group-item`}>
-                    <Link to="/">Trang chủ</Link> 
+                    <Link to="/">Trang chủ</Link>
                 </li>
-                <li className={`${styles.listGroupItem} list-group-item`}>
-                    <Link to="">Đơn hàng</Link> 
+                <li className={`${styles.listGroupItem} list-group-item ${isActive('/order-list')}`}>
+                    <Link to="/order-list">Đơn hàng</Link>
                 </li>
                 <li className={`${styles.listGroupItem} list-group-item ${isActive('/tai-khoan')}`}>
-                    <Link to="/tai-khoan">Trang tài khoản</Link> 
+                    <Link to="/tai-khoan">Trang tài khoản</Link>
                 </li>
                 <li className={`${styles.listGroupItem} list-group-item ${isActive('/doi-mat-khau')}`}>
-                    <Link to="/doi-mat-khau">Thay đổi mật khẩu</Link> 
+                    <Link to="/doi-mat-khau">Thay đổi mật khẩu</Link>
                 </li>
                 <li className={`${styles.listGroupItem} list-group-item`}>
-                    <Link to="" onClick={handleLogout}>Đăng xuất</Link> 
+                    <Link to="" onClick={handleLogout}>Đăng xuất</Link>
                 </li>
             </ul>
         </div>

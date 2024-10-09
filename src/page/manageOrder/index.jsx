@@ -74,9 +74,6 @@ const ManageOrder = () => {
                         <tr>
                             <th>ID</th>
                             <th>Ngày đặt hàng</th>
-                            <th>Tên khách hàng</th>
-                            <th>Địa chỉ nhận hàng</th>
-                            <th>Trạng thái</th>
                             <th>Thành tiền</th>
                             <th>Action</th>
                         </tr>
@@ -86,16 +83,13 @@ const ManageOrder = () => {
                             <tr key={order.id} className={styles.row}>
                                 <td>{order.id}</td>
                                 <td>{order.orderDate}</td>
-                                <td>{order.customerName}</td>
-                                <td>{order.address}</td>
-                                <td>{order.status}</td>
                                 <td>{order.totalPrice} VND</td>
                                 <td>
                                     <button
                                         className={styles.button1}
                                         onClick={() => handleOrderClick(order.id)}
                                     >
-                                        View Details
+                                        Tiếp nhận
                                     </button>
                                 </td>
                             </tr>
