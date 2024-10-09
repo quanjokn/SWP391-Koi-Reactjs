@@ -12,7 +12,6 @@ import "./orderStatus.css";
 
 export default function OrderStatus({ orderId, date, status }) {
     // Nhận thêm status từ API
-
     useEffect(() => {
         const colElement = document.querySelector(".col-12");
         if (colElement) {
@@ -33,9 +32,15 @@ export default function OrderStatus({ orderId, date, status }) {
             Preparing: 2,
             Shipping: 3,
             Completed: 4,
+            Rejected: 0,
         };
 
         const currentStep = statusMap[status] || 0;
+
+        if (status === "Rejected" && step === 1) {
+            return "rejected";
+        }
+
         return currentStep >= step
             ? "active"
             : currentStep < step
@@ -92,7 +97,10 @@ export default function OrderStatus({ orderId, date, status }) {
                                     <div className="d-flex justify-content-between">
                                         <div className="d-flex flex-column align-items-center">
                                             <MDBIcon fas icon="clipboard-list" size="3x" />
-                                            <p className="fw-bold text-center mb-0">
+                                            <p
+                                                className={`fw-bold text-center mb-0 ${status === "Rejected" ? "rejected-text" : ""
+                                                    }`}
+                                            >
                                                 Đợi Xác Nhận
                                             </p>
                                         </div>
@@ -102,9 +110,7 @@ export default function OrderStatus({ orderId, date, status }) {
                                         </div>
                                         <div className="d-flex flex-column align-items-center">
                                             <MDBIcon fas icon="shipping-fast" size="3x" />
-                                            <p className="fw-bold text-center mb-0">
-                                                Đang Vận Chuyển
-                                            </p>
+                                            <p className="fw-bold text-center mb-0">Đang Vận Chuyển</p>
                                         </div>
                                         <div className="d-flex flex-column align-items-center">
                                             <MDBIcon fas icon="home" size="3x" />
