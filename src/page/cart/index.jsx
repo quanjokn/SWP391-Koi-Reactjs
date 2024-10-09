@@ -59,12 +59,12 @@ const Cart = () => {
             }
     
             // Gửi yêu cầu POST đến API để đặt hàng
-            api.post(`http://localhost:8080/orderDetail/placeOrder/${userId}`)
+            api.post(`/orderDetail/placeOrder/${userId}`)
                 .then((response) => {
                     // Nhận được OrderID từ phản hồi
-                    const orderId = response.data.id;
+                    const orderId = response.data.orderId;
                     
-                    // Chuyển hướng sang trang chi tiết đơn hàng và truyền orderId
+                    // Chuyển hướng sang trang đơn hàng và truyền orderId
                     navigate(`/orders/${orderId}`);
                     
                 })

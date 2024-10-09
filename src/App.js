@@ -24,7 +24,6 @@ import OrderDetail from './page/orderInformation';
 import ManageOrder from './page/manageOrder';
 import ManageOrderDetail from './page/manageOrderDetail';
 
-
 function App() {
   const router = createBrowserRouter([
     {

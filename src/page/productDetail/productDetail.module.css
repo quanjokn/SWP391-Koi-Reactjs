@@ -5,8 +5,10 @@ body {
 }
 .title{
   position: sticky;
-  top: 0;
+  top: 59px;
+  background-color: rgb(80, 0, 0);
   z-index: 1000;
+  color: white;
 }
 .price{
   font-size: 1.5em; 
@@ -51,7 +53,7 @@ footer.footer {
 /* Product section */
 .product-section {
   flex-grow: 1;
-  padding: 40px;
+  padding: 100px;
 }
 
 .breadcrumb {
@@ -110,7 +112,7 @@ footer.footer {
 
 .message-popup {
   position: fixed;
-  top: 20px;
+  top: 80px;
   right: 20px;
   background-color: #28a745;
   color: white;
