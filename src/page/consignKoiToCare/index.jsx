@@ -12,14 +12,14 @@ import { useNavigate } from 'react-router-dom';
 
 const ConsignedKoiToCare = () => {
     const [fishForm, setFishForm] = useState([{
-            name: '',
-            sex: '',
-            age: '',
-            size: '',
-            ration: '',
-            healthStatus: '',
-            photo: ''
-        }
+        name: '',
+        sex: '',
+        age: '',
+        size: '',
+        ration: '',
+        healthStatus: '',
+        photo: ''
+    }
     ]);
     const { user } = useContext(UserContext);
     const [startDate, setStartDate] = useState("");
@@ -58,10 +58,16 @@ const ConsignedKoiToCare = () => {
             return navigate('/login');
         }
         try {
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            const timeDifference = end - start; // Time difference in milliseconds
+            const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24)); // Convert to days
+            const totalPrice = daysDifference * 100000;
+
             const fishData = {
                 startDate: startDate,
                 endDate: endDate,
-                totalPrice: 0, // Bạn có thể tính toán giá trị này nếu cần
+                totalPrice: totalPrice, // Bạn có thể tính toán giá trị này nếu cần
                 CaredKoiList: fishForm.map(fishData => ({
                     name: fishData.name,
                     sex: fishData.sex,
