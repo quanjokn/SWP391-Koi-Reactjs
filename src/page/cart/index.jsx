@@ -51,85 +51,91 @@ const Cart = () => {
     };
 
     const handlePlaceOrder = () => {
-        if (cart && cart.cartItems.length > 0) {         
-            const userId = user ? user.id : null;   
+        if (cart && cart.cartItems.length > 0) {
             if (!userId) {
                 alert("Bạn cần đăng nhập trước khi đặt hàng.");
                 return navigate(`/login`);
             }
-    
-            // Gửi yêu cầu POST đến API để đặt hàng
-            api.post(`/orderDetail/placeOrder/${userId}`)
-                .then((response) => {
-                    // Nhận được OrderID từ phản hồi
-                    const orderId = response.data.orderId;
-                    
-                    // Chuyển hướng sang trang đơn hàng và truyền orderId
-                    navigate(`/orders/${orderId}`);
-                    
-                })
-                .catch((error) => {
-                    console.error("Error placing order:", error);
-                    alert("Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại.");
-                });
+
+            // Chuyển hướng sang trang Order và truyền dữ liệu giỏ hàng qua state
+            navigate('/orders', { state: { cart: cart } });
         } else {
             alert("Giỏ hàng của bạn trống.");
         }
     };
 
-return (
-    <>
-        <Header /> {/* Included Header */}
-        <Tagbar /> {/* Included Tagbar */}
+    return (
+        <>
+            <Header /> {/* Included Header */}
+            <Tagbar /> {/* Included Tagbar */}
 
-        <div className={styles["cart-page"]}>
-            <h2 className={styles["cart-title"]}>Giỏ hàng của bạn</h2>
+            <div className={styles["cart-page"]}>
+                <h2 className={styles["cart-title"]}>Giỏ hàng của bạn</h2>
 
-            <div className={styles["cart-container"]}>
-                {cart && cart.cartItems.length > 0 ? (
-                    cart.cartItems.map(item => (
-                        <div key={item.fishId} className={styles["cart-item"]}>
-                            <img src={item.photo} alt={item.fishName} />
-                            <h3>{item.fishName}</h3>
-                            <p>Đơn giá: {item.unitPrice} VND</p>
-                            <p>
-                                Số lượng:
-                                <input
-                                    type="number"
-                                    value={item.quantity}
-                                    onChange={(e) => handleQuantityChange(item.fishId, e.target.value)}
-                                />
-                            </p>
-                            <p>Tổng giá: {item.totalPrice} VND</p>
-                            <button
-                                className={styles["remove-button"]}
-                                onClick={() => handleRemoveFromCart(item.fishId)}
-                            >
-                                Xóa
-                            </button>
-                        </div>
-                    ))
-                ) : (
-                    <p>Giỏ hàng của bạn trống.</p>
+                <div className={styles["cart-container"]}>
+                    <table className="cart-table">
+                        <thead>
+                            <tr>
+                                <th>Sản phẩm</th>
+                                <th>Đơn giá</th>
+                                <th>Số lượng</th>
+                                <th>Tổng tiền</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {cart && cart.cartItems.length > 0 ? (
+                                cart.cartItems.map(item => (
+                                    <tr key={item.fishId}>
+                                        <td>
+                                            <img src={item.photo} alt={item.fishName} />
+                                            <h3>{item.fishName}</h3>
+                                        </td>
+                                        <td>{item.unitPrice.toLocaleString()} VND</td>
+                                        <td>
+                                            <input
+                                                type="number"
+                                                value={item.quantity}
+                                                onChange={(e) => handleQuantityChange(item.fishId, e.target.value)}
+                                            />
+                                        </td>
+                                        <td>{(item.unitPrice * item.quantity).toLocaleString()} VND</td>
+                                        <td>
+                                            <button
+                                                className={styles["remove-button"]}
+                                                onClick={() => handleRemoveFromCart(item.fishId)}
+                                            >
+                                                Xóa
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="5" style={{ textAlign: 'center' }}>Giỏ hàng của bạn trống.</td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+
+                </div>
+
+                {cart && cart.cartItems.length > 0 && (
+                    <div className={styles["cart-total"]}>
+                        <h3>Tổng thanh toán: {cart.totalPrice.toLocaleString()} VND</h3>
+                        <button
+                            className={styles["place-order-button"]}
+                            onClick={handlePlaceOrder}            
+                        >
+                            Đi đến thanh toán 
+                        </button>
+                    </div>
                 )}
             </div>
 
-            {cart && cart.cartItems.length > 0 && (
-                <div className={styles["cart-total"]}>
-                    <h3>Tổng tiền: {cart.totalPrice} VND</h3>
-                    <button
-                        className={styles["place-order-button"]}
-                        onClick={handlePlaceOrder}
-                    >
-                        Đặt hàng
-                    </button>
-                </div>
-            )}
-        </div>
-
-        <Footer /> {/* Included Footer */}
-    </>
-);
+            <Footer /> {/* Included Footer */}
+        </>
+    );
 };
 
 export default Cart;
