@@ -53,11 +53,12 @@ const OrderList = () => {
                                 <table className={styles.table}>
                                     <thead>
                                         <tr>
-                                            <th>Ngày</th>
-                                            <th>Trạng thái đơn hàng</th>
+                                            <th>Ngày</th>                                            
                                             <th>Tên sản phẩm</th>
                                             <th>Số lượng</th>
                                             <th>Giá</th>
+                                            <th>Trạng thái đơn hàng</th>
+                                            <th>Đánh giá</th>
                                         </tr>
                                     </thead>
                                     <tbody>

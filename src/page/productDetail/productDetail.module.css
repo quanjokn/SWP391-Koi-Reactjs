@@ -69,9 +69,6 @@ footer.footer {
   margin-right: -150px;
 }
 
-
-
-
 .product-info {
   background-color: #f9f9f9; /* Nền sáng cho container */
   border: 1px solid #020202; /* Đường viền xung quanh */
@@ -197,7 +194,7 @@ button {
 }
 
 .thumb-image {
-  height: 100%;
+  height: 60%;
   width: auto;
   cursor: pointer;
   object-fit: cover;
