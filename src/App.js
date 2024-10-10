@@ -24,6 +24,7 @@ import OrderDetail from './page/orderDetail';
 import ManageOrder from './page/manageOrder';
 import ManageOrderDetail from './page/manageOrderDetail';
 import OrderList from './page/orderList';
+import Processing from './page/processing';
 
 function App() {
   const router = createBrowserRouter([
@@ -118,6 +119,10 @@ function App() {
     {
       path: 'error',
       element: <ErrorPage />
+    },
+    {
+      path: 'process-order',
+      element: <Processing />
     },
   ]);
 

@@ -6,6 +6,7 @@ import Footer from '../../component/footer/index';
 import Tagbar from '../../component/tagbar';
 import { UserContext } from '../../service/UserContext';
 import styles from './manageOrderDetail.module.css';
+import Loading from '../../component/loading';
 
 const ManageOrderDetail = () => {
     const { orderId } = useParams();
@@ -27,31 +28,27 @@ const ManageOrderDetail = () => {
     }, [navigate, setUser]);
 
     useEffect(() => {
-        const loadingTimeout = setTimeout(() => {
-            setIsLoading(false);
-        }, 3000);
-
-        return () => clearTimeout(loadingTimeout);
-    }, []);
-
-    useEffect(() => {
-
-        if (isLoading) return;
+        // Fetch chi tiết đơn hàng dựa trên orderId từ dummyjson
+        const fetchOrderDetail = async () => {
+            try {
+                const response = await axios.get(`https://dummyjson.com/carts/${orderId}`);
+                setOrder(response.data);
+                setStatus(response.data.isDeleted ? 'Cancelled' : 'Pending');
+                setIsLoading(false); // Đặt loading thành false khi có dữ liệu
+            } catch (error) {
+                console.error('Error fetching order detail:', error);
+                navigate('/error'); // Chuyển hướng đến trang lỗi nếu không lấy được dữ liệu
+            }
+        };
 
         // Kiểm tra phân quyền người dùng
         if (!user || user.role !== 'Staff') {
             navigate('/error');
             return;
         } else {
-            // Fetch chi tiết đơn hàng dựa trên orderId từ dummyjson
-            axios.get(`https://dummyjson.com/carts/${orderId}`)
-                .then(response => {
-                    setOrder(response.data);
-                    setStatus(response.data.isDeleted ? 'Cancelled' : 'Pending');
-                })
-                .catch(error => console.error('Error fetching order detail:', error));
+            fetchOrderDetail();
         }
-    }, [user, isLoading, orderId, navigate]);
+    }, [user, orderId, navigate]);
 
     const handleStatusChange = () => {
         // Cập nhật trạng thái đơn hàng
@@ -62,8 +59,9 @@ const ManageOrderDetail = () => {
             .catch(error => console.error('Error updating order status:', error));
     };
 
-    if (!order) {
-        return <div>Loading...</div>;
+    // Chỉ hiển thị loading nếu đang trong trạng thái loading
+    if (isLoading) {
+        return <Loading />;
     }
 
     // Tính toán tổng giá
@@ -74,13 +72,13 @@ const ManageOrderDetail = () => {
             <Header />
             <Tagbar />
             <div className={styles.container}>
-                <h1>Order Details for {order.id}</h1>
+                <h1>Chi tiết đơn hàng của ID {order.id}</h1>
                 <h2>Ngày đặt hàng: {order.orderDate}</h2>
                 <div className={styles.customerInfo}>
                     <h2>Thông tin khách hàng:</h2>
-                    <p>Tên: {order.customerName}</p> {/* Hiển thị tên khách hàng */}
-                    <p>Số điện thoại: {order.customerPhone}</p> {/* Hiển thị số điện thoại */}
-                    <p>Địa chỉ: {order.customerAddress}</p> {/* Hiển thị địa chỉ */}
+                    <p>Tên: {order.customerName}</p>
+                    <p>Số điện thoại: {order.customerPhone}</p>
+                    <p>Địa chỉ: {order.customerAddress}</p>
                 </div>
                 <h2>Sản phẩm:</h2>
                 <table className={styles.table}>

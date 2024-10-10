@@ -15,7 +15,6 @@ const OrderDetail = () => {
         const orderId = 1; // Thay thế bằng ID đơn hàng thực tế
         api.post(`/orderDetail/${orderId}`)
             .then(response => {
-                console.log('Full API Response:', response);
                 const orderDTO = response.data;
                 if (orderDTO) {
                     setOrder(orderDTO);

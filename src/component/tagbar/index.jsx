@@ -17,7 +17,7 @@ const Tagbar = () => {
         <>
             <div className={styles.tagbar}>
                 {/* Hiển thị menu và giỏ hàng cho Customer */}
-                {user?.role === 'Customer' || !user && (
+                {(user?.role === 'Customer' || !user) && (
                     <>
                         <div className={styles.navContainer}>
                             <nav>
@@ -49,7 +49,7 @@ const Tagbar = () => {
                                 <li><Link to="/inventory">Ký gửi chăm sóc</Link></li>
                                 <li><Link to="/">Ký gửi bán</Link></li>
                                 <li><Link to="/">Tạo tin tức</Link></li>
-                                <li><Link to="/">Đang xử lý</Link></li>
+                                <li><Link to="/process-order">Đang xử lý</Link></li>
                                 <li><Link to="/">Lịch sử</Link></li>
                             </ul>
                         </nav>
