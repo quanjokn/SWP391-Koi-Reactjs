@@ -34,7 +34,7 @@ const ProductDetail = () => {
                 console.error("Error fetching product details:", error);
             });
         // Fetch feedback for the product
-        api.post(`/feedback/${productId}`)
+        api.get(`/feedback/${productId}`)
             .then((response) => {
                 setFeedbacks(response.data);
             })
@@ -95,7 +95,7 @@ const ProductDetail = () => {
             {/* Product Section */}
             
             <main className={styles["product-section"]}>
-                <h1 className={styles["title"]}>Chi tiết sản phẩm - {product.name}</h1>
+                <h1 className={styles["title"]}>{product.name}</h1>
                 <p className={styles["breadcrumb"]}>Trang chủ &gt; Danh sách sản phẩm &gt; {product.name}</p>
                 <div className={styles["product-details"]} class="row">
                     <div class="col-md-9 row" >
@@ -200,7 +200,7 @@ const ProductDetail = () => {
                         </div>
                     </div>
                     <div class="col-md-3">
-                        link blog
+                        
                     </div>
                 </div>
 

@@ -93,8 +93,8 @@ function App() {
       element: <ConsignOrders />
     },
     {
-      path: 'orders/:orderId',
-      element: <Orders />
+      path: 'orders' ,
+      element: <Orders /> 
     },
     {
       path: 'compare',

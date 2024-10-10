@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import styles from './tagbar.module.css';
 import { useNavigate, Link } from 'react-router-dom';
 import { UserContext } from '../../service/UserContext'; // Import UserContext
@@ -24,7 +24,13 @@ const Tagbar = () => {
                                 <ul className={styles.navList}>
                                     <li><Link to="/">Trang chủ</Link></li>
                                     <li><Link to="/fish/fishes-list">Sản phẩm</Link></li>
-                                    <li><Link to="/giong-ca">Giống cá</Link></li>
+                                    <li>
+                                        <span className={styles["dich-vu"]}>Dịch vụ</span>
+                                        <ul>
+                                            <li><Link to="/ki-gui-cham-soc"> Ký gửi chăm sóc</Link> </li>
+                                            <li><Link to="/ki-gui-ban-ca"> Ký gửi bán</Link> </li>                                            
+                                        </ul>
+                                    </li>
                                     <li><Link to="/tin-tuc">Tin tức</Link></li>
                                     <li><Link to="/lien-he">Liên hệ</Link></li>
                                 </ul>

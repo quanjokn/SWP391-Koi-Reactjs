@@ -34,6 +34,41 @@
   font-weight: bold;
   padding: 5px 10px;
 }
+.dich-vu {
+  text-decoration: none;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding: 5px 10px;
+}
+
+.navList li {
+  position: relative;
+  padding: 10px;
+  cursor: pointer;
+}
+.navList li ul {
+  display: none; /* Ẩn menu con */
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+  width: 200px;
+}
+.navList li:hover ul {
+  display: block; /* Hiển thị menu con khi hover */
+}
+.navList li ul li a {
+  text-decoration: none;
+  color: black;
+}
+.navList li ul li a:hover {
+  background-color: #f0f0f0;
+}
 
 .navList li a:hover {
   color: red;
