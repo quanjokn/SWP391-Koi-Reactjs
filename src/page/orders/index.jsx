@@ -32,7 +32,7 @@ const Orders = () => {
             // Gửi yêu cầu POST đến API để đặt hàng
             api.post(`/orderDetail/placeOrder/${userId}`)
                 .then((response) => {
-                    alert("Đặt hàng thành công!");;
+                    return navigate("/thank-you");
 
                 })
                 .catch((error) => {

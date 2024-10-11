@@ -1,0 +1,34 @@
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Nền tối với độ trong suốt */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; 
+}
+
+
+.modalContent {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 300px; /* Chiều rộng của modal */
+}
+
+.modalButtons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.modalButtons button {
+    border-radius: 5px;
+}
+
+.modalButtons button:hover {
+    background-color: rgb(40, 110, 202);
+}

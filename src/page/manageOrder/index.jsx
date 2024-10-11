@@ -56,9 +56,8 @@ const ManageOrder = () => {
 
     const handleOrderClick = async (orderId) => {
         try {
-            const staffId = user.id; // Giả định rằng bạn có ID của staff trong user context
-            console.log(`Sending request to: /staff/reveiving/${orderId}/${staffId}`);
-            await api.post(`/staff/reveiving/${orderId}/${staffId}`); // Gửi yêu cầu đến backend
+            const staffId = user.id;
+            await api.post(`/staff/receiving/${orderId}/${staffId}`);
             // gọi lại fetchOrders để lấy lại danh sách đơn hàng mới
             await fetchOrders();
         } catch (error) {
