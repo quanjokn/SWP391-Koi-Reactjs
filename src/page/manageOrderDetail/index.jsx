@@ -1,12 +1,14 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../config/axios';
 import Header from '../../component/header/index';
 import Footer from '../../component/footer/index';
 import Tagbar from '../../component/tagbar';
 import { UserContext } from '../../service/UserContext';
 import styles from './manageOrderDetail.module.css';
 import Loading from '../../component/loading';
+import OrderStatus from '../../component/orderStatus';
+import ReasonModal from '../../component/reasonNote';
 
 const ManageOrderDetail = () => {
     const { orderId } = useParams();
@@ -15,34 +17,41 @@ const ManageOrderDetail = () => {
     const [order, setOrder] = useState(null);
     const [status, setStatus] = useState('');
     const [isLoading, setIsLoading] = useState(true);
+    const [reason, setReason] = useState('');
+    const [showModal, setShowModal] = useState(false);
+    const [tempReason, setTempReason] = useState('');
+    const [isOrderProcessed, setIsOrderProcessed] = useState(false);
 
     useEffect(() => {
-        // Kiểm tra token (hoặc user) có hết hạn không
-        const tokenExpiryTime = localStorage.getItem('tokenExpiryTime'); // Giả định bạn lưu thời gian hết hạn
+        const tokenExpiryTime = localStorage.getItem('tokenExpiryTime');
         if (tokenExpiryTime && Date.now() > tokenExpiryTime) {
-            setUser(null); // Đặt lại user về null
+            setUser(null);
             setTimeout(() => {
-                navigate('/login'); // Chuyển hướng đến trang đăng nhập
-            }, 3000); // Thời gian đếm ngược 3 giây trước khi chuyển hướng
+                navigate('/login');
+            }, 3000);
         }
     }, [navigate, setUser]);
 
-    useEffect(() => {
-        // Fetch chi tiết đơn hàng dựa trên orderId từ dummyjson
-        const fetchOrderDetail = async () => {
-            try {
-                const response = await axios.get(`https://dummyjson.com/carts/${orderId}`);
-                setOrder(response.data);
-                setStatus(response.data.isDeleted ? 'Cancelled' : 'Pending');
-                setIsLoading(false); // Đặt loading thành false khi có dữ liệu
-            } catch (error) {
-                console.error('Error fetching order detail:', error);
-                navigate('/error'); // Chuyển hướng đến trang lỗi nếu không lấy được dữ liệu
+    const fetchOrderDetail = async () => {
+        try {
+            const response = await api.post(`/staff/orderDetail/${orderId}`);
+            console.log(response.data); // Kiểm tra dữ liệu nhận được
+            if (response.data) {
+                // Cập nhật order với thông tin nhận được từ API
+                setOrder(response.data); // Cập nhật với đối tượng order
+                setStatus(response.data.status); // Cập nhật trạng thái
+            } else {
+                throw new Error('No order data found');
             }
-        };
+            setIsLoading(false);
+        } catch (error) {
+            console.error('Error fetching order detail:', error);
+            navigate('/error');
+        }
+    };
 
-        // Kiểm tra phân quyền người dùng
-        if (!user || user.role !== 'Staff') {
+    useEffect(() => {
+        if (!isLoading && (!user || user.role !== 'Staff')) {
             navigate('/error');
             return;
         } else {
@@ -50,74 +59,110 @@ const ManageOrderDetail = () => {
         }
     }, [user, orderId, navigate]);
 
-    const handleStatusChange = () => {
-        // Cập nhật trạng thái đơn hàng
-        axios.put(`https://dummyjson.com/carts/${orderId}`, { isDeleted: status === 'Cancelled' })
-            .then(() => {
-                setStatus(status === 'Pending' ? 'Cancelled' : 'Pending');
-            })
-            .catch(error => console.error('Error updating order status:', error));
+    const handlePrepareOrder = async (reason) => {
+        if (!reason) {
+            alert('Vui lòng nhập lý do từ chối!');
+            return;
+        }
+
+        try {
+            await api.post(`/staff/updateStatus`, { orderId, status: 'Rejected', reason });
+            alert('Đơn hàng đã bị từ chối');
+            setIsOrderProcessed(true);
+            fetchOrderDetail();
+            setShowModal(false);
+            setTempReason('');
+        } catch (error) {
+            console.error('Error preparing order:', error);
+            alert('Đã xảy ra lỗi');
+        }
     };
 
-    // Chỉ hiển thị loading nếu đang trong trạng thái loading
+    const handleAcceptOrder = async () => {
+        try {
+            await api.post(`/staff/updateStatus`, { orderId, status: 'Accepted' });
+            alert('Đơn hàng đã được chấp nhận thành công!');
+            setIsOrderProcessed(true);
+            fetchOrderDetail();
+        } catch (error) {
+            console.error('Error accepting order:', error);
+            alert('Đã xảy ra lỗi khi chấp nhận đơn hàng.');
+        }
+    };
+
     if (isLoading) {
         return <Loading />;
     }
 
-    // Tính toán tổng giá
-    const totalPrice = order.products.reduce((acc, product) => acc + (product.price * product.quantity), 0);
+    // Sử dụng order đã cập nhật từ API
+    const totalPrice = order.totalOrderPrice; // Giá trị tổng từ API
 
     return (
         <>
             <Header />
             <Tagbar />
             <div className={styles.container}>
-                <h1>Chi tiết đơn hàng của ID {order.id}</h1>
-                <h2>Ngày đặt hàng: {order.orderDate}</h2>
+                <h1>Đơn hàng #{order.orderId}</h1>
+                <h2>Ngày đặt hàng: {new Date(order.date).toLocaleDateString()}</h2>
                 <div className={styles.customerInfo}>
                     <h2>Thông tin khách hàng:</h2>
-                    <p>Tên: {order.customerName}</p>
-                    <p>Số điện thoại: {order.customerPhone}</p>
-                    <p>Địa chỉ: {order.customerAddress}</p>
+                    {order.users ? ( // Kiểm tra sự tồn tại của thông tin người dùng
+                        <>
+                            <p>Tên: {order.users.name}</p>
+                            <p>Số điện thoại: {order.users.phone}</p>
+                            <p>Địa chỉ: {order.users.address}</p>
+                        </>
+                    ) : (
+                        <p>Không có thông tin khách hàng</p>
+                    )}
                 </div>
                 <h2>Sản phẩm:</h2>
                 <table className={styles.table}>
                     <thead>
                         <tr>
-                            <th>Tên cá</th>
+                            <th>Tên sản phẩm</th>
                             <th>Số lượng</th>
                             <th>Giá</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {order.products.map(product => (
-                            <tr key={product.id}>
-                                <td>{product.title}</td>
-                                <td>{product.quantity}</td>
-                                <td>{product.price} VND</td>
+                        {order.orderDetailsDTO.map((item) => (
+                            <tr key={item.id}>
+                                <td>{item.fishName}</td>
+                                <td>{item.quantity}</td>
+                                <td>{item.price} VND</td>
                             </tr>
                         ))}
                         <tr>
-                            <td colSpan="2" style={{ textAlign: 'right' }}><strong>Thành tiền:</strong></td>
-                            <td><strong>{totalPrice} VND</strong></td>
+                            <td colSpan="2">Tổng giá trị</td>
+                            <td>{totalPrice} VND</td>
                         </tr>
                     </tbody>
                 </table>
-
-                <div className={styles.statusContainer}>
-                    <label htmlFor="status">Trạng thái:</label>
-                    <select
-                        id="status"
-                        value={status}
-                        onChange={(e) => setStatus(e.target.value)}
-                    >
-                        <option value="Pending">Pending</option>
-                        <option value="Cancelled">Cancelled</option>
-                    </select>
-                    <button className={styles.button2} onClick={handleStatusChange}>
-                        Cập nhật trạng thái
-                    </button>
-                </div>
+                <OrderStatus
+                    orderId={orderId}
+                    date={new Date(order.date).toLocaleDateString()}
+                    status={status}
+                />
+                {!isOrderProcessed && (
+                    <div className={styles.buttonStatus}>
+                        <h2>Kiểm duyệt</h2>
+                        <button className={styles.buttonReject} onClick={() => setShowModal(true)}>
+                            Từ chối đơn hàng
+                        </button>
+                        <button className={styles.buttonAccept} onClick={handleAcceptOrder}>
+                            Chấp nhận đơn hàng
+                        </button>
+                    </div>
+                )}
+                {showModal && (
+                    <ReasonModal
+                        reason={tempReason}
+                        setReason={setTempReason}
+                        setShowModal={setShowModal}
+                        handlePrepareOrder={handlePrepareOrder}
+                    />
+                )}
             </div>
             <Footer />
         </>

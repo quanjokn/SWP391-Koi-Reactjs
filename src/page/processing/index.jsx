@@ -31,7 +31,6 @@ const Processing = () => {
     const fetchOrders = async () => {
         try {
             const response = await api.post(`/staff/${staffId}`);
-            console.log(response);
             const ordersData = response.data.map(order => ({
                 id: order.id,
                 totalPrice: order.total, // Tổng tiền
@@ -56,6 +55,10 @@ const Processing = () => {
         }
     }, [user, isLoading, navigate]);
 
+    // Hàm điều hướng đến trang chi tiết đơn hàng
+    const handleOrderClick = (orderId) => {
+        navigate(`/manage-orders/${orderId}`);
+    };
 
     // Tính toán các chỉ số để hiển thị đơn hàng trên trang hiện tại
     const indexOfLastOrder = currentPage * ordersPerPage;
@@ -109,7 +112,7 @@ const Processing = () => {
                                     <td>
                                         <button
                                             className={styles.button1}
-                                        // onClick={() => handleOrderClick(order.id)}
+                                            onClick={() => handleOrderClick(order.id)}
                                         >
                                             Chi tiết
                                         </button>
