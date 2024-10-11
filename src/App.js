@@ -24,6 +24,10 @@ import OrderDetail from './page/orderDetail';
 import ManageOrder from './page/manageOrder';
 import ManageOrderDetail from './page/manageOrderDetail';
 import OrderList from './page/orderList';
+import FeedbackPage from './page/feedback';
+import ManageConsignSell from './page/manageConsignSell';
+import ManageConsignCare from './page/manageConsignCare';
+import ManageConsignSellDetail from './page/manageConsignSellDetail';
 
 function App() {
   const router = createBrowserRouter([
@@ -118,6 +122,26 @@ function App() {
     {
       path: 'error',
       element: <ErrorPage />
+    },
+    {
+      path: 'feedback',
+      element: <FeedbackPage />
+    },
+    {
+      path: '/manage-consign-sell',
+      element: <ManageConsignSell />
+    },
+    {
+      path: '/manage-consign-care',
+      element: <ManageConsignCare />
+    },
+    {
+      path: '/manage-consign-sell/:orderId',
+      element: <ManageConsignSellDetail />
+    },
+    {
+      path: '/manage-consign-care-detail',
+      element: <ManageConsignSellDetail />
     },
   ]);
 
