@@ -23,17 +23,20 @@ const Orders = () => {
 
     const handlePlaceOrder = () => {
         if (cart && cart.cartItems.length > 0) {
-            const userId = user ? user.id : null;
+            const userId = user ? user.id : null;           
             if (!userId) {
                 alert("Bạn cần đăng nhập trước khi đặt hàng.");
                 return navigate(`/login`);
             }
 
             // Gửi yêu cầu POST đến API để đặt hàng
-            api.post(`/orderDetail/placeOrder/${userId}`)
+            api.post(`/orderDetail/placeOrder`, {
+                userId: userId,
+                paymentMethod: paymentMethod,
+            })
                 .then((response) => {
+                    alert("Đặt hàng thành công!");;
                     return navigate("/thank-you");
-
                 })
                 .catch((error) => {
                     console.error("Error placing order:", error);
