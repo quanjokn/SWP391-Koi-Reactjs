@@ -15,7 +15,6 @@ const Processing = () => {
     const [orders, setOrders] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [ordersPerPage] = useState(10);
-    const staffId = user ? user.id : null;
 
     useEffect(() => {
         // Kiểm tra token (hoặc user) có hết hạn không
@@ -29,7 +28,10 @@ const Processing = () => {
     }, [navigate, setUser]);
 
     const fetchOrders = async () => {
+        if (!user || !user.id) return;
+
         try {
+            const staffId = user.id;
             const response = await api.post(`/staff/${staffId}`);
             const ordersData = response.data.map(order => ({
                 id: order.id,
@@ -37,17 +39,18 @@ const Processing = () => {
                 orderDate: new Date(order.date).toLocaleDateString() // Ngày đặt hàng
             }));
             setOrders(ordersData);
-            setIsLoading(false); // Đặt isLoading thành false sau khi tải xong
         } catch (error) {
             console.error('Error fetching orders:', error);
-            setIsLoading(false); // Cũng đặt là false nếu có lỗi
+        } finally {
+            setIsLoading(false); // Luôn đặt isLoading thành false sau khi tải xong
         }
     };
 
     useEffect(() => {
-        // Gọi hàm fetchOrders khi component được mount
-        fetchOrders();
-    }, [user, navigate]);
+        if (user) {
+            fetchOrders();
+        }
+    }, [user]);
 
     useEffect(() => {
         if (!isLoading && (!user || user.role !== 'Staff')) {

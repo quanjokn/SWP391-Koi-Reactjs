@@ -54,3 +54,41 @@
 .buttonStatus {
     text-align: center;
 }
+
+.updateStatus {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.buttonShipping {
+    background-color: #2196F3; /* Màu xanh lá cho nút Shipping */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 10px;
+    width: 15%;
+}
+
+.buttonCompleted {
+    background-color: #4CAF50; /* Màu xanh dương cho nút Completed */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 10px;
+    width: 15%;
+}
+
+.buttonDisabled {
+    background-color: #ddd; /* Màu xám cho nút vô hiệu hóa */
+    color: #aaa;
+    padding: 10px 15px;
+    border: none;
+    cursor: not-allowed;
+    margin-left: 10px;
+    border-radius: 5px;
+    width: 15%;
+}

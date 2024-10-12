@@ -17,7 +17,6 @@ const ManageOrderDetail = () => {
     const [order, setOrder] = useState(null);
     const [status, setStatus] = useState('');
     const [isLoading, setIsLoading] = useState(true);
-    const [reason, setReason] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [tempReason, setTempReason] = useState('');
     const [isOrderProcessed, setIsOrderProcessed] = useState(false);
@@ -66,7 +65,7 @@ const ManageOrderDetail = () => {
         }
 
         try {
-            await api.post(`/staff/updateStatus`, { orderId, status: 'Rejected', reason });
+            await api.post(`/staff/updateStatus`, { orderId, status: 'Rejected', note: reason });
             alert('Đơn hàng đã bị từ chối');
             setIsOrderProcessed(true);
             fetchOrderDetail();
@@ -80,13 +79,35 @@ const ManageOrderDetail = () => {
 
     const handleAcceptOrder = async () => {
         try {
-            await api.post(`/staff/updateStatus`, { orderId, status: 'Accepted' });
+            await api.post(`/staff/updateStatus`, { orderId, status: 'Preparing' });
             alert('Đơn hàng đã được chấp nhận thành công!');
             setIsOrderProcessed(true);
             fetchOrderDetail();
         } catch (error) {
             console.error('Error accepting order:', error);
             alert('Đã xảy ra lỗi khi chấp nhận đơn hàng.');
+        }
+    };
+
+    const handleShippingOrder = async () => {
+        try {
+            await api.post(`/staff/updateStatus`, { orderId, status: 'Shipping' });
+            alert('Đơn hàng đang được giao!');
+            fetchOrderDetail();
+        } catch (error) {
+            console.error('Error updating order status to Shipping:', error);
+            alert('Đã xảy ra lỗi khi cập nhật trạng thái đơn hàng.');
+        }
+    };
+
+    const handleCompleteOrder = async () => {
+        try {
+            await api.post(`/staff/updateStatus`, { orderId, status: 'Completed' });
+            alert('Đơn hàng đã hoàn thành!');
+            fetchOrderDetail();
+        } catch (error) {
+            console.error('Error updating order status to Completed:', error);
+            alert('Đã xảy ra lỗi khi cập nhật trạng thái đơn hàng.');
         }
     };
 
@@ -106,7 +127,7 @@ const ManageOrderDetail = () => {
                 <h2>Ngày đặt hàng: {new Date(order.date).toLocaleDateString()}</h2>
                 <div className={styles.customerInfo}>
                     <h2>Thông tin khách hàng:</h2>
-                    {order.users ? ( // Kiểm tra sự tồn tại của thông tin người dùng
+                    {order.users ? (
                         <>
                             <p>Tên: {order.users.name}</p>
                             <p>Số điện thoại: {order.users.phone}</p>
@@ -144,7 +165,9 @@ const ManageOrderDetail = () => {
                     date={new Date(order.date).toLocaleDateString()}
                     status={status}
                 />
-                {!isOrderProcessed && (
+
+                {/* Kiểm duyệt */}
+                {!isOrderProcessed && status === 'Pending_confirmation' && (
                     <div className={styles.buttonStatus}>
                         <h2>Kiểm duyệt</h2>
                         <button className={styles.buttonReject} onClick={() => setShowModal(true)}>
@@ -155,6 +178,28 @@ const ManageOrderDetail = () => {
                         </button>
                     </div>
                 )}
+
+                {/* Bảng cập nhật trạng thái */}
+                {(status === 'Preparing' || status === 'Shipping') && !isOrderProcessed && status !== 'Completed' && (
+                    <div className={styles.updateStatus}>
+                        <h2>Cập nhật trạng thái</h2>
+                        <button
+                            className={status === 'Shipping' ? styles.buttonDisabled : styles.buttonShipping}
+                            onClick={status !== 'Shipping' ? handleShippingOrder : undefined}
+                            disabled={status === 'Shipping'}
+                        >
+                            Shipping
+                        </button>
+                        <button
+                            className={status === 'Completed' ? styles.buttonDisabled : styles.buttonCompleted}
+                            onClick={status !== 'Completed' ? handleCompleteOrder : undefined}
+                            disabled={status === 'Completed'}
+                        >
+                            Completed
+                        </button>
+                    </div>
+                )}
+
                 {showModal && (
                     <ReasonModal
                         reason={tempReason}
