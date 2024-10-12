@@ -147,7 +147,8 @@ function App() {
     {
       path: '/manage-consign-care-detail',
       element: <ManageConsignSellDetail />
-    };
+    },
+    {
       path: 'process-order',
       element: <Processing />
     },
