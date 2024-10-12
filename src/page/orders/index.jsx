@@ -36,7 +36,7 @@ const Orders = () => {
             })
                 .then((response) => {
                     alert("Đặt hàng thành công!");;
-                    
+                    return navigate("/thank-you");
                 })
                 .catch((error) => {
                     console.error("Error placing order:", error);

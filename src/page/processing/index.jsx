@@ -5,16 +5,17 @@ import { UserContext } from '../../service/UserContext';
 import Tagbar from '../../component/tagbar';
 import Footer from '../../component/footer';
 import api from '../../config/axios';
-import styles from './manageOrder.module.css';
+import styles from './processing.module.css';
 import Loading from '../../component/loading';
 
-const ManageOrder = () => {
+const Processing = () => {
     const { user, setUser } = useContext(UserContext);
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
     const [orders, setOrders] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [ordersPerPage] = useState(10);
+    const staffId = user ? user.id : null;
 
     useEffect(() => {
         // Kiểm tra token (hoặc user) có hết hạn không
@@ -29,7 +30,7 @@ const ManageOrder = () => {
 
     const fetchOrders = async () => {
         try {
-            const response = await api.get('/staff/allOrder');
+            const response = await api.post(`/staff/${staffId}`);
             const ordersData = response.data.map(order => ({
                 id: order.id,
                 totalPrice: order.total, // Tổng tiền
@@ -54,17 +55,10 @@ const ManageOrder = () => {
         }
     }, [user, isLoading, navigate]);
 
-    const handleOrderClick = async (orderId) => {
-        try {
-            const staffId = user.id;
-            await api.post(`/staff/receiving/${orderId}/${staffId}`);
-            // gọi lại fetchOrders để lấy lại danh sách đơn hàng mới
-            await fetchOrders();
-        } catch (error) {
-            console.error('Error receiving order:', error);
-        }
+    // Hàm điều hướng đến trang chi tiết đơn hàng
+    const handleOrderClick = (orderId) => {
+        navigate(`/manage-orders/${orderId}`);
     };
-
 
     // Tính toán các chỉ số để hiển thị đơn hàng trên trang hiện tại
     const indexOfLastOrder = currentPage * ordersPerPage;
@@ -97,7 +91,7 @@ const ManageOrder = () => {
                 {/* Kiểm tra xem có đơn hàng không */}
                 {orders.length === 0 ? (
                     <div className={styles.noOrdersMessage}>
-                        Hiện tại không có đơn hàng đang đợi tiếp nhận.
+                        Hiện tại bạn không có đơn tiếp nhận.
                     </div>
                 ) : (
                     <table className={styles.table}>
@@ -120,7 +114,7 @@ const ManageOrder = () => {
                                             className={styles.button1}
                                             onClick={() => handleOrderClick(order.id)}
                                         >
-                                            Tiếp nhận
+                                            Chi tiết
                                         </button>
                                     </td>
                                 </tr>
@@ -155,4 +149,4 @@ const ManageOrder = () => {
     );
 };
 
-export default ManageOrder;
+export default Processing;
