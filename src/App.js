@@ -110,11 +110,11 @@ function App() {
     },
     {
       path: 'order-list',
-      element: <OrderList />  //dang doi
+      element: <OrderList />  
     },
     {
-      path: 'order-detail',
-      element: <OrderDetail />  //dang doi
+      path: 'order-detail/:orderId',
+      element: <OrderDetail />  
     },
     {
       path: 'manage-orders',
