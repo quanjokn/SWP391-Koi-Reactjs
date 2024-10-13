@@ -25,18 +25,22 @@ header.masthead .meta{
     text-align: center;
 }
 
+header.masthead .siteHeading {
+    text-align: center;
+}
+
 header.masthead .siteHeading h1,
 header.masthead .siteHeading .h1{
   font-size: 5rem;
   color: white;
-  font-family: Kadwa;
+  font-family: 'Calibri';
   font-weight: bold;
 }
 
 header.masthead .siteHeading .meta {
     font-size: 1.5rem;
     color: white;
-    font-family: Kadwa;
+    font-family: 'Calibri', sans-serif;
 }
 
 .sectionHeading {

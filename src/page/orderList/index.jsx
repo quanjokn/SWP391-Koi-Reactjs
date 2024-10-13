@@ -38,6 +38,7 @@ const OrderList = () => {
             try {
                 const userid = user.id;
                 const response = await api.post(`/order/orderList/${userid}`);
+                console.log(response);
                 if (response.data && Array.isArray(response.data)) {
                     setOrders(response.data);
                 }
@@ -88,8 +89,7 @@ const OrderList = () => {
                                         <thead>
                                             <tr>
                                                 <th>Ngày</th>
-                                                <th>Tên sản phẩm</th>
-                                                <th>Số lượng</th>
+                                                <th>Mã đơn hàng</th>
                                                 <th>Giá</th>
                                                 <th>Trạng thái đơn hàng</th>
                                             </tr>
@@ -115,8 +115,7 @@ const OrderList = () => {
                                                         style={{ cursor: 'pointer' }}
                                                     >
                                                         <td>{order.date || 'N/A'}</td>
-                                                        <td>{productNames}</td>
-                                                        <td>{totalQuantity}</td>
+                                                        <td>{'KFS_' + order.id}</td>
                                                         <td>{totalPrice} VND</td>
                                                         <td>{order.status || 'N/A'}</td>
                                                     </tr>

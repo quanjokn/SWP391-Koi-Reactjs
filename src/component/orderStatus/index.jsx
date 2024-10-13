@@ -64,7 +64,7 @@ export default function OrderStatus({ orderId, date, status }) {
                                             <MDBTypography tag="h5" className="mb-0">
                                                 ORDER ID{" "}
                                                 <span className="text-primary font-weight-bold">
-                                                    #{orderId}
+                                                    #{'KFS_' + orderId}
                                                 </span>
                                             </MDBTypography>
                                         </div>
