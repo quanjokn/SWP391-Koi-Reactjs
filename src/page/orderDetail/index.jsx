@@ -12,6 +12,7 @@ const OrderDetail = () => {
     const [order, setOrder] = useState({});
     const [orderItems, setOrderItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [containerStyle, setContainerStyle] = useState({}); // State để quản lý style cho container
     const navigate = useNavigate();
     const { orderId } = useParams(); // Lấy orderId từ URL
 
@@ -38,6 +39,18 @@ const OrderDetail = () => {
         fetchOrderDetails();
     }, [orderId, navigate]);
 
+    useEffect(() => {
+        // Thiết lập khoảng cách giữa container và footer
+        setContainerStyle({
+            marginBottom: '48px', // Cách footer 48px
+        });
+
+        // Cleanup function để phục hồi trạng thái khi rời khỏi trang
+        return () => {
+            setContainerStyle({}); // Phục hồi trạng thái ban đầu
+        };
+    }, []);
+
     if (isLoading) {
         return <Loading />;
     }
@@ -50,7 +63,7 @@ const OrderDetail = () => {
         <>
             <Header />
             <Tagbar />
-            <div className="container mt-5">
+            <div className="container mt-5" style={containerStyle}> {/* Áp dụng style cho container */}
                 <OrderStatus orderId={order.orderId} date={order.date} status={order.status} />
 
                 {/* Bảng thông tin khách hàng và tổng quan đơn hàng */}

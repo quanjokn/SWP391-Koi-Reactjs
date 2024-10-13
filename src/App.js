@@ -114,7 +114,7 @@ function App() {
     },
     {
       path: 'order-detail/:orderId',
-      element: <OrderDetail />  //dang doi
+      element: <OrderDetail />  
     },
     {
       path: 'manage-orders',
