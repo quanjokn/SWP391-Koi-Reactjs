@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Footer from '../../component/footer';
 import Header from '../../component/header';
 import Tagbar from '../../component/tagbar';
 import styles from './orderList.module.css';
 import NavigationList from '../../component/navigationList';
 import Loading from '../../component/loading';
+import { UserContext } from '../../service/UserContext';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../config/axios';
 
 const OrderList = () => {
     const [containerStyle, setContainerStyle] = useState({});
@@ -14,6 +15,7 @@ const OrderList = () => {
     const [currentPage, setCurrentPage] = useState(1); // Quản lý trang hiện tại
     const [ordersPerPage] = useState(10); // Số đơn hàng hiển thị mỗi trang
     const [isLoading, setIsLoading] = useState(true);
+    const { user } = useContext(UserContext);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -27,24 +29,30 @@ const OrderList = () => {
     // Lấy dữ liệu từ API
     useEffect(() => {
         const fetchOrders = async () => {
-            setIsLoading(true); // Bắt đầu loading
+            if (!user || !user.id) {
+                // Nếu user hoặc user.id không tồn tại, không gọi API
+                setIsLoading(false);
+                return;
+            }
+            setIsLoading(true);
             try {
-                const response = await axios.get('https://dummyjson.com/carts');
-                if (response.data && response.data.carts) {
-                    setOrders(response.data.carts); // Đảm bảo bạn đang thiết lập đúng mảng đơn hàng
+                const userid = user.id;
+                const response = await api.post(`/order/orderList/${userid}`);
+                if (response.data && Array.isArray(response.data)) {
+                    setOrders(response.data);
                 }
             } catch (error) {
                 console.error('Error fetching orders:', error);
             } finally {
-                setIsLoading(false); // Kết thúc loading
+                setIsLoading(false);
             }
         };
 
         fetchOrders();
-    }, []);
+    }, [user]);
 
-    const handleViewOrderDetail = () => {
-        navigate('/order-detail');
+    const handleViewOrderDetail = (orderId) => {
+        navigate(`/order-detail/${orderId}`);
     };
 
     // Tính toán các chỉ số để hiển thị đơn hàng trên trang hiện tại
@@ -87,13 +95,25 @@ const OrderList = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {currentOrders.map(order => {
-                                                const totalPrice = order.products.reduce((total, product) => total + product.price * product.quantity, 0);
-                                                const productNames = order.products.map(product => product.title).join(', '); // Tạo chuỗi tên sản phẩm
-                                                const totalQuantity = order.products.reduce((total, product) => total + product.quantity, 0); // Tính tổng số lượng sản phẩm
+                                            {currentOrders.map((order) => {
+                                                const productNames =
+                                                    order.orderDetails && order.orderDetails.length > 0
+                                                        ? order.orderDetails.map((product) => product.title).join(', ')
+                                                        : 'Chưa có sản phẩm';
+
+                                                const totalQuantity =
+                                                    order.orderDetails && order.orderDetails.length > 0
+                                                        ? order.orderDetails.reduce((total, product) => total + product.quantity, 0)
+                                                        : 0;
+
+                                                const totalPrice = order.total || 0;
 
                                                 return (
-                                                    <tr key={order.id} onClick={handleViewOrderDetail} style={{ cursor: 'pointer' }}>
+                                                    <tr
+                                                        key={order.id}
+                                                        onClick={() => handleViewOrderDetail(order.id)}
+                                                        style={{ cursor: 'pointer' }}
+                                                    >
                                                         <td>{order.date || 'N/A'}</td>
                                                         <td>{productNames}</td>
                                                         <td>{totalQuantity}</td>

@@ -33,6 +33,7 @@ const Processing = () => {
         try {
             const staffId = user.id;
             const response = await api.post(`/staff/${staffId}`);
+            console.log(response);
             const ordersData = response.data.map(order => ({
                 id: order.id,
                 totalPrice: order.total, // Tổng tiền

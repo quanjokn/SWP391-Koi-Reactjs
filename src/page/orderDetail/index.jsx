@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import api from '../../config/axios';
 import OrderStatus from '../../component/orderStatus/index';
 import './orderDetail.module.css';
@@ -6,54 +6,52 @@ import Header from '../../component/header';
 import Tagbar from '../../component/tagbar';
 import Footer from '../../component/footer';
 import Loading from '../../component/loading';
-import { useNavigate } from 'react-router-dom'; // Thêm import useNavigate
+import { useNavigate, useParams } from 'react-router-dom'; // Thêm useParams để lấy orderId từ URL
 
 const OrderDetail = () => {
     const [order, setOrder] = useState({});
     const [orderItems, setOrderItems] = useState([]);
-    const containerRef = useRef(null); // Tạo ref cho container
-    const navigate = useNavigate(); // Khởi tạo navigate
+    const [isLoading, setIsLoading] = useState(true);
+    const navigate = useNavigate();
+    const { orderId } = useParams(); // Lấy orderId từ URL
 
     useEffect(() => {
-        const orderId = 2; // Thay thế bằng ID đơn hàng thực tế
-        api.post(`/orderDetail/${orderId}`)
-            .then(response => {
+        const fetchOrderDetails = async () => {
+            try {
+                const response = await api.post(`/order/orderDetail/${orderId}`);
                 const orderDTO = response.data;
-                console.log(response.data);
                 if (orderDTO) {
                     setOrder(orderDTO);
                     setOrderItems(orderDTO.orderDetailsDTO);
                 } else {
                     console.error('No order data received from backend API');
-                    navigate('/error'); // Chuyển đến trang error nếu không có dữ liệu
+                    navigate('/error'); // Điều hướng nếu không có dữ liệu
                 }
-            })
-            .catch(error => {
-                console.error(error);
-                navigate('/error'); // Chuyển đến trang error nếu có lỗi
-            });
-
-        // Cập nhật marginBottom cho container
-        if (containerRef.current) {
-            containerRef.current.style.marginBottom = "48px";
-        }
-        return () => {
-            if (containerRef.current) {
-                containerRef.current.style.marginBottom = "";
+            } catch (error) {
+                console.error('Error fetching order details:', error);
+                navigate('/error'); // Điều hướng nếu có lỗi
+            } finally {
+                setIsLoading(false);
             }
         };
-    }, [navigate]); // Thêm navigate vào dependencies
 
-    if (!order || !orderItems.length) {
+        fetchOrderDetails();
+    }, [orderId, navigate]);
+
+    if (isLoading) {
         return <Loading />;
+    }
+
+    if (!order || orderItems.length === 0) {
+        return <div className="alert alert-danger">Không tìm thấy đơn hàng</div>;
     }
 
     return (
         <>
             <Header />
             <Tagbar />
-            <div className="container mt-5" ref={containerRef}>
-                <OrderStatus orderId={order.orderId} date={order.date} status={order.status} /> {/* Thêm OrderStatus */}
+            <div className="container mt-5">
+                <OrderStatus orderId={order.orderId} date={order.date} status={order.status} />
 
                 {/* Bảng thông tin khách hàng và tổng quan đơn hàng */}
                 <div className="order-summary">
@@ -69,10 +67,10 @@ const OrderDetail = () => {
                         </thead>
                         <tbody>
                             <tr>
-                                <td>{order.users?.name}</td>
-                                <td>{order.users?.phone}</td>
+                                <td>{order.users?.name || 'N/A'}</td>
+                                <td>{order.users?.phone || 'N/A'}</td>
                                 <td>{order.users?.address || 'N/A'}</td>
-                                <td>{order.totalQuantity}</td>
+                                <td>{order.totalQuantity || 0}</td>
                                 <td>{order.totalOrderPrice ? order.totalOrderPrice.toLocaleString('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 0} đồng</td>
                             </tr>
                         </tbody>
@@ -94,8 +92,8 @@ const OrderDetail = () => {
                         <tbody>
                             {orderItems.map((item) => (
                                 <tr key={item.fishId}>
-                                    <td>{item.fishName}</td>
-                                    <td>{item.quantity}</td>
+                                    <td>{item.fishName || 'N/A'}</td>
+                                    <td>{item.quantity || 0}</td>
                                     <td>{item.unitPrice ? item.unitPrice.toLocaleString('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 0} đồng</td>
                                     <td>{item.totalPrice ? item.totalPrice.toLocaleString('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 0} đồng</td>
                                 </tr>
