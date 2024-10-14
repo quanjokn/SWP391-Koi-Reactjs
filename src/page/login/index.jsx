@@ -102,6 +102,9 @@ export const LoginForm = () => {
         }
     };
 
+    const handleLoginGoogle = () => {
+        window.location.href = "http://localhost:8080/oauth2/authorization/google";
+    };
 
     return (
         <>
@@ -153,7 +156,7 @@ export const LoginForm = () => {
                     </div>
 
                     <div className={styles.socialLogin}>
-                        <a href="http://localhost:8080/oauth2/authorization/google" className={styles.btnGoogle} onClick={() => console.log("Đăng nhập bằng Google")}>
+                        <a href="#" className={styles.btnGoogle} onClick={handleLoginGoogle}>
                             <img src="/imagines/icon/icon-google.png" alt="GOOGLE" />
                             Google
                         </a>

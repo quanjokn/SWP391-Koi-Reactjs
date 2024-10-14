@@ -28,7 +28,7 @@ const Tagbar = () => {
                                         <span className={styles["dich-vu"]}>Dịch vụ</span>
                                         <ul>
                                             <li><Link to="/ki-gui-cham-soc"> Ký gửi chăm sóc</Link> </li>
-                                            <li><Link to="/ki-gui-ban-ca"> Ký gửi bán</Link> </li>                                            
+                                            <li><Link to="/ki-gui-ban-ca"> Ký gửi bán</Link> </li>
                                         </ul>
                                     </li>
                                     <li><Link to="/tin-tuc">Tin tức</Link></li>
@@ -67,8 +67,8 @@ const Tagbar = () => {
                     <div className={styles.navContainer}>
                         <nav>
                             <ul className={styles.navList}>
-                                <li><Link to="/orders">Dash board</Link></li>
-                                <li><Link to="/inventory">Nhân viên</Link></li>
+                                <li><Link to="/dashboard">Dash board</Link></li>
+                                <li><Link to="/">Nhân viên</Link></li>
                                 <li><Link to="/">Khách hàng</Link></li>
                                 <li><Link to="/">Hàng tồn kho</Link></li>
                                 <li><Link to="/">Tin tức</Link></li>
