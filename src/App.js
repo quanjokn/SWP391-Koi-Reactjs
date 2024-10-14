@@ -29,7 +29,7 @@ import FeedbackPage from './page/feedback';
 import ManageConsignSell from './page/manageConsignSell';
 import ManageConsignCare from './page/manageConsignCare';
 import ManageConsignSellDetail from './page/manageConsignSellDetail';
-
+import Dashboard from './page/dashboard';
 import Processing from './page/processing';
 import ThankYou from './page/thankYou';
 
@@ -155,6 +155,10 @@ function App() {
     {
       path: 'thank-you',
       element: <ThankYou />
+    },
+    {
+      path: '/dashboard',
+      element: <Dashboard />, 
     },
   ]);
 
