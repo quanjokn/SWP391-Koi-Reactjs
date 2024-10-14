@@ -24,7 +24,7 @@ import OrderDetail from './page/orderDetail';
 import ManageOrder from './page/manageOrder';
 import ManageOrderDetail from './page/manageOrderDetail';
 import OrderList from './page/orderList';
-
+import OAuthCallback from './page/oauthcallback';
 import FeedbackPage from './page/feedback';
 import ManageConsignSell from './page/manageConsignSell';
 import ManageConsignCare from './page/manageConsignCare';
@@ -159,6 +159,10 @@ function App() {
     {
       path: '/dashboard',
       element: <Dashboard />, 
+    },
+    {
+      path: '/oauth/callback',
+      element: <OAuthCallback />, 
     },
   ]);
 
