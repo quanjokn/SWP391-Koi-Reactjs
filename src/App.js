@@ -32,6 +32,8 @@ import ManageConsignSellDetail from './page/manageConsignSellDetail';
 import Dashboard from './page/dashboard';
 import Processing from './page/processing';
 import ThankYou from './page/thankYou';
+import ProtectedRoute from './component/protectedRoute';
+import PrivateRoute from './component/privateRoute';
 
 
 function App() {
@@ -70,7 +72,11 @@ function App() {
     },
     {
       path: 'tai-khoan',
-      element: <ProfilePage />
+      element: (
+        <ProtectedRoute>
+          <ProfilePage />
+        </ProtectedRoute>
+      )
     },
     {
       path: 'fish-detail/:productId',
@@ -86,7 +92,11 @@ function App() {
     },
     {
       path: 'doi-mat-khau',
-      element: <ChangePasswordPage />
+      element: (
+        <ProtectedRoute>
+          <ChangePasswordPage />
+        </ProtectedRoute>
+      )
     },
     {
       path: 'ki-gui-ban-ca',
@@ -102,7 +112,11 @@ function App() {
     },
     {
       path: 'orders' ,
-      element: <Orders /> 
+      element: (
+        <ProtectedRoute>
+          <Orders />
+        </ProtectedRoute>
+      )
     },
     {
       path: 'compare',
@@ -110,19 +124,35 @@ function App() {
     },
     {
       path: 'order-list',
-      element: <OrderList />  
+      element: (
+        <ProtectedRoute>
+          <OrderList />
+        </ProtectedRoute>
+      )
     },
     {
       path: 'order-detail/:orderId',
-      element: <OrderDetail />  
+      element: (
+        <ProtectedRoute>
+          <OrderDetail />
+        </ProtectedRoute>
+      )
     },
     {
       path: 'manage-orders',
-      element: <ManageOrder />
+      element: (
+        <PrivateRoute requiredRole="Staff">
+          <ManageOrder />
+        </PrivateRoute>
+      )
     },
     {
       path: 'manage-orders/:orderId',
-      element: <ManageOrderDetail />
+      element: (
+        <PrivateRoute requiredRole="Staff">
+          <ManageOrderDetail />
+        </PrivateRoute>
+      )
     },
     {
       path: 'error',
@@ -130,27 +160,51 @@ function App() {
     },
     {
       path: 'feedback',
-      element: <FeedbackPage />
+      element: (
+        <ProtectedRoute>
+          <FeedbackPage />
+        </ProtectedRoute>
+      )
     },
     {
       path: '/manage-consign-sell',
-      element: <ManageConsignSell />
+      element: (
+        <PrivateRoute requiredRole="Staff">
+          <ManageConsignSell />
+        </PrivateRoute>
+      )
     },
     {
       path: '/manage-consign-care',
-      element: <ManageConsignCare />
+      element: (
+        <PrivateRoute requiredRole="Staff">
+          <ManageConsignCare />
+        </PrivateRoute>
+      )
     },
     {
       path: '/manage-consign-sell/:orderId',
-      element: <ManageConsignSellDetail />
+      element: (
+        <PrivateRoute requiredRole="Staff">
+          <ManageConsignSellDetail />
+        </PrivateRoute>
+      )
     },
     {
       path: '/manage-consign-care-detail',
-      element: <ManageConsignSellDetail />
+      element: (
+        <PrivateRoute requiredRole="Staff">
+          <ManageConsignSellDetail />
+        </PrivateRoute>
+      )
     },
     {
       path: 'process-order',
-      element: <Processing />
+      element: (
+        <PrivateRoute requiredRole="Staff">
+          <Processing />
+        </PrivateRoute>
+      )
     },
     {
       path: 'thank-you',
@@ -158,7 +212,11 @@ function App() {
     },
     {
       path: '/dashboard',
-      element: <Dashboard />, 
+      element: (
+        <PrivateRoute requiredRole="Manager">
+          <Dashboard />
+        </PrivateRoute>
+      )
     },
     {
       path: '/oauth/callback',

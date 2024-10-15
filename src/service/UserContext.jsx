@@ -5,6 +5,7 @@ export const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const jwt = localStorage.getItem('jwt');
@@ -20,19 +21,21 @@ export const UserProvider = ({ children }) => {
                     }
                 })
                     .then(response => {
-                        // Lưu thông tin người dùng vào state
                         setUser({ ...response.data, token: jwt });
                     })
                     .catch(error => {
                         console.error("Lỗi khi lấy thông tin người dùng:", error);
                         setUser(null);
-                    });
+                    })
+                    .finally(() => setLoading(false));  // Hết quá trình tải
             } else {
-                // Hết hạn, xóa JWT
                 localStorage.removeItem('jwt');
                 localStorage.removeItem('userExpiration');
                 setUser(null);
+                setLoading(false);  // Kết thúc quá trình tải
             }
+        } else {
+            setLoading(false);  // Kết thúc quá trình tải nếu không có jwt
         }
     }, []);
 
@@ -57,7 +60,7 @@ export const UserProvider = ({ children }) => {
     };
 
     return (
-        <UserContext.Provider value={{ user, setUser, saveUser, logout }}>
+        <UserContext.Provider value={{ user, setUser, saveUser, logout, loading }}>
             {children}
         </UserContext.Provider>
     );
