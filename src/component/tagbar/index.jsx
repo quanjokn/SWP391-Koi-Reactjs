@@ -67,7 +67,7 @@ const Tagbar = () => {
                     <div className={styles.navContainer}>
                         <nav>
                             <ul className={styles.navList}>
-                                <li><Link to="/dashboard">Dash board</Link></li>
+                                <li><Link to="/dashboard">Dashboard</Link></li>
                                 <li><Link to="/">Nhân viên</Link></li>
                                 <li><Link to="/">Khách hàng</Link></li>
                                 <li><Link to="/">Hàng tồn kho</Link></li>
