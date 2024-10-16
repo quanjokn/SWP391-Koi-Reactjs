@@ -29,6 +29,7 @@ import FeedbackPage from './page/feedback';
 import ManageConsignSell from './page/manageConsignSell';
 import ManageConsignCare from './page/manageConsignCare';
 import ManageConsignSellDetail from './page/manageConsignSellDetail';
+import ManageConsignCareDetail from './page/manageConsignCareDetail';
 import Dashboard from './page/dashboard';
 import Processing from './page/processing';
 import ThankYou from './page/thankYou';
@@ -191,7 +192,7 @@ function App() {
       )
     },
     {
-      path: '/manage-consign-care-detail',
+      path: '/manage-consign-care/:orderId',
       element: (
         <PrivateRoute requiredRole="Staff">
           <ManageConsignSellDetail />

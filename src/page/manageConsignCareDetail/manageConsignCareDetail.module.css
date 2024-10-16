@@ -1,0 +1,119 @@
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse; /* Giảm khoảng cách giữa các ô */
+}
+
+.table th, .table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+th.actionColumn {
+    width: 120px; 
+    text-align: center; 
+}
+
+td.actionColumn {
+    width: 150px; 
+     
+}
+td.actionColumn label {
+    display: inline-block;
+    margin-right: 10px; /* Khoảng cách giữa các radio */
+}
+
+td.actionColumn input[type="radio"] {
+    margin-right: 5px; /* Khoảng cách giữa radio và text */
+    transform: scale(1.2); /* Tăng kích thước radio button */
+}
+
+td.actionColumn span {
+    font-size: 14px; /* Điều chỉnh kích thước text */
+    font-weight: bold; /* Làm đậm chữ */
+    color: #333; /* Màu chữ */
+}
+
+.statusContainer {
+    margin-top: 20px;
+}
+
+.buttonReject, .buttonAccept {
+    margin-left: 10px;
+    padding: 10px 15px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 15%;
+}
+
+.buttonReject {
+    background-color: red;
+}
+
+.buttonAccept {
+    background-color: green;
+}
+
+.buttonReject:hover {
+    background-color: rgb(153, 2, 2);
+}
+.buttonAccept:hover {
+    background-color: rgb(0, 75, 0);
+}
+
+.customerInfo {
+    margin-bottom: 20px; /* Thêm khoảng cách dưới */
+}
+
+.buttonStatus {
+    text-align: center;
+}
+
+.updateStatus {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.buttonShipping {
+    background-color: #2196F3; /* Màu xanh lá cho nút Shipping */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 10px;
+    width: 15%;
+}
+
+.buttonCompleted {
+    background-color: #4CAF50; /* Màu xanh dương cho nút Completed */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 10px;
+    width: 15%;
+}
+
+.buttonDisabled {
+    background-color: #ddd; /* Màu xám cho nút vô hiệu hóa */
+    color: #aaa;
+    padding: 10px 15px;
+    border: none;
+    cursor: not-allowed;
+    margin-left: 10px;
+    border-radius: 5px;
+    width: 15%;
+}
