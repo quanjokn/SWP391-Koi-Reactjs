@@ -98,8 +98,7 @@ export default function OrderStatus({ orderId, date, status }) {
                                         <div className="d-flex flex-column align-items-center">
                                             <MDBIcon fas icon="clipboard-list" size="3x" />
                                             <p
-                                                className={`fw-bold text-center mb-0 ${status === "Rejected" ? "rejected-text" : ""
-                                                    }`}
+                                                className={`fw-bold text-center mb-0`}
                                             >
                                                 Đợi Xác Nhận
                                             </p>

@@ -37,12 +37,14 @@ const Processing = () => {
             const staffId = user.id;
             const response = await api.post(`/staff/getAllOrder/${staffId}`);
             console.log(response);
-            const ordersData = response.data.order.map(order => ({
-                id: order.id,
-                totalPrice: order.total, // Tổng tiền
-                orderDate: new Date(order.date).toLocaleDateString(), // Ngày đặt hàng
-                status: order.status
-            }));
+            const ordersData = response.data.order
+                .filter(order => order.status !== "Completed" && order.status !== "Rejected") // Lọc các đơn hàng có trạng thái không phải "Completed" hoặc "Rejected"
+                .map(order => ({
+                    id: order.id,
+                    totalPrice: order.total, // Tổng tiền
+                    orderDate: new Date(order.date).toLocaleDateString(), // Ngày đặt hàng
+                    status: order.status
+                }));
             const caring = response.data.caringOrders.map(order => ({
                 id: order.id,
                 startDate: new Date(order.startDate).toLocaleDateString(),
