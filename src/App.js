@@ -29,6 +29,7 @@ import FeedbackPage from './page/feedback';
 import ManageConsignSell from './page/manageConsignSell';
 import ManageConsignCare from './page/manageConsignCare';
 import ManageConsignSellDetail from './page/manageConsignSellDetail';
+import ManageConsignCareDetail from './page/manageConsignCareDetail';
 
 import Processing from './page/processing';
 import ThankYou from './page/thankYou';
@@ -145,8 +146,8 @@ function App() {
       element: <ManageConsignSellDetail />
     },
     {
-      path: '/manage-consign-care-detail',
-      element: <ManageConsignSellDetail />
+      path: '/manage-consign-care/:orderId',
+      element: <ManageConsignCareDetail />
     },
     {
       path: 'process-order',
