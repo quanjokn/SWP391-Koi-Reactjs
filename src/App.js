@@ -30,6 +30,7 @@ import ManageConsignSell from './page/manageConsignSell';
 import ManageConsignCare from './page/manageConsignCare';
 import ManageConsignSellDetail from './page/manageConsignSellDetail';
 import ManageConsignCareDetail from './page/manageConsignCareDetail';
+import OrderListConsignCare from './page/orderListConsignCare';
 import Dashboard from './page/dashboard';
 import Processing from './page/processing';
 import ThankYou from './page/thankYou';
@@ -132,6 +133,14 @@ function App() {
       )
     },
     {
+      path: 'order-list-consign-care',
+      element: (
+        <ProtectedRoute>
+          <OrderListConsignCare />
+        </ProtectedRoute>
+      )
+    },
+    {
       path: 'order-detail/:orderId',
       element: (
         <ProtectedRoute>
@@ -195,7 +204,7 @@ function App() {
       path: '/manage-consign-care/:orderId',
       element: (
         <PrivateRoute requiredRole="Staff">
-          <ManageConsignSellDetail />
+          <ManageConsignCareDetail />
         </PrivateRoute>
       )
     },

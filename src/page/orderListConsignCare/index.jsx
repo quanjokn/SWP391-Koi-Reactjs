@@ -2,14 +2,14 @@ import React, { useEffect, useState, useContext } from 'react';
 import Footer from '../../component/footer';
 import Header from '../../component/header';
 import Tagbar from '../../component/tagbar';
-import styles from './orderList.module.css';
+import styles from './orderListConsignCare.module.css';
 import NavigationList from '../../component/navigationList';
 import Loading from '../../component/loading';
 import { UserContext } from '../../service/UserContext';
 import { useNavigate } from 'react-router-dom';
 import api from '../../config/axios';
 
-const OrderList = () => {
+const OrderListConsignCare = () => {
     const [containerStyle, setContainerStyle] = useState({});
     const [orders, setOrders] = useState([]); // Khởi tạo mảng đơn hàng
     const [currentPage, setCurrentPage] = useState(1); // Quản lý trang hiện tại
@@ -36,8 +36,8 @@ const OrderList = () => {
             }
             setIsLoading(true);
             try {
-                const userid = user.id;
-                const response = await api.post(`/order/orderList/${userid}`);
+                const response = await api.post(`/caringOrder/getList/${user.id}`);
+                console.log(response);
                 if (response.data && Array.isArray(response.data)) {
                     setOrders(response.data);
                 }
@@ -88,9 +88,9 @@ const OrderList = () => {
                                         <thead>
                                             <tr>
                                                 <th>Ngày</th>
-                                                <th>Mã đơn hàng</th>
+                                                <th>Mã đơn ký gửi</th>
                                                 <th>Giá</th>
-                                                <th>Trạng thái đơn hàng</th>
+                                                <th>Trạng thái ký gửi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -114,7 +114,7 @@ const OrderList = () => {
                                                         style={{ cursor: 'pointer' }}
                                                     >
                                                         <td>{order.date || 'N/A'}</td>
-                                                        <td>{'KFS_' + order.id}</td>
+                                                        <td>{order.id}</td>
                                                         <td>{totalPrice} VND</td>
                                                         <td>{order.status || 'N/A'}</td>
                                                     </tr>
@@ -156,4 +156,4 @@ const OrderList = () => {
     );
 };
 
-export default OrderList;
+export default OrderListConsignCare;
