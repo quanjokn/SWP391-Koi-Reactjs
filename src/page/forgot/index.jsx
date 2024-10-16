@@ -30,6 +30,8 @@ const ForgotPassword = () => {
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false); // Trạng thái của nút "Gửi lại OTP"
+    const [timer, setTimer] = useState(0); // Thời gian chờ đếm ngược
 
     // Gửi yêu cầu OTP sau khi nhập email và username
     const handleEmailSubmit = async (e) => {
@@ -43,6 +45,33 @@ const ForgotPassword = () => {
             setStep(2);
         } catch (error) {
             setErrorMessage("Tài khoản hoặc email không tồn tại");
+        }
+    };
+
+    // Gửi lại yêu cầu OTP mà không cần nhập lại email và username
+    const handleResendOtp = async () => {
+        try {
+            const response = await api.post('/email/forgotPassword', {
+                userName,
+                email,
+            });
+            setErrorMessage("Mã OTP mới đã được gửi lại!");  // Thông báo thành công
+            setIsButtonDisabled(true); // Vô hiệu hóa nút "Gửi lại OTP"
+            setTimer(30); // Đặt thời gian chờ là 30 giây
+
+            // Đếm ngược thời gian chờ
+            const countdown = setInterval(() => {
+                setTimer((prevTimer) => {
+                    if (prevTimer <= 1) {
+                        clearInterval(countdown);
+                        setIsButtonDisabled(false); // Kích hoạt lại nút sau khi hết 30 giây
+                        return 0;
+                    }
+                    return prevTimer - 1;
+                });
+            }, 1000);
+        } catch (error) {
+            setErrorMessage("Lỗi khi gửi lại mã OTP");
         }
     };
 
@@ -61,6 +90,10 @@ const ForgotPassword = () => {
     // Đổi mật khẩu mới
     const handlePasswordSubmit = async (e) => {
         e.preventDefault();
+        if (!newPassword || !confirmPassword) {
+            setErrorMessage("Cần nhập mật khẩu reset!");
+            return;
+        }
         if (newPassword !== confirmPassword) {
             setErrorMessage("Mật khẩu và xác nhận mật khẩu không khớp!"); // Cập nhật thông báo lỗi
             return;
@@ -136,6 +169,14 @@ const ForgotPassword = () => {
                         />
                     </div>
                     <div className={styles.buttonGroup}>
+                        <button
+                            type="button"
+                            style={{ backgroundColor: 'gray' }}
+                            onClick={handleResendOtp}
+                            disabled={isButtonDisabled} // Vô hiệu hóa nút khi đang đếm ngược
+                        >
+                            {isButtonDisabled ? `Gửi lại OTP (${timer}s)` : 'Gửi lại OTP'}
+                        </button>
                         <button type="submit">Xác nhận OTP</button>
                     </div>
                 </form>

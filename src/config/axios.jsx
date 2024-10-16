@@ -11,7 +11,7 @@ const api = axios.create({
 // Hàm xử lý trước khi gọi API (interceptor)
 const handleBefore = (config) => {
     // Lấy token từ localStorage và đính kèm vào headers nếu có
-    const token = localStorage.getItem("jwt"); // Loại bỏ dấu ngoặc kép
+    const token = localStorage.getItem("jwt");
     if (token) {
         config.headers["Authorization"] = `Bearer ${token}`;
     }
