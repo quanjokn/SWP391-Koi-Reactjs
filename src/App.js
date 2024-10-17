@@ -34,8 +34,11 @@ import OrderListConsignCare from './page/orderListConsignCare';
 import Dashboard from './page/dashboard';
 import Processing from './page/processing';
 import ThankYou from './page/thankYou';
+import OrderListConsignSell from './page/orderListConsignSell';
+import OrderDetailConSignCare from './page/orderListConsignCareDt';
 import ProtectedRoute from './component/protectedRoute';
 import PrivateRoute from './component/privateRoute';
+import OrderDetailConSignSell from './page/orderListConsignSellDt';
 import ManageEmployee from './page/manageEmployee';
 
 
@@ -134,10 +137,34 @@ function App() {
       )
     },
     {
+      path: 'order-list-consign-sell',
+      element: (
+        <ProtectedRoute>
+          <OrderListConsignSell />
+        </ProtectedRoute>
+      )
+    },
+    {
       path: 'order-list-consign-care',
       element: (
         <ProtectedRoute>
           <OrderListConsignCare />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'order-consign-sell/:orderId',
+      element: (
+        <ProtectedRoute>
+          <OrderDetailConSignSell />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'order-consign-care/:orderId' ,
+      element: (
+        <ProtectedRoute>
+          <OrderDetailConSignCare />
         </ProtectedRoute>
       )
     },
