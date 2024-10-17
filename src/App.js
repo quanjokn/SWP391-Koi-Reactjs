@@ -39,6 +39,7 @@ import OrderDetailConSignCare from './page/orderListConsignCareDt';
 import ProtectedRoute from './component/protectedRoute';
 import PrivateRoute from './component/privateRoute';
 import OrderDetailConSignSell from './page/orderListConsignSellDt';
+import ManageEmployee from './page/manageEmployee';
 
 
 function App() {
@@ -252,6 +253,14 @@ function App() {
       element: (
         <PrivateRoute requiredRole="Manager">
           <Dashboard />
+        </PrivateRoute>
+      )
+    },
+    {
+      path: '/nhan-vien',
+      element: (
+        <PrivateRoute requiredRole="Manager">
+          <ManageEmployee/>
         </PrivateRoute>
       )
     },

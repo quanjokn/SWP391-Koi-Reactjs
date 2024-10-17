@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { useLocation } from "react-router-dom";
+import { redirect, useLocation } from "react-router-dom";
 import api from "../../config/axios";
 import Header from "../../component/header";
 import Footer from "../../component/footer";
@@ -13,6 +13,7 @@ const Orders = () => {
 
     const [paymentMethod, setPaymentMethod] = useState("COD"); // Mặc định là thanh toán khi nhận hàng
     const location = useLocation();
+    const [paymentURL, setPaymentURL] = useState("");
     const cart = location.state?.cart;
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
@@ -20,6 +21,17 @@ const Orders = () => {
     const handlePaymentChange = (event) => {
         setPaymentMethod(event.target.value);
     };
+
+    const handleGetLink = async () =>{
+        try{
+            const response = await api.post(`/api/payment/create_payment/${user.id}`,{});
+            setPaymentURL(response.data);
+        }catch (error) {
+            console.error("Error fetching payment URL:", error);
+            alert("Có lỗi xảy ra khi lấy đường dẫn thanh toán. Vui lòng thử lại.");
+            return null; // Trả về null nếu có lỗi
+        }
+    }
 
     const handlePlaceOrder = () => {
         if (cart && cart.cartItems.length > 0) {
@@ -29,11 +41,14 @@ const Orders = () => {
                 return navigate(`/login`);
             }
 
-            // Gửi yêu cầu POST đến API để đặt hàng
-            api.post(`/orderDetail/placeOrder`, {
-                userId: userId,
-                paymentMethod: paymentMethod,
-            })
+            if(paymentMethod == "VNPAY"){
+                return window.location.href = paymentURL;
+            }else{
+                // Gửi yêu cầu POST đến API để đặt hàng
+                api.post(`/order/placeOrder`, {
+                    userId: userId,
+                    paymentMethod: paymentMethod,
+                })
                 .then((response) => {
                     alert("Đặt hàng thành công!");;
                     return navigate("/thank-you");
@@ -42,6 +57,7 @@ const Orders = () => {
                     console.error("Error placing order:", error);
                     alert("Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại.");
                 });
+            }
         } else {
             alert("Giỏ hàng của bạn trống.");
         }
@@ -98,11 +114,11 @@ const Orders = () => {
                                         Thanh toán khi nhận hàng
                                     </label>
                                     <br />
-                                    <label>
+                                    <label onClick={handleGetLink}>
                                         <input
                                             type="radio"
-                                            value="BankTransfer"
-                                            checked={paymentMethod === "BankTransfer"}
+                                            value="VNPAY"
+                                            checked={paymentMethod === "VNPAY"}
                                             onChange={handlePaymentChange}
                                         />
                                         Chuyển khoản
