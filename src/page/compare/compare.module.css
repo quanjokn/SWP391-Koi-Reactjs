@@ -29,7 +29,7 @@
     border-radius: 5px; /* Bo góc cho hình ảnh */
 }
 
-h1 {
+.h1compare {
     text-align: center; /* Căn giữa tiêu đề */
     margin-bottom: 20px; /* Khoảng cách dưới tiêu đề */
 }

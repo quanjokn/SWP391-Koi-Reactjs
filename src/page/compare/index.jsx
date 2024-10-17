@@ -13,11 +13,11 @@ const ComparePage = () => {
         return <p>Không có sản phẩm nào để so sánh.</p>;
     }
     return (
-        
+
         <div>
-            <Header/>
-            <Tagbar/>
-            <h1>So sánh sản phẩm</h1>
+            <Header />
+            <Tagbar />
+            <h1 className={styles['h1compare']}>So sánh sản phẩm</h1>
             <div className={styles['compare-container']} class="row">
                 {productsToCompare.map((product, index) => (
                     <div key={index} className={styles['compare-item']}>
@@ -38,7 +38,7 @@ const ComparePage = () => {
                     </div>
                 ))}
             </div>
-            <Footer/>
+            <Footer />
         </div>
     );
 };
