@@ -35,6 +35,7 @@ import Processing from './page/processing';
 import ThankYou from './page/thankYou';
 import ProtectedRoute from './component/protectedRoute';
 import PrivateRoute from './component/privateRoute';
+import ManageEmployee from './page/manageEmployee';
 
 
 function App() {
@@ -195,7 +196,7 @@ function App() {
       path: '/manage-consign-care/:orderId',
       element: (
         <PrivateRoute requiredRole="Staff">
-          <ManageConsignSellDetail />
+          <ManageConsignCareDetail />
         </PrivateRoute>
       )
     },
@@ -216,6 +217,14 @@ function App() {
       element: (
         <PrivateRoute requiredRole="Manager">
           <Dashboard />
+        </PrivateRoute>
+      )
+    },
+    {
+      path: '/nhan-vien',
+      element: (
+        <PrivateRoute requiredRole="Manager">
+          <ManageEmployee/>
         </PrivateRoute>
       )
     },
