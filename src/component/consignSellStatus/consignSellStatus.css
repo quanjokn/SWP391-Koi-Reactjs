@@ -63,7 +63,6 @@
 #progressbar-2 li:nth-child(3):after {
     left: 1%;
     width: 100%;
-    background: grey;
 }
 
 #progressbar-2 li:nth-child(4) {
