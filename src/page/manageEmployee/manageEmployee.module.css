@@ -1,0 +1,142 @@
+.container {
+    width: 80%; /* Đặt chiều rộng container là 80% */
+    margin: 20px auto; /* Để container nằm giữa trang */
+    padding: 20px; /* Thêm padding nếu cần */
+    background-color: #f9f9f9; /* Tùy chọn: màu nền cho container */
+    border-radius: 8px; /* Tùy chọn: bo góc cho container */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Tùy chọn: thêm bóng đổ */
+}
+
+.form-create-account{
+    max-width: 500px; /* Set a maximum width for the form */
+    margin: 20px auto; /* Center the form */
+    padding: 20px; /* Add padding around the form */
+    border: 1px solid #ccc; /* Add a border around the form */
+    border-radius: 8px; /* Round the corners */
+    background-color: #f9f9f9; /* Light background color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.form-create-account label{
+    display: block; /* Make labels block elements */
+    margin-bottom: 8px; /* Space between labels and inputs */
+    font-weight: bold; /* Make labels bold */
+}
+
+.form-create-account input[type="text"],
+.form-create-account input[type="email"],
+.form-create-account select {
+    width: 100%; /* Full width */
+    padding: 10px; /* Padding inside inputs */
+    margin-bottom: 16px; /* Space between inputs */
+    border: 1px solid #ccc; /* Border for inputs */
+    border-radius: 4px; /* Round corners */
+    box-sizing: border-box; /* Include padding in width */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+}
+
+.btn {
+    background: none;
+    color: #333;
+    border: #333 solid 1px;
+    border-radius: 5px;
+}
+
+.btn:hover{
+    background-color: #ccc ;
+}
+
+.btn-create {
+    background-color: rgb(0, 80, 253);
+    color: #f9f9f9;
+    border: #333 solid 1px;
+    border-radius: 5px;
+}
+
+.btn-create:hover{
+    background-color: #1800ec ;
+}
+
+/* Container cho cả search và filter cùng hàng */
+.search-filter-container2 {
+    display: flex;
+    justify-content: space-between; /* Đặt filter sang bên phải */
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%;
+    margin-top: 50px;
+}
+
+/* Container của thanh search */
+.search-container2 {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 300px; /* Thanh search nhỏ lại */
+}
+
+.search-container2 label {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+}
+
+.search-container2 input {
+    width: 100%;
+    padding: 10px;
+    padding-right: 40px; /* Dành không gian cho icon */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.search-container2 .search {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    position: absolute;
+    right: 0px; /* Icon nằm bên phải ngoài cùng */
+    color: #333;
+}
+
+/* Filter container */
+.filter-container2 {
+    display: flex;
+    align-items: center;
+    margin-left: 20px; /* Tạo khoảng cách giữa thanh search và filter */
+}
+
+.filter-container2 label {
+    margin-right: 10px;
+}
+
+.filter-container2 select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.filter-container2 .ap-dung {
+    background: none;
+    color: #333;
+    border: #333 solid 1px;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.filter-container2 .ap-dung:hover {
+    background-color: #0056b3;
+}
+
+

@@ -62,7 +62,8 @@ const ConsignedKoiToCare = () => {
             const end = new Date(endDate);
             const timeDifference = end - start; // Time difference in milliseconds
             const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24)); // Convert to days
-            const totalPrice = daysDifference * 100000;
+            const totalFishQuantity = fishForm.length;
+            const totalPrice = daysDifference * 100000 * totalFishQuantity;
 
             const fishData = {
                 startDate: startDate,

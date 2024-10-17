@@ -19,7 +19,7 @@ const ManageConsignSell = () => {
             const ordersData = response.data.map(order => ({
                 id: order.id,
                 totalPrice: order.totalPrice, 
-                orderDate: order.startDate
+                date: order.date
             }));
             setOrders(ordersData);
         } catch (error) {
@@ -75,7 +75,7 @@ const ManageConsignSell = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {orders.map(order => (
+                            {currentOrders.map(order => (
                                 <tr key={order.id} className={styles.row}>
                                     <td>{order.id}</td>
                                     <td>{order.date}</td>

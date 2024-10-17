@@ -36,6 +36,7 @@ import Processing from './page/processing';
 import ThankYou from './page/thankYou';
 import ProtectedRoute from './component/protectedRoute';
 import PrivateRoute from './component/privateRoute';
+import ManageEmployee from './page/manageEmployee';
 
 
 function App() {
@@ -225,6 +226,14 @@ function App() {
       element: (
         <PrivateRoute requiredRole="Manager">
           <Dashboard />
+        </PrivateRoute>
+      )
+    },
+    {
+      path: '/nhan-vien',
+      element: (
+        <PrivateRoute requiredRole="Manager">
+          <ManageEmployee/>
         </PrivateRoute>
       )
     },
