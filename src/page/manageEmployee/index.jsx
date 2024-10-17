@@ -20,7 +20,7 @@ const ManageEmployee = () => {
     const [newAccount, setNewAccount] = useState({
         id: 0,
         userName: '',
-        role: '',
+        role: 'Customer',
         name: '',
         phone: '',
         address: '',
@@ -53,6 +53,7 @@ const ManageEmployee = () => {
                     'Content-Type': 'application/json',
                 },
             });
+            alert('Create user successfully');
             console.log('Account created:', response.data);
             const updatedUsers = [...users, response.data]; // Cập nhật danh sách người dùng sau khi thêm mới
             setUsers(updatedUsers);

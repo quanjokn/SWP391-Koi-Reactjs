@@ -86,17 +86,10 @@ const ManageConsignSellDetail = () => {
 
     const handleCompleteOrder = async () => {
         const staffId = user ? user.id : null;
-        const approveReq = {
-            orderID: orderId,
-            decision,
-            note: ""
-        };
         console.log('Staff ID:', staffId);
-        console.log('Order ID:', orderId);
-        console.log('Decision:', decision);
-        console.log('Approve Request:', approveReq);
+        console.log('Order ID:', orderId);     
         try {
-            await api.post(`/consignManagement/approval/${staffId}`, approveReq);
+            await api.post(`/consignManagement/done/${staffId}/${orderId}`);
             alert('Đơn hàng đã hoàn thành!');
             fetchOrderDetail();
         } catch (error) {
@@ -127,6 +120,7 @@ const ManageConsignSellDetail = () => {
                                     <th>Tên cá</th>
                                     <th>Số lượng</th>
                                     <th>Giá bán</th>
+                                    <th>Trạng thái</th>
                                     {status === 'Receiving' && (
                                         <th className={styles["actionColumn"]}>Action</th>
                                     )}
@@ -138,6 +132,7 @@ const ManageConsignSellDetail = () => {
                                         <td>{product.name}</td>
                                         <td>{product.quantity}</td>
                                         <td>{product.price} VND</td>
+                                        <td>{product.status}</td>
                                         {status === 'Receiving' && (
                                             <td className={styles["actionColumn"]}>                        
                                                 <label>
@@ -192,8 +187,10 @@ const ManageConsignSellDetail = () => {
                     </div>
                 )}
 
-                {/* Bảng cập nhật trạng thái */}
-                {(status === 'Responded' && status !== 'Done') && (
+                {/* Bảng cập nhật trạng thái || product.status === 'Rejected'*/}
+                {status === 'Responded' && 
+                (order.request.ConsignList.every(product => (product.status === 'Sold' || product.status === 'Rejected'    
+                ))) && (
                     <div className={styles.updateStatus}>
                         <h2>Cập nhật trạng thái</h2>
                         <button
@@ -201,7 +198,19 @@ const ManageConsignSellDetail = () => {
                             onClick={status !== 'Done' ? handleCompleteOrder : undefined}
                             disabled={status === 'Done'}
                         >
-                            Completed
+                            Hoàn thành
+                        </button>
+                    </div>
+                )}
+                {status === 'Done' && (
+                    <div className={styles.updateStatus}>
+                        <h2>Cập nhật trạng thái</h2>
+                        <button
+                            className={status === 'Done' ? styles.buttonDisabled : styles.buttonCompleted}
+                            onClick={status !== 'Done' ? handleCompleteOrder : undefined}
+                            disabled={status === 'Done'}
+                        >
+                            Thanh toán
                         </button>
                     </div>
                 )}
