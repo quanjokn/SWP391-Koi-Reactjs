@@ -32,6 +32,7 @@ export default function ConsignSellStatus({ orderId, Date, status }) {
             Receiving: 2,
             Responded: 3,
             Done: 4,
+            Shared: 5,
             Rejected: 0,
         };
 
@@ -86,8 +87,12 @@ export default function ConsignSellStatus({ orderId, Date, status }) {
                                             id="step3"
                                         ></li>
                                         <li
-                                            className={`step0 ${getStatusClass(4)} text-end`}
+                                            className={`step0 ${getStatusClass(4)} text-center`}
                                             id="step4"
+                                        ></li>
+                                        <li
+                                            className={`step0 ${getStatusClass(5)} text-end`}
+                                            id="step5"
                                         ></li>
                                     </ul>
 
@@ -112,6 +117,10 @@ export default function ConsignSellStatus({ orderId, Date, status }) {
                                         <div className="d-flex flex-column align-items-center">
                                             <MDBIcon fas icon="home" size="3x" />
                                             <p className="fw-bold text-center mb-0">Đã Hoàn Thành</p>
+                                        </div>
+                                        <div className="d-flex flex-column align-items-center">
+                                            <MDBIcon fas icon="coins" size="3x" />
+                                            <p className="fw-bold text-center mb-0">Đã thanh toán</p>
                                         </div>
                                     </div>
                                 </MDBCardBody>

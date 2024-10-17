@@ -17,7 +17,8 @@
 #progressbar-2 #step1:before,
 #progressbar-2 #step2:before,
 #progressbar-2 #step3:before,
-#progressbar-2 #step4:before {
+#progressbar-2 #step4:before,
+#progressbar-2 #step5:before {
     font-family: "Font Awesome 5 Free";
     color: #fff;
     width: 37px;
@@ -26,11 +27,13 @@
 
 #progressbar-2 #step1:before,
 #progressbar-2 #step2:before,
-#progressbar-2 #step3:before {
+#progressbar-2 #step3:before,
+#progressbar-2 #step4:before,
+#progressbar-2 #step5:before {
     content: '\f058'; /* Biểu tượng đánh dấu */
 }
 
-#progressbar-2 #step4:before {
+#progressbar-2 #step5:before {
     content: '\f111'; /* Biểu tượng hình tròn */
 }
 
@@ -55,23 +58,24 @@
 }
 
 #progressbar-2 li:nth-child(1):after,
-#progressbar-2 li:nth-child(2):after {
+#progressbar-2 li:nth-child(2):after,
+#progressbar-2 li:nth-child(3):after {
     left: 1%;
     width: 100%;
 }
 
-#progressbar-2 li:nth-child(3):after {
+#progressbar-2 li:nth-child(4):after {
     left: 1%;
     width: 100%;
     background: grey;
 }
 
-#progressbar-2 li:nth-child(4) {
+#progressbar-2 li:nth-child(5) {
     left: 0;
     width: 37px;
 }
 
-#progressbar-2 li:nth-child(4):after {
+#progressbar-2 li:nth-child(5):after {
     left: 0;
     width: 0;
 }
