@@ -2,14 +2,14 @@ import React, { useEffect, useState, useContext } from 'react';
 import Footer from '../../component/footer';
 import Header from '../../component/header';
 import Tagbar from '../../component/tagbar';
-import styles from './orderListConsignCare.module.css';
+import styles from './orderConsignSell.module.css';
 import NavigationList from '../../component/navigationList';
 import Loading from '../../component/loading';
 import { UserContext } from '../../service/UserContext';
 import { useNavigate } from 'react-router-dom';
 import api from '../../config/axios';
 
-const OrderListConsignCare = () => {
+const OrderListConsignSell = () => {
     const [containerStyle, setContainerStyle] = useState({});
     const [orders, setOrders] = useState([]); // Khởi tạo mảng đơn hàng
     const [currentPage, setCurrentPage] = useState(1); // Quản lý trang hiện tại
@@ -36,7 +36,7 @@ const OrderListConsignCare = () => {
             }
             setIsLoading(true);
             try {
-                const response = await api.post(`/caringOrder/getList/${user.id}`);
+                const response = await api.post(`/consignOrder/getList/${user.id}`);
                 console.log(response);
                 if (response.data && Array.isArray(response.data)) {
                     setOrders(response.data);
@@ -52,7 +52,7 @@ const OrderListConsignCare = () => {
     }, [user]);
 
     const handleViewOrderDetail = (orderId) => {
-        navigate(`/order-consign-care/${orderId}`);
+        navigate(`/order-consign-sell/${orderId}`);
     };
 
     // Tính toán các chỉ số để hiển thị đơn hàng trên trang hiện tại
@@ -105,7 +105,7 @@ const OrderListConsignCare = () => {
                                                         ? order.orderDetails.reduce((total, product) => total + product.quantity, 0)
                                                         : 0;
 
-                                                const totalPrice = order.total || 0;
+                                                const totalPrice = order.totalPrice || 0;
 
                                                 return (
                                                     <tr
@@ -156,4 +156,4 @@ const OrderListConsignCare = () => {
     );
 };
 
-export default OrderListConsignCare;
+export default OrderListConsignSell;

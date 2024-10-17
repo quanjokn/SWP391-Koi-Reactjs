@@ -1,0 +1,40 @@
+/* orderList.module.css */
+
+.container {
+    min-height: 100vh; /* Đảm bảo trang phủ đầy chiều cao của màn hình */
+    background-color: white; /* Màu nền cho nội dung bên trong */
+    padding: 20px; /* Khoảng cách bên trong */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng giống như trang ProfilePage */
+}
+
+.row {
+    display: flex;
+    flex-wrap: nowrap; /* Không cho phép các phần tử xuống dòng */
+    justify-content: space-between; /* Canh đều giữa các phần tử */
+}
+
+.col-md-3, .col-md-9 {
+    flex-shrink: 0; /* Không cho phép co lại */
+}
+
+.col-md-3 {
+    max-width: 300px; /* Chiều rộng cố định cho menu bên trái */
+}
+
+.col-md-9 {
+    flex-grow: 1; /* Phần chính sẽ chiếm phần còn lại của không gian */
+}
+
+.leftMenu {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-right: 1px solid #ddd;
+}
+.noOrdersMessage {
+    color: white; /* Màu chữ */
+}
+
+.table {
+    background-color: white;
+}
+
