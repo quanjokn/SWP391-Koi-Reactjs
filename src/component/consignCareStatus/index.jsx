@@ -70,7 +70,7 @@ export default function ConsignCareStatus({ orderId, startDate, endDate, status 
                                         </div>
                                     </div>
                                     <ul
-                                        id="progressbarCare-2"
+                                        id="progressbar-2"
                                         className="d-flex justify-content-between mx-0 mt-0 mb-5 px-0 pt-0 pb-2"
                                     >
                                         <li

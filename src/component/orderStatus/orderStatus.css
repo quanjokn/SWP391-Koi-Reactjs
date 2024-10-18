@@ -67,25 +67,15 @@
     /* background: grey; */
 }
 
-/* #progressbar-2 li:nth-child(4) {
+#progressbar-2 li:nth-child(4) {
     left: 0;
     width: 37px;
-} */
+}
 
-/* #progressbar-2 li:nth-child(4):before {
+/* #progressbar-2 li:nth-child(4):after {
     left: 1%;
     width: 100%;
 } */
-
-#progressbar-2 li:nth-child(4):after {
-    content: ''; /* Không hiển thị nội dung */
-    width: 0; /* Đặt chiều rộng về 0 */
-    height: 0; /* Đặt chiều cao về 0 nếu cần */
-    position: absolute; /* Đảm bảo không ảnh hưởng đến layout */
-    left: 0; /* Đặt vị trí của nó */
-    top: 15px; /* Giữ nó ở cùng vị trí như trước */
-    z-index: -1; /* Để nó ở dưới cùng */
-}
 
 #progressbar-2 li.active:before,
 #progressbar-2 li.active:after {

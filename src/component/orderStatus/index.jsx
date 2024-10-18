@@ -90,7 +90,7 @@ export default function OrderStatus({ orderId, date, status }) {
                                     </div>
                                     <ul
                                         id="progressbar-2"
-                                        className={` d-flex justify-content-between mx-0 mt-0 mb-5 px-0 pt-0 pb-2 ${status === 'Rejected' ? 'rejected' : ''}`}
+                                        className={`d-flex justify-content-between mx-0 mt-0 mb-5 px-0 pt-0 pb-2 ${status === 'Rejected' ? 'rejected' : ''}`}
                                     >
                                         <li
                                             className={`step0 ${getStatusClass(1)} text-center`}
