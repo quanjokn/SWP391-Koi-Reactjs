@@ -9,30 +9,33 @@
 }
 .form-container{
     border: black solid 1px;
-    border-radius: 15px;
-    margin: 100px auto;
+    border-radius: 10px;
+    margin: 60px 60px;
     padding: 20px;
-    background-color: rgb(224, 213, 213);
+    background-color: rgb(110, 6, 6);
+
 }
 .btAdd{
     border-radius: 10px;
     background-color: rgb(54, 26, 212);
 }
 .closeButton{
-    
-    color: black;
-    background-color: rgb(224, 213, 213);
+    color: aliceblue;
+    background: none;
     margin-left: 720px;
-
 }
+
 .title{
-    font-size: 30px;
+    font-size: 40px;
     font-weight: bold;
+    text-align: center;
+    color: aliceblue;
 }
 .head-form{
     display: flex;
     height: 100px;
     align-items: center;
+    color: aliceblue;
 }
 
 .submitButton{
