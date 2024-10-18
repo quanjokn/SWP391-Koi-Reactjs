@@ -76,23 +76,23 @@ export default function ConsignSellStatus({ orderId, Date, status }) {
                                     >
                                         <li
                                             className={`step0 ${getStatusClass(1)} text-center`}
-                                            id="step1"
+                                            id="step1s"
                                         ></li>
                                         <li
                                             className={`step0 ${getStatusClass(2)} text-center`}
-                                            id="step2"
+                                            id="step2s"
                                         ></li>
                                         <li
                                             className={`step0 ${getStatusClass(3)} text-center`}
-                                            id="step3"
+                                            id="step3s"
                                         ></li>
                                         <li
                                             className={`step0 ${getStatusClass(4)} text-center`}
-                                            id="step4"
+                                            id="step4s"
                                         ></li>
                                         <li
                                             className={`step0 ${getStatusClass(5)} text-end`}
-                                            id="step5"
+                                            id="step5s"
                                         ></li>
                                     </ul>
 
