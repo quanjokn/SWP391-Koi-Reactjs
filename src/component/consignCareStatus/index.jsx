@@ -70,7 +70,7 @@ export default function ConsignCareStatus({ orderId, startDate, endDate, status 
                                         </div>
                                     </div>
                                     <ul
-                                        id="progressbar-2"
+                                        id="progressbarCare-2"
                                         className="d-flex justify-content-between mx-0 mt-0 mb-5 px-0 pt-0 pb-2"
                                     >
                                         <li
@@ -102,15 +102,15 @@ export default function ConsignCareStatus({ orderId, startDate, endDate, status 
                                             </p>
                                         </div>
                                         <div className="d-flex flex-column align-items-center">
-                                            <MDBIcon fas icon="box-open" size="3x" />
+                                            <MDBIcon fas icon="clipboard-check" size="3x" />
                                             <p className="fw-bold text-center mb-0">Đang xác nhận</p>
                                         </div>
                                         <div className="d-flex flex-column align-items-center">
-                                            <MDBIcon fas icon="shipping-fast" size="3x" />
+                                            <MDBIcon fas icon="reply" size="3x" />
                                             <p className="fw-bold text-center mb-0">Đã phản hồi </p>
                                         </div>
                                         <div className="d-flex flex-column align-items-center">
-                                            <MDBIcon fas icon="home" size="3x" />
+                                            <MDBIcon fas icon="circle-check" size="3x" />
                                             <p className="fw-bold text-center mb-0">Đã Hoàn Thành</p>
                                         </div>
                                     </div>

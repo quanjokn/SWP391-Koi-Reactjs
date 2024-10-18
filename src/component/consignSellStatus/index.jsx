@@ -32,6 +32,7 @@ export default function ConsignSellStatus({ orderId, Date, status }) {
             Receiving: 2,
             Responded: 3,
             Done: 4,
+            Shared: 5,
             Rejected: 0,
         };
 
@@ -70,24 +71,28 @@ export default function ConsignSellStatus({ orderId, Date, status }) {
                                         </div>
                                     </div>
                                     <ul
-                                        id="progressbar-2"
+                                        id="progressbarSell-2"
                                         className="d-flex justify-content-between mx-0 mt-0 mb-5 px-0 pt-0 pb-2"
                                     >
                                         <li
                                             className={`step0 ${getStatusClass(1)} text-center`}
-                                            id="step1"
+                                            id="step1s"
                                         ></li>
                                         <li
                                             className={`step0 ${getStatusClass(2)} text-center`}
-                                            id="step2"
+                                            id="step2s"
                                         ></li>
                                         <li
                                             className={`step0 ${getStatusClass(3)} text-center`}
-                                            id="step3"
+                                            id="step3s"
                                         ></li>
                                         <li
-                                            className={`step0 ${getStatusClass(4)} text-end`}
-                                            id="step4"
+                                            className={`step0 ${getStatusClass(4)} text-center`}
+                                            id="step4s"
+                                        ></li>
+                                        <li
+                                            className={`step0 ${getStatusClass(5)} text-end`}
+                                            id="step5s"
                                         ></li>
                                     </ul>
 
@@ -102,16 +107,20 @@ export default function ConsignSellStatus({ orderId, Date, status }) {
                                             </p>
                                         </div>
                                         <div className="d-flex flex-column align-items-center">
-                                            <MDBIcon fas icon="box-open" size="3x" />
+                                            <MDBIcon fas icon="clipboard-check" size="3x" />
                                             <p className="fw-bold text-center mb-0">Đang xác nhận</p>
                                         </div>
                                         <div className="d-flex flex-column align-items-center">
-                                            <MDBIcon fas icon="shipping-fast" size="3x" />
+                                            <MDBIcon fas icon="reply" size="3x" />
                                             <p className="fw-bold text-center mb-0">Đã phản hồi </p>
                                         </div>
                                         <div className="d-flex flex-column align-items-center">
-                                            <MDBIcon fas icon="home" size="3x" />
+                                            <MDBIcon fas icon="circle-check" size="3x" />
                                             <p className="fw-bold text-center mb-0">Đã Hoàn Thành</p>
+                                        </div>
+                                        <div className="d-flex flex-column align-items-center">
+                                            <MDBIcon fas icon="coins" size="3x" />
+                                            <p className="fw-bold text-center mb-0">Đã thanh toán</p>
                                         </div>
                                     </div>
                                 </MDBCardBody>
