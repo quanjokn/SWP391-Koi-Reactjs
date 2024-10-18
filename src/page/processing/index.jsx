@@ -151,20 +151,20 @@ const Processing = () => {
                     <table className={styles.table}>
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Ngày đặt hàng</th>
-                                <th>Thành tiền</th>
-                                <th>Trạng thái</th>
-                                <th>Action</th>
+                                <th className={styles.textLeft}>ID</th>
+                                <th className={styles.textLeft}>Ngày đặt hàng</th>
+                                <th className={styles.textLeft}>Thành tiền VND</th>
+                                <th className={styles.textLeft}>Trạng thái</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             {currentOrders.map(order => (
                                 <tr key={order.id} className={styles.row}>
-                                    <td>{order.id}</td>
-                                    <td>{order.orderDate}</td>
-                                    <td>{order.totalPrice} VND</td>
-                                    <td>{order.status}</td>
+                                    <td className={styles.textLeft}>{order.id}</td>
+                                    <td className={styles.textLeft}>{order.orderDate}</td>
+                                    <td className={styles.textRight}>{order.totalPrice}</td>
+                                    <td className={styles.textLeft}>{order.status}</td>
                                     <td>
                                         <button
                                             className={styles.button1}
@@ -207,22 +207,22 @@ const Processing = () => {
                     <table className={styles.table}>
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Ngày bắt đầu</th>
-                                <th>Ngày kết thúc</th>
-                                <th>Thành tiền</th>
-                                <th>Trạng thái</th>
-                                <th>Action</th>
+                                <th className={styles.textLeft}>ID</th>
+                                <th className={styles.textLeft}>Ngày bắt đầu</th>
+                                <th className={styles.textLeft}>Ngày kết thúc</th>
+                                <th className={styles.textLeft}>Thành tiền VND</th>
+                                <th className={styles.textLeft}>Trạng thái</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             {currentCareOrders.map(order => (
                                 <tr key={order.id} className={styles.row}>
-                                    <td>{order.id}</td>
-                                    <td>{order.startDate}</td>
-                                    <td>{order.endDate}</td>
-                                    <td>{order.totalPrice} VND</td>
-                                    <td>{order.status}</td>
+                                    <td className={styles.textLeft}>{order.id}</td>
+                                    <td className={styles.textLeft}>{order.startDate}</td>
+                                    <td className={styles.textLeft}>{order.endDate}</td>
+                                    <td className={styles.textRight}>{order.totalPrice}</td>
+                                    <td className={styles.textLeft}>{order.status}</td>
                                     <td>
                                         <button
                                             className={styles.button1}
@@ -265,20 +265,20 @@ const Processing = () => {
                     <table className={styles.table}>
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Ngày đặt hàng</th>
-                                <th>Thành tiền</th>
-                                <th>Trạng thái</th>
-                                <th>Action</th>
+                                <th className={styles.textLeft}>ID</th>
+                                <th className={styles.textLeft}>Ngày đặt hàng</th>
+                                <th className={styles.textLeft}>Thành tiền VND</th>
+                                <th className={styles.textLeft}>Trạng thái</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             {currentConsignOrders.map(order => (
                                 <tr key={order.id} className={styles.row}>
-                                    <td>{order.id}</td>
-                                    <td>{order.date}</td>
-                                    <td>{order.totalPrice} VND</td>
-                                    <td>{order.status}</td>
+                                    <td className={styles.textLeft}>{order.id}</td>
+                                    <td className={styles.textLeft}>{order.date}</td>
+                                    <td className={styles.textRight}>{order.totalPrice}</td>
+                                    <td className={styles.textLeft}>{order.status}</td>
                                     <td>
                                         <button
                                             className={styles.button1}

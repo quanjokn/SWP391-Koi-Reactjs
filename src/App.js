@@ -40,6 +40,7 @@ import ProtectedRoute from './component/protectedRoute';
 import PrivateRoute from './component/privateRoute';
 import OrderDetailConSignSell from './page/orderListConsignSellDt';
 import ManageEmployee from './page/manageEmployee';
+import BlogManager from './page/manageBlog';
 
 
 function App() {
@@ -174,6 +175,14 @@ function App() {
         <ProtectedRoute>
           <OrderDetail />
         </ProtectedRoute>
+      )
+    },
+    {
+      path: 'manage-blog',
+      element: (
+        <PrivateRoute requiredRole="Staff">
+          <BlogManager />
+        </PrivateRoute>
       )
     },
     {

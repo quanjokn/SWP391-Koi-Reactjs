@@ -141,7 +141,7 @@ const ManageConsignCareDetail = () => {
                                     <th>Giới tính</th>
                                     <th>Tình trạng</th>
                                     {status === 'Receiving' && (
-                                        <th className={styles["actionColumn"]}>Action</th>
+                                        <th className={styles["actionColumn"]}></th>
                                     )}
                                 </tr>
                             </thead>

@@ -26,30 +26,35 @@ const OrderList = () => {
         });
     }, []);
 
-    // Lấy dữ liệu từ API
+    // Lấy dữ liệu từ API và sắp xếp theo ngày
     useEffect(() => {
-        const fetchOrders = async () => {
-            if (!user.id) {
-                // Nếu user hoặc user.id không tồn tại, không gọi API
-                setIsLoading(false);
-                return;
+    const fetchOrders = async () => {
+        if (!user.id) {
+            // Nếu user hoặc user.id không tồn tại, không gọi API
+            setIsLoading(false);
+            return;
+        }
+        setIsLoading(true);
+        try {
+            const userid = user.id;
+            const response = await api.post(`/order/orderList/${userid}`);
+            if (response.data && Array.isArray(response.data)) {
+                const sortedOrders = response.data.sort((a, b) => {
+                    const dateA = new Date(a.date);
+                    const dateB = new Date(b.date);
+                    return dateB - dateA; // Sắp xếp từ mới đến cũ
+                });
+                setOrders(sortedOrders);
             }
-            setIsLoading(true);
-            try {
-                const userid = user.id;
-                const response = await api.post(`/order/orderList/${userid}`);
-                if (response.data && Array.isArray(response.data)) {
-                    setOrders(response.data);
-                }
-            } catch (error) {
-                console.error('Error fetching orders:', error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
+        } catch (error) {
+            console.error('Error fetching orders:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
-        fetchOrders();
-    }, [user]);
+    fetchOrders();
+}, [user]);
 
     const handleViewOrderDetail = (orderId) => {
         navigate(`/order-detail/${orderId}`);
@@ -87,10 +92,10 @@ const OrderList = () => {
                                     <table className={styles.table}>
                                         <thead>
                                             <tr>
-                                                <th>Ngày</th>
-                                                <th>Mã đơn hàng</th>
-                                                <th>Giá</th>
-                                                <th>Trạng thái đơn hàng</th>
+                                                <th className={styles.textLeft}>Ngày</th>
+                                                <th className={styles.textLeft}>Mã đơn hàng</th>
+                                                <th className={styles.textLeft}>Giá VND</th>
+                                                <th className={styles.textLeft}>Trạng thái đơn hàng</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -113,10 +118,10 @@ const OrderList = () => {
                                                         onClick={() => handleViewOrderDetail(order.id)}
                                                         style={{ cursor: 'pointer' }}
                                                     >
-                                                        <td>{order.date || 'N/A'}</td>
-                                                        <td>{'KFS_' + order.id}</td>
-                                                        <td>{totalPrice} VND</td>
-                                                        <td>{order.status || 'N/A'}</td>
+                                                        <td className={styles.textLeft}>{order.date || 'N/A'}</td>
+                                                        <td className={styles.textLeft}>{'KFS_' + order.id}</td>
+                                                        <td className={styles.textRight}>{totalPrice}</td>
+                                                        <td className={styles.textLeft}>{order.status || 'N/A'}</td>
                                                     </tr>
                                                 );
                                             })}

@@ -37,9 +37,10 @@ const OrderListConsignCare = () => {
             setIsLoading(true);
             try {
                 const response = await api.post(`/caringOrder/getList/${user.id}`);
-                console.log(response);
                 if (response.data && Array.isArray(response.data)) {
-                    setOrders(response.data);
+                    // Sắp xếp các đơn hàng theo ngày giảm dần (mới nhất lên đầu)
+                    const sortedOrders = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    setOrders(sortedOrders);
                 }
             } catch (error) {
                 console.error('Error fetching orders:', error);
@@ -87,10 +88,10 @@ const OrderListConsignCare = () => {
                                     <table className={styles.table}>
                                         <thead>
                                             <tr>
-                                                <th>Ngày</th>
-                                                <th>Mã đơn ký gửi</th>
-                                                <th>Giá</th>
-                                                <th>Trạng thái ký gửi</th>
+                                                <th className={styles.textLeft}>Ngày</th>
+                                                <th className={styles.textLeft}>Mã đơn ký gửi</th>
+                                                <th className={styles.textLeft}>Giá VND</th>
+                                                <th className={styles.textLeft}>Trạng thái ký gửi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -105,7 +106,7 @@ const OrderListConsignCare = () => {
                                                         ? order.orderDetails.reduce((total, product) => total + product.quantity, 0)
                                                         : 0;
 
-                                                const totalPrice = order.total || 0;
+                                                const totalPrice = order.totalPrice || 0;
 
                                                 return (
                                                     <tr
@@ -113,10 +114,10 @@ const OrderListConsignCare = () => {
                                                         onClick={() => handleViewOrderDetail(order.id)}
                                                         style={{ cursor: 'pointer' }}
                                                     >
-                                                        <td>{order.date || 'N/A'}</td>
-                                                        <td>{order.id}</td>
-                                                        <td>{totalPrice} VND</td>
-                                                        <td>{order.status || 'N/A'}</td>
+                                                        <td className={styles.textLeft}>{order.date || 'N/A'}</td>
+                                                        <td className={styles.textLeft}>{order.id}</td>
+                                                        <td className={styles.textRight}>{totalPrice}</td>
+                                                        <td className={styles.textLeft}>{order.status || 'N/A'}</td>
                                                     </tr>
                                                 );
                                             })}
