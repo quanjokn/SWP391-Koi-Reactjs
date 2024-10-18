@@ -71,28 +71,28 @@ export default function ConsignSellStatus({ orderId, Date, status }) {
                                         </div>
                                     </div>
                                     <ul
-                                        id="progressbarSell-2"
+                                        id="progressbar-sell"
                                         className="d-flex justify-content-between mx-0 mt-0 mb-5 px-0 pt-0 pb-2"
                                     >
                                         <li
                                             className={`step0 ${getStatusClass(1)} text-center`}
-                                            id="step1s"
+                                            id="step1"
                                         ></li>
                                         <li
                                             className={`step0 ${getStatusClass(2)} text-center`}
-                                            id="step2s"
+                                            id="step2"
                                         ></li>
                                         <li
                                             className={`step0 ${getStatusClass(3)} text-center`}
-                                            id="step3s"
+                                            id="step3"
                                         ></li>
                                         <li
                                             className={`step0 ${getStatusClass(4)} text-center`}
-                                            id="step4s"
+                                            id="step4"
                                         ></li>
                                         <li
                                             className={`step0 ${getStatusClass(5)} text-end`}
-                                            id="step5s"
+                                            id="step5"
                                         ></li>
                                     </ul>
 
@@ -120,7 +120,7 @@ export default function ConsignSellStatus({ orderId, Date, status }) {
                                         </div>
                                         <div className="d-flex flex-column align-items-center">
                                             <MDBIcon fas icon="coins" size="3x" />
-                                            <p className="fw-bold text-center mb-0">Đã thanh toán</p>
+                                            <p className="fw-bold text-center mb-0">Đã Thanh toán</p>
                                         </div>
                                     </div>
                                 </MDBCardBody>

@@ -105,7 +105,7 @@ const OrderListConsignCare = () => {
                                                         ? order.orderDetails.reduce((total, product) => total + product.quantity, 0)
                                                         : 0;
 
-                                                const totalPrice = order.total || 0;
+                                                const totalPrice = order.totalPrice || 0;
 
                                                 return (
                                                     <tr
