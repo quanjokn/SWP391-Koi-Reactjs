@@ -125,9 +125,9 @@ const ManageConsignCareDetail = () => {
                             <h2>Thông tin khách hàng:</h2>
                             {order.caringOrder.customer ? (
                                 <>
-                                    <p>Tên: {order.caringOrder.customer.name}</p>
-                                    <p>Số điện thoại: {order.caringOrder.customer.phone}</p>
-                                    <p>Địa chỉ: {order.caringOrder.customer.address}</p>
+                                    <p className={styles.textLeft}>Tên: {order.caringOrder.customer.name}</p>
+                                    <p className={styles.textLeft}>Số điện thoại: {order.caringOrder.customer.phone}</p>
+                                    <p className={styles.textLeft}>Địa chỉ: {order.caringOrder.customer.address}</p>
                                 </>
                             ) : (
                                 <p>Không có thông tin khách hàng</p>
@@ -137,9 +137,9 @@ const ManageConsignCareDetail = () => {
                         <table className={styles.table}>
                             <thead>
                                 <tr>
-                                    <th>Tên sản phẩm</th>
-                                    <th>Giới tính</th>
-                                    <th>Tình trạng</th>
+                                    <th className={styles.textLeft}>Tên sản phẩm</th>
+                                    <th className={styles.textLeft}>Giới tính</th>
+                                    <th className={styles.textLeft}>Tình trạng</th>
                                     {status === 'Receiving' && (
                                         <th className={styles["actionColumn"]}></th>
                                     )}
@@ -150,29 +150,29 @@ const ManageConsignCareDetail = () => {
                                     order.caredKois.map((koi) =>
                                         koi !== null ? (
                                             <tr key={koi.id}>
-                                                <td>{koi.name}</td>
-                                                <td>{koi.sex}</td>
-                                                <td>{koi.status}</td>
+                                                <td className={styles.textLeft}>{koi.name}</td>
+                                                <td className={styles.textLeft}>{koi.sex}</td>
+                                                <td className={styles.textLeft}>{koi.status}</td>
                                                 {status === 'Receiving' && (
                                                     <td className={styles["actionColumn"]}>
                                                         <label>
-                                                    <input
-                                                        type="radio"
-                                                        value="false"
-                                                        checked={ decision[koi.id] === false}
-                                                        onChange={() => handleDecision(koi.id, false)}
-                                                    />
-                                                     <span>Từ chối</span>
-                                                </label>
-                                                <label>
-                                                    <input
-                                                        type="radio"
-                                                        value="true"
-                                                        checked={ decision[koi.id] === true}
-                                                        onChange={() => handleDecision(koi.id, true)}
-                                                    />
-                                                    <span>Chấp nhận</span>
-                                                </label>
+                                                            <input
+                                                                type="radio"
+                                                                value="false"
+                                                                checked={decision[koi.id] === false}
+                                                                onChange={() => handleDecision(koi.id, false)}
+                                                            />
+                                                            <span>Từ chối</span>
+                                                        </label>
+                                                        <label>
+                                                            <input
+                                                                type="radio"
+                                                                value="true"
+                                                                checked={decision[koi.id] === true}
+                                                                onChange={() => handleDecision(koi.id, true)}
+                                                            />
+                                                            <span>Chấp nhận</span>
+                                                        </label>
                                                     </td>
                                                 )}
                                             </tr>
@@ -196,7 +196,7 @@ const ManageConsignCareDetail = () => {
                 {/* Kiểm duyệt */}
                 {!isOrderProcessed && status === 'Receiving' && (
                     <div className={styles.buttonStatus}>
-                        <h2>Kiểm duyệt</h2>              
+                        <h2>Kiểm duyệt</h2>
                         <button className={styles.buttonAccept} onClick={handleAcceptOrder}>
                             Phản hồi
                         </button>
@@ -204,7 +204,7 @@ const ManageConsignCareDetail = () => {
                 )}
 
                 {/* Bảng cập nhật trạng thái */}
-                {(status === 'Responded' )  && status !== 'Done' && (
+                {(status === 'Responded') && status !== 'Done' && (
                     <div className={styles.updateStatus}>
                         <h2>Cập nhật trạng thái</h2>
                         <button

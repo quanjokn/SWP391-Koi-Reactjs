@@ -78,14 +78,14 @@ export default function OrderStatus({ orderId, date, status }) {
                                     <div className="d-flex justify-content-between align-items-center mb-5">
                                         <div>
                                             <MDBTypography tag="h5" className="mb-0">
-                                                ORDER ID{" "}
+                                                ID Đơn Hàng{" "}
                                                 <span className="text-primary font-weight-bold">
-                                                    #{'KFS_' + orderId}
+                                                    #{orderId}
                                                 </span>
                                             </MDBTypography>
                                         </div>
                                         <div className="text-end justify-content-between align-items-center mb-0">
-                                            Order Date <span>{date}</span>
+                                            Ngày đặt hàng <span>{date}</span>
                                         </div>
                                     </div>
                                     <ul

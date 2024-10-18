@@ -28,33 +28,33 @@ const OrderList = () => {
 
     // Lấy dữ liệu từ API và sắp xếp theo ngày
     useEffect(() => {
-    const fetchOrders = async () => {
-        if (!user.id) {
-            // Nếu user hoặc user.id không tồn tại, không gọi API
-            setIsLoading(false);
-            return;
-        }
-        setIsLoading(true);
-        try {
-            const userid = user.id;
-            const response = await api.post(`/order/orderList/${userid}`);
-            if (response.data && Array.isArray(response.data)) {
-                const sortedOrders = response.data.sort((a, b) => {
-                    const dateA = new Date(a.date);
-                    const dateB = new Date(b.date);
-                    return dateB - dateA; // Sắp xếp từ mới đến cũ
-                });
-                setOrders(sortedOrders);
+        const fetchOrders = async () => {
+            if (!user.id) {
+                // Nếu user hoặc user.id không tồn tại, không gọi API
+                setIsLoading(false);
+                return;
             }
-        } catch (error) {
-            console.error('Error fetching orders:', error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+            setIsLoading(true);
+            try {
+                const userid = user.id;
+                const response = await api.post(`/order/orderList/${userid}`);
+                if (response.data && Array.isArray(response.data)) {
+                    const sortedOrders = response.data.sort((a, b) => {
+                        const dateA = new Date(a.date);
+                        const dateB = new Date(b.date);
+                        return dateB - dateA; // Sắp xếp từ mới đến cũ
+                    });
+                    setOrders(sortedOrders);
+                }
+            } catch (error) {
+                console.error('Error fetching orders:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
 
-    fetchOrders();
-}, [user]);
+        fetchOrders();
+    }, [user]);
 
     const handleViewOrderDetail = (orderId) => {
         navigate(`/order-detail/${orderId}`);
@@ -75,6 +75,23 @@ const OrderList = () => {
     for (let i = 1; i <= Math.ceil(orders.length / ordersPerPage); i++) {
         pageNumbers.push(i);
     }
+
+    const translateStatus = (status) => {
+        switch (status) {
+            case 'Pending_confirmation':
+                return { text: 'Đợi xác nhận' };
+            case 'Preparing':
+                return { text: 'Đang chuẩn bị' };
+            case 'Shipping':
+                return { text: 'Đang vận chuyển' };
+            case 'Completed':
+                return { text: 'Đã hoàn thành', className: styles.done }; // Sử dụng className cho trạng thái hoàn thành
+            case 'Rejected':
+                return { text: 'Đã bị từ chối', className: styles.rejected }; // Sử dụng className cho trạng thái từ chối
+            default:
+                return { text: status };
+        }
+    };
 
     return (
         <>
@@ -118,10 +135,10 @@ const OrderList = () => {
                                                         onClick={() => handleViewOrderDetail(order.id)}
                                                         style={{ cursor: 'pointer' }}
                                                     >
-                                                        <td className={styles.textLeft}>{order.date || 'N/A'}</td>
-                                                        <td className={styles.textLeft}>{'KFS_' + order.id}</td>
+                                                        <td className={styles.textLeft}>{order.date}</td>
+                                                        <td className={styles.textLeft}>{order.id}</td>
                                                         <td className={styles.textRight}>{totalPrice}</td>
-                                                        <td className={styles.textLeft}>{order.status || 'N/A'}</td>
+                                                        <td className={`${styles.textLeft} ${translateStatus(order.status).className}`}>{translateStatus(order.status).text}</td>
                                                     </tr>
                                                 );
                                             })}

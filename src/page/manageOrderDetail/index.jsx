@@ -81,6 +81,7 @@ const ManageOrderDetail = () => {
         try {
             await api.post(`/staff/updateStatus`, { orderId, status: 'Preparing' });
             alert('Đơn hàng đã được chấp nhận thành công!');
+            setStatus('Preparing');
             setIsOrderProcessed(true);
             fetchOrderDetail();
         } catch (error) {
@@ -127,36 +128,45 @@ const ManageOrderDetail = () => {
                 <h2>Ngày đặt hàng: {new Date(order.date).toLocaleDateString()}</h2>
                 <div className={styles.customerInfo}>
                     <h2>Thông tin khách hàng:</h2>
-                    {order.users ? (
-                        <>
-                            <p>Tên: {order.users.name}</p>
-                            <p>Số điện thoại: {order.users.phone}</p>
-                            <p>Địa chỉ: {order.users.address}</p>
-                        </>
-                    ) : (
-                        <p>Không có thông tin khách hàng</p>
-                    )}
+                    <table className={styles.table}>
+                        <thead>
+                            <tr>
+                                <th className={styles.textLeft}>Tên khách hàng</th>
+                                <th className={styles.textLeft}>Số điện thoại</th>
+                                <th className={styles.textLeft}>Địa chỉ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td className={styles.textLeft}>{order.users.name}</td>
+                                <td className={styles.textLeft}>{order.users.phone}</td>
+                                <td className={styles.textLeft}>{order.users.address}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
+
+
                 <h2>Sản phẩm:</h2>
                 <table className={styles.table}>
                     <thead>
                         <tr>
-                            <th>Tên sản phẩm</th>
-                            <th>Số lượng</th>
-                            <th>Giá</th>
+                            <th className={styles.textLeft}>Tên sản phẩm</th>
+                            <th className={styles.textLeft}>Số lượng</th>
+                            <th className={styles.textLeft}>Giá VND</th>
                         </tr>
                     </thead>
                     <tbody>
                         {order.orderDetailsDTO.map((item) => (
                             <tr key={item.id}>
-                                <td>{item.fishName}</td>
-                                <td>{item.quantity}</td>
-                                <td>{item.price} VND</td>
+                                <td className={styles.textLeft}>{item.fishName}</td>
+                                <td className={styles.textRight}>{item.quantity}</td>
+                                <td className={styles.textRight}>{item.totalPrice}</td>
                             </tr>
                         ))}
                         <tr>
-                            <td colSpan="2">Tổng giá trị</td>
-                            <td>{totalPrice} VND</td>
+                            <td className={styles.textLeft} colSpan="2">Tổng giá trị</td>
+                            <td className={styles.textRight}>{totalPrice}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -188,14 +198,14 @@ const ManageOrderDetail = () => {
                             onClick={status !== 'Shipping' ? handleShippingOrder : undefined}
                             disabled={status === 'Shipping'}
                         >
-                            Shipping
+                            Vận chuyển
                         </button>
                         <button
                             className={status === 'Completed' ? styles.buttonDisabled : styles.buttonCompleted}
                             onClick={status !== 'Completed' ? handleCompleteOrder : undefined}
                             disabled={status === 'Completed'}
                         >
-                            Completed
+                            Hoàn thành
                         </button>
                     </div>
                 )}

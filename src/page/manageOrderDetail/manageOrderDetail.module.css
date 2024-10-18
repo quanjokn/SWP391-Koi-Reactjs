@@ -15,7 +15,6 @@
 .table th, .table td {
     border: 1px solid #ccc;
     padding: 10px;
-    text-align: left;
 }
 
 .statusContainer {
@@ -48,7 +47,7 @@
 }
 
 .customerInfo {
-    margin-bottom: 20px; /* Thêm khoảng cách dưới */
+    margin-bottom: 48px; 
 }
 
 .buttonStatus {
@@ -91,4 +90,12 @@
     margin-left: 10px;
     border-radius: 5px;
     width: 15%;
+}
+
+.textLeft {
+    text-align: left;
+}
+
+.textRight {
+    text-align: right;
 }
