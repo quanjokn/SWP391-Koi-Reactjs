@@ -14,26 +14,26 @@
     position: relative;
 }
 
-#progressbarSell-2 #step1:before,
-#progressbarSell-2 #step2:before,
-#progressbarSell-2 #step3:before,
-#progressbarSell-2 #step4:before,
-#progressbarSell-2 #step5:before {
+#progressbarSell-2 #step1s:before,
+#progressbarSell-2 #step2s:before,
+#progressbarSell-2 #step3s:before,
+#progressbarSell-2 #step4s:before,
+#progressbarSell-2 #step5s:before {
     font-family: "Font Awesome 5 Free";
     color: #fff;
     width: 37px;
     text-align: center;
 }
 
-#progressbarSell-2 #step1:before,
-#progressbarSell-2 #step2:before,
-#progressbarSell-2 #step3:before,
-#progressbarSell-2 #step4:before,
-#progressbarSell-2 #step5:before {
+#progressbarSell-2 #step1s:before,
+#progressbarSell-2 #step2s:before,
+#progressbarSell-2 #step3s:before,
+#progressbarSell-2 #step4s:before,
+#progressbarSell-2 #step5s:before {
     content: '\f058'; /* Biểu tượng đánh dấu */
 }
 
-#progressbarSell-2 #step5:before {
+#progressbarSell-2 #step5s:before {
     content: '\f111'; /* Biểu tượng hình tròn */
 }
 
@@ -67,6 +67,7 @@
 #progressbarSell-2 li:nth-child(4):after {
     left: 1%;
     width: 100%;
+    background: grey;
 }
 
 #progressbarSell-2 li:nth-child(5) {
