@@ -71,7 +71,7 @@ export default function ConsignSellStatus({ orderId, Date, status }) {
                                         </div>
                                     </div>
                                     <ul
-                                        id="progressbar-2"
+                                        id="progressbarSell-2"
                                         className="d-flex justify-content-between mx-0 mt-0 mb-5 px-0 pt-0 pb-2"
                                     >
                                         <li
