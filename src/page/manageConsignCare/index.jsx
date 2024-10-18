@@ -78,8 +78,8 @@ const ManageConsignCare = () => {
                             <tr>
                                 <th>ID</th>
                                 <th>Ngày đặt hàng</th>
-                                <th>Thành tiền</th>
-                                <th>Action</th>
+                                <th>Thành tiền VND</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -87,7 +87,7 @@ const ManageConsignCare = () => {
                                 <tr key={order.id} className={styles.row}>
                                     <td>{order.id}</td>
                                     <td>{order.orderDate}</td>
-                                    <td>{order.totalPrice} VND</td>
+                                    <td>{order.totalPrice}</td>
                                     <td>
                                         <button
                                             className={styles.button1}

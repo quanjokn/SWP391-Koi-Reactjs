@@ -117,18 +117,20 @@ const ManageConsignSellDetail = () => {
                         <table className={styles.table}>
                             <thead>
                                 <tr>
-                                    <th>Tên cá</th>
-                                    <th>Số lượng</th>
-                                    <th>Giá bán</th>
-                                    <th>Trạng thái</th>
+                                    <th className={styles.textLeft}>Tên cá</th>
+                                    <th className={styles.textLeft}>Số lượng</th>
+                                    <th className={styles.textLeft}>Giá bán VND</th>
                                     {status === 'Receiving' && (
-                                        <th className={styles["actionColumn"]}>Action</th>
+                                        <th className={styles["actionColumn"]}></th>
                                     )}
                                 </tr>
                             </thead>
                             <tbody>
                                 {order.request.ConsignList.map(product => (
                                     <tr key={product.fishID}>
+                                        <td className={styles.textLeft}>{product.name}</td>
+                                        <td className={styles.textRight}>{product.quantity}</td>
+                                        <td className={styles.textRight}>{product.price}</td>
                                         <td>{product.name}</td>
                                         <td>{product.quantity}</td>
                                         <td>{product.price} VND</td>
@@ -139,7 +141,7 @@ const ManageConsignSellDetail = () => {
                                                     <input
                                                         type="radio"
                                                         value="false"
-                                                        checked={ decision[product.fishID] === false}
+                                                        checked={decision[product.fishID] === false}
                                                         onChange={() => handleDecision(product.fishID, false)}
                                                     />
                                                     <span>Từ chối</span>
@@ -148,7 +150,7 @@ const ManageConsignSellDetail = () => {
                                                     <input
                                                         type="radio"
                                                         value="true"
-                                                        checked={ decision[product.fishID] === true}
+                                                        checked={decision[product.fishID] === true}
                                                         onChange={() => handleDecision(product.fishID, true)}
                                                     />
                                                     <span>Chấp nhận</span>
@@ -158,12 +160,12 @@ const ManageConsignSellDetail = () => {
                                     </tr>
                                 ))}
                                 <tr>
-                                    <td colSpan="2" style={{ textAlign: 'right' }}><strong>Thành tiền:</strong></td>
-                                    <td><strong>{order.request.totalPrice} VND</strong></td>
+                                    <td colSpan="2" className={styles.textLeft}><strong>Thành tiền:</strong></td>
+                                    <td className={styles.textRight}><strong>{order.request.totalPrice} VND</strong></td>
                                 </tr>
                                 <tr>
-                                    <td colSpan="2" style={{ textAlign: 'right' }}><strong>Hoa hồng:</strong></td>
-                                    <td><strong>{order.request.commission} VND</strong></td>
+                                    <td colSpan="2" className={styles.textLeft}><strong>Hoa hồng:</strong></td>
+                                    <td className={styles.textRight}><strong>{order.request.commission} VND</strong></td>
                                 </tr>
                             </tbody>
                         </table>

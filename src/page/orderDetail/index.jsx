@@ -55,10 +55,6 @@ const OrderDetail = () => {
         return <Loading />;
     }
 
-    if (!order || orderItems.length === 0) {
-        return <div className="alert alert-danger">Không tìm thấy đơn hàng</div>;
-    }
-
     return (
         <>
             <Header />
@@ -66,16 +62,17 @@ const OrderDetail = () => {
             <div className="container mt-5" style={containerStyle}> {/* Áp dụng style cho container */}
                 <OrderStatus orderId={order.orderId} date={order.date} status={order.status} />
 
-                {/* Bảng thông tin khách hàng và tổng quan đơn hàng */}
+                {/* Bảng hóa đơn */}
+                <h3>Hóa đơn</h3>
                 <div className="order-summary">
                     <table className="table-custom">
                         <thead>
                             <tr>
-                                <th>Customer Name</th>
-                                <th>Phone</th>
-                                <th>Address</th>
-                                <th>Total Quantity</th>
-                                <th>Total Price</th>
+                                <th>Tên khách hàng</th>
+                                <th>Số điện thoại</th>
+                                <th>Địa chỉ</th>
+                                <th>Tổng số lượng</th>
+                                <th>Thành tiền VND</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -84,22 +81,21 @@ const OrderDetail = () => {
                                 <td>{order.users?.phone || 'N/A'}</td>
                                 <td>{order.users?.address || 'N/A'}</td>
                                 <td>{order.totalQuantity || 0}</td>
-                                <td>{order.totalOrderPrice ? order.totalOrderPrice.toLocaleString('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 0} đồng</td>
+                                <td>{order.totalOrderPrice ? order.totalOrderPrice.toLocaleString('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 0}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
                 {/* Bảng thông tin các sản phẩm */}
-                <h3>Order Items</h3>
+                <h3>Thông tin chi tiết</h3>
                 <div className="order-items">
                     <table className="table-custom">
                         <thead>
                             <tr>
-                                <th>Product Name</th>
-                                <th>Quantity</th>
-                                <th>Unit Price</th>
-                                <th>Subtotal</th>
+                                <th>Tên cá</th>
+                                <th>Số lượng</th>
+                                <th>Giá tiền VND</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -107,8 +103,7 @@ const OrderDetail = () => {
                                 <tr key={item.fishId}>
                                     <td>{item.fishName || 'N/A'}</td>
                                     <td>{item.quantity || 0}</td>
-                                    <td>{item.unitPrice ? item.unitPrice.toLocaleString('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 0} đồng</td>
-                                    <td>{item.totalPrice ? item.totalPrice.toLocaleString('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 0} đồng</td>
+                                    <td>{item.unitPrice ? item.unitPrice.toLocaleString('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : 0}</td>
                                 </tr>
                             ))}
                         </tbody>

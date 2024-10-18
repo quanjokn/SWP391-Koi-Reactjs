@@ -68,18 +68,18 @@ const ManageConsignSell = () => {
                     <table className={styles.table}>
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Ngày đặt hàng</th>
-                                <th>Thành tiền</th>
-                                <th>Thao tác</th>
+                                <th className={styles.textLeft}>ID</th>
+                                <th className={styles.textLeft}>Ngày đặt hàng</th>
+                                <th className={styles.textLeft}>Thành tiền VND</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             {currentOrders.map(order => (
                                 <tr key={order.id} className={styles.row}>
-                                    <td>{order.id}</td>
-                                    <td>{order.date}</td>
-                                    <td>{order.totalPrice} VND</td>
+                                    <td className={styles.textLeft}>{order.id}</td>
+                                    <td className={styles.textLeft}>{order.date}</td>
+                                    <td className={styles.textRight}>{order.totalPrice}</td>
                                     <td>
                                         <button
                                             className={styles.button1}

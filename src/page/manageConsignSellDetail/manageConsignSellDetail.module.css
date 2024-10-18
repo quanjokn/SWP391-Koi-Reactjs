@@ -15,7 +15,6 @@
 .table th, .table td {
     border: 1px solid #ccc;
     padding: 10px;
-    text-align: left;
 }
 
 th.actionColumn {
@@ -78,3 +77,10 @@ td.actionColumn span {
     width: 15%;
 }
 
+.textLeft {
+    text-align: left;
+}
+
+.textRight {
+    text-align: right;
+}

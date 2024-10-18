@@ -11,9 +11,9 @@ import api from '../../config/axios';
 
 const OrderListConsignSell = () => {
     const [containerStyle, setContainerStyle] = useState({});
-    const [orders, setOrders] = useState([]); // Khởi tạo mảng đơn hàng
-    const [currentPage, setCurrentPage] = useState(1); // Quản lý trang hiện tại
-    const [ordersPerPage] = useState(10); // Số đơn hàng hiển thị mỗi trang
+    const [orders, setOrders] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [ordersPerPage] = useState(10);
     const [isLoading, setIsLoading] = useState(true);
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
@@ -26,20 +26,19 @@ const OrderListConsignSell = () => {
         });
     }, []);
 
-    // Lấy dữ liệu từ API
     useEffect(() => {
         const fetchOrders = async () => {
             if (!user.id) {
-                // Nếu user hoặc user.id không tồn tại, không gọi API
                 setIsLoading(false);
                 return;
             }
             setIsLoading(true);
             try {
                 const response = await api.post(`/consignOrder/getList/${user.id}`);
-                console.log(response);
                 if (response.data && Array.isArray(response.data)) {
-                    setOrders(response.data);
+                    // Sắp xếp đơn hàng theo ngày (mới nhất trước)
+                    const sortedOrders = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    setOrders(sortedOrders);
                 }
             } catch (error) {
                 console.error('Error fetching orders:', error);
@@ -55,17 +54,14 @@ const OrderListConsignSell = () => {
         navigate(`/order-consign-sell/${orderId}`);
     };
 
-    // Tính toán các chỉ số để hiển thị đơn hàng trên trang hiện tại
     const indexOfLastOrder = currentPage * ordersPerPage;
     const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
     const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
 
-    // Thay đổi trang khi người dùng bấm số trang
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
 
-    // Tạo danh sách các trang
     const pageNumbers = [];
     for (let i = 1; i <= Math.ceil(orders.length / ordersPerPage); i++) {
         pageNumbers.push(i);
@@ -81,49 +77,37 @@ const OrderListConsignSell = () => {
                     <div className="col-md-9">
                         <div className="p-3 py-5">
                             {isLoading ? (
-                                <Loading /> // Hiển thị Loading khi đang tải
+                                <Loading />
                             ) : currentOrders.length > 0 ? (
                                 <>
                                     <table className={styles.table}>
                                         <thead>
                                             <tr>
-                                                <th>Ngày</th>
-                                                <th>Mã đơn ký gửi</th>
-                                                <th>Giá</th>
-                                                <th>Trạng thái ký gửi</th>
+                                                <th className={styles.textLeft}>Ngày</th>
+                                                <th className={styles.textLeft}>Mã đơn ký gửi</th>
+                                                <th className={styles.textLeft}>Giá VND</th>
+                                                <th className={styles.textLeft}>Trạng thái ký gửi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {currentOrders.map((order) => {
-                                                const productNames =
-                                                    order.orderDetails && order.orderDetails.length > 0
-                                                        ? order.orderDetails.map((product) => product.title).join(', ')
-                                                        : 'Chưa có sản phẩm';
-
-                                                const totalQuantity =
-                                                    order.orderDetails && order.orderDetails.length > 0
-                                                        ? order.orderDetails.reduce((total, product) => total + product.quantity, 0)
-                                                        : 0;
-
                                                 const totalPrice = order.totalPrice || 0;
-
                                                 return (
                                                     <tr
                                                         key={order.id}
                                                         onClick={() => handleViewOrderDetail(order.id)}
                                                         style={{ cursor: 'pointer' }}
                                                     >
-                                                        <td>{order.date || 'N/A'}</td>
-                                                        <td>{order.id}</td>
-                                                        <td>{totalPrice} VND</td>
-                                                        <td>{order.status || 'N/A'}</td>
+                                                        <td className={styles.textLeft}>{order.date || 'N/A'}</td>
+                                                        <td className={styles.textLeft}>{order.id}</td>
+                                                        <td className={styles.textRight}>{totalPrice}</td>
+                                                        <td className={styles.textLeft}>{order.status || 'N/A'}</td>
                                                     </tr>
                                                 );
                                             })}
                                         </tbody>
                                     </table>
 
-                                    {/* Hiển thị nút phân trang */}
                                     <nav>
                                         <ul className="pagination justify-content-center">
                                             {pageNumbers.map(number => (
