@@ -9,7 +9,7 @@ import styles from './manageConsignCare.module.css';
 
 const ManageConsignCare = () => {
     const { user } = useContext(UserContext); // Lấy cả setUser từ UserContext
-    const [orders, setOrders] = useState([]);   
+    const [orders, setOrders] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [ordersPerPage] = useState(10);
 
@@ -21,10 +21,10 @@ const ManageConsignCare = () => {
                 totalPrice: order.totalPrice, // Tổng tiền
                 orderDate: order.startDate
             }));
-            setOrders(ordersData);           
+            setOrders(ordersData);
         } catch (error) {
             console.error('Error fetching orders:', error);
-            
+
         }
     };
 
@@ -65,7 +65,7 @@ const ManageConsignCare = () => {
             <Header />
             <Tagbar />
             <div className={styles.container}>
-                <h1>Danh sách đơn hàng</h1>
+                <h1>Danh sách đơn ký gửi chăm sóc</h1>
 
                 {/* Kiểm tra xem có đơn hàng không */}
                 {orders.length === 0 ? (
@@ -76,19 +76,19 @@ const ManageConsignCare = () => {
                     <table className={styles.table}>
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Ngày đặt hàng</th>
-                                <th>Thành tiền VND</th>
+                                <th className={styles.textLeft}>ID</th>
+                                <th className={styles.textLeft}>Ngày đặt hàng</th>
+                                <th className={styles.textLeft}>Thành tiền VND</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             {currentOrders.map(order => (
                                 <tr key={order.id} className={styles.row}>
-                                    <td>{order.id}</td>
-                                    <td>{order.orderDate}</td>
-                                    <td>{order.totalPrice}</td>
-                                    <td>
+                                    <td className={styles.textLeft}>{order.id}</td>
+                                    <td className={styles.textLeft}>{order.orderDate}</td>
+                                    <td className={styles.textRight}>{order.totalPrice}</td>
+                                    <td className={styles.textCenter}>
                                         <button
                                             className={styles.button1}
                                             onClick={() => handleOrderClick(order.id)}

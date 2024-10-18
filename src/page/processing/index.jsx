@@ -165,7 +165,7 @@ const Processing = () => {
                                     <td className={styles.textLeft}>{order.orderDate}</td>
                                     <td className={styles.textRight}>{order.totalPrice}</td>
                                     <td className={styles.textLeft}>{order.status}</td>
-                                    <td>
+                                    <td className={styles.textCenter}>
                                         <button
                                             className={styles.button1}
                                             onClick={() => handleOrderClick(order.id)}
@@ -223,7 +223,7 @@ const Processing = () => {
                                     <td className={styles.textLeft}>{order.endDate}</td>
                                     <td className={styles.textRight}>{order.totalPrice}</td>
                                     <td className={styles.textLeft}>{order.status}</td>
-                                    <td>
+                                    <td className={styles.textCenter}>
                                         <button
                                             className={styles.button1}
                                             onClick={() => handleCaringClick(order.id)}
@@ -279,7 +279,7 @@ const Processing = () => {
                                     <td className={styles.textLeft}>{order.date}</td>
                                     <td className={styles.textRight}>{order.totalPrice}</td>
                                     <td className={styles.textLeft}>{order.status}</td>
-                                    <td>
+                                    <td className={styles.textCenter}>
                                         <button
                                             className={styles.button1}
                                             onClick={() => handleConsignClick(order.id)}

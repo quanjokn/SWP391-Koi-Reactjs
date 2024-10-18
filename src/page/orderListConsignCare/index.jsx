@@ -72,6 +72,23 @@ const OrderListConsignCare = () => {
         pageNumbers.push(i);
     }
 
+    const translateStatus = (status) => {
+        switch (status) {
+            case 'Pending_confirmation':
+                return { text: 'Đợi xác nhận' };
+            case 'Receiving':
+                return { text: 'Đang xác nhận' };
+            case 'Responded':
+                return { text: 'Đã phản hồi' };
+            case 'Done':
+                return { text: 'Đã hoàn thành', className: styles.done };
+            case 'Rejected':
+                return { text: 'Đã bị từ chối', className: styles.rejected };
+            default:
+                return { text: status, className: '' };
+        }
+    };
+
     return (
         <>
             <Header />
@@ -114,10 +131,10 @@ const OrderListConsignCare = () => {
                                                         onClick={() => handleViewOrderDetail(order.id)}
                                                         style={{ cursor: 'pointer' }}
                                                     >
-                                                        <td className={styles.textLeft}>{order.date || 'N/A'}</td>
+                                                        <td className={styles.textLeft}>{order.date}</td>
                                                         <td className={styles.textLeft}>{order.id}</td>
                                                         <td className={styles.textRight}>{totalPrice}</td>
-                                                        <td className={styles.textLeft}>{order.status || 'N/A'}</td>
+                                                        <td className={`${styles.textLeft} ${translateStatus(order.status).className}`}>{translateStatus(order.status).text}</td>
                                                     </tr>
                                                 );
                                             })}

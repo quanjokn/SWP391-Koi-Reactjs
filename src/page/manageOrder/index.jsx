@@ -103,19 +103,19 @@ const ManageOrder = () => {
                     <table className={styles.table}>
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Ngày đặt hàng</th>
-                                <th>Thành tiền</th>
-                                <th>Action</th>
+                                <th className={styles.textLeft}>ID</th>
+                                <th className={styles.textLeft}>Ngày đặt hàng</th>
+                                <th className={styles.textLeft}>Thành tiền</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             {currentOrders.map(order => (
                                 <tr key={order.id} className={styles.row}>
-                                    <td>{order.id}</td>
-                                    <td>{order.orderDate}</td>
-                                    <td>{order.totalPrice} VND</td>
-                                    <td>
+                                    <td className={styles.textLeft}>{order.id}</td>
+                                    <td className={styles.textLeft}>{order.orderDate}</td>
+                                    <td className={styles.textRight}>{order.totalPrice} VND</td>
+                                    <td className={styles.textCenter}>
                                         <button
                                             className={styles.button1}
                                             onClick={() => handleOrderClick(order.id)}

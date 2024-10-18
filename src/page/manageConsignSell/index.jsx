@@ -18,7 +18,7 @@ const ManageConsignSell = () => {
             const response = await api.get('/consignManagement/allPendingOrder')
             const ordersData = response.data.map(order => ({
                 id: order.id,
-                totalPrice: order.totalPrice, 
+                totalPrice: order.totalPrice,
                 date: order.date
             }));
             setOrders(ordersData);
@@ -80,7 +80,7 @@ const ManageConsignSell = () => {
                                     <td className={styles.textLeft}>{order.id}</td>
                                     <td className={styles.textLeft}>{order.date}</td>
                                     <td className={styles.textRight}>{order.totalPrice}</td>
-                                    <td>
+                                    <td className={styles.textCenter}>
                                         <button
                                             className={styles.button1}
                                             onClick={() => handleOrderClick(order.id)}
