@@ -22,17 +22,37 @@ const ConsignedKoiToCare = () => {
     }
     ]);
     const { user } = useContext(UserContext);
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
     const navigate = useNavigate();
 
     const handleStartDateChange = (event) => {
         const newDate = event.target.value;
-        setStartDate(newDate);
+        const today = new Date();
+        const selectedDate = new Date(newDate);
+
+        // Kiểm tra nếu selectedDate cách hôm nay 2 ngày
+        const diffTime = selectedDate - today;
+        const diffDays = diffTime / (1000 * 60 * 60 * 24); // Chuyển đổi thành số ngày
+
+        if (diffDays >= 2) {
+            setStartDate(newDate);
+            setEndDate('');// Reset endDate nếu startDate thay đổi
+        } else {
+            alert('Ngày bắt đầu phải cách hôm nay ít nhất 2 ngày.');
+        }
     };
     const handleEndDateChange = (event) => {
         const newDate = event.target.value;
-        setEndDate(newDate);
+        const selectedEndDate = new Date(newDate);
+        const selectedStartDate = new Date(startDate);
+
+        // Kiểm tra xem endDate có phải sau startDate không
+        if (selectedEndDate > selectedStartDate) {
+            setEndDate(newDate);
+        } else {
+            alert('Ngày kết thúc phải sau ngày bắt đầu.');
+        }
     };
 
 
@@ -56,6 +76,12 @@ const ConsignedKoiToCare = () => {
         if (!userId) {
             console.error("User not logged in!");
             return navigate('/login');
+        }
+        // Kiểm tra tính hợp lệ của form
+        const form = e.target;
+        if (!form.checkValidity()) {
+            alert('Vui lòng điền đầy đủ thông tin trước khi gửi.');
+            return; // Dừng lại nếu form không hợp lệ
         }
         try {
             const start = new Date(startDate);
@@ -88,6 +114,7 @@ const ConsignedKoiToCare = () => {
             setFishForm([{ name: '', sex: '', age: '', size: '', ration: '', healthStatus: '', photo: '' }]);
         } catch (error) {
             console.error('Lỗi khi gửi dữ liệu:', error);
+            alert('Vui lòng điền đầy đủ thông tin');
         }
     };
     const handleAddNewForm = () => {
@@ -109,9 +136,9 @@ const ConsignedKoiToCare = () => {
             <Tagbar />
             <Masthead title="Kí gửi để chăm sóc" />
 
-            <div className={`container ${styles.wrapper}`} >
+            <div >
                 <div className={styles['form-container']}>
-                    <h1 className={styles['title']}> Kí gửi để chăm sóc </h1>
+                    <h1 className={styles['title']}>Điền thông tin kí gửi chăm sóc </h1>
                     <form onSubmit={handleSubmit} className={styles['date-form']}>
                         <label htmlFor="startDate">Ngày bắt đầu:  </label>
                         <input
@@ -131,6 +158,7 @@ const ConsignedKoiToCare = () => {
                             value={endDate}
                             onChange={handleEndDateChange}
                             required // Bắt buộc chọn ngày
+                            disabled={!startDate}
                         />
                     </form>
 
