@@ -20,7 +20,7 @@ const ManageEmployee = () => {
     const [newAccount, setNewAccount] = useState({
         id: 0,
         userName: '',
-        role: 'Customer',
+        role: 'Staff',
         name: '',
         phone: '',
         address: '',
@@ -220,8 +220,8 @@ const ManageEmployee = () => {
                                 value={newAccount.role}
                                 onChange={handleInputChange}
                             >
-                                <option value="Customer">Customer</option>
                                 <option value="Staff">Staff</option>
+                                <option value="Manager">Manager</option>
                             </select>
                         </label>
                         <br />
