@@ -67,6 +67,25 @@ const OrderListConsignSell = () => {
         pageNumbers.push(i);
     }
 
+    const translateStatus = (status) => {
+        switch (status) {
+            case 'Pending_confirmation':
+                return { text: 'Đợi xác nhận', className: styles.pending };
+            case 'Receiving':
+                return { text: 'Đang xác nhận', className: styles.receiving };
+            case 'Responded':
+                return { text: 'Đã phản hồi', className: styles.responded };
+            case 'Done':
+                return { text: 'Đã hoàn thành', className: styles.done };
+            case 'Shared':
+                return { text: 'Đã thanh toán', className: styles.shared };
+            case 'Rejected':
+                return { text: 'Đã bị từ chối', className: styles.rejected };
+            default:
+                return { text: status, className: '' };
+        }
+    };
+
     return (
         <>
             <Header />
@@ -101,7 +120,7 @@ const OrderListConsignSell = () => {
                                                         <td className={styles.textLeft}>{order.date || 'N/A'}</td>
                                                         <td className={styles.textLeft}>{order.id}</td>
                                                         <td className={styles.textRight}>{totalPrice}</td>
-                                                        <td className={styles.textLeft}>{order.status || 'N/A'}</td>
+                                                        <td className={`${styles.textLeft} ${translateStatus(order.status).className}`}>{translateStatus(order.status).text}</td>
                                                     </tr>
                                                 );
                                             })}

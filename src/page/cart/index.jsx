@@ -112,7 +112,7 @@ const Cart = () => {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="5" style={{ textAlign: 'center' }}>Giỏ hàng của bạn trống.</td>
+                                    <td colSpan="5" className={`${styles.textLeft} ${styles.ifEmpty}`}>Giỏ hàng của bạn trống</td>
                                 </tr>
                             )}
                         </tbody>
@@ -125,9 +125,9 @@ const Cart = () => {
                         <h3>Tổng thanh toán: {cart.totalPrice.toLocaleString()} VND</h3>
                         <button
                             className={styles["place-order-button"]}
-                            onClick={handlePlaceOrder}            
+                            onClick={handlePlaceOrder}
                         >
-                            Đi đến thanh toán 
+                            Đi đến thanh toán
                         </button>
                     </div>
                 )}

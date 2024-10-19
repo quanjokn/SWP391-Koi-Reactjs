@@ -53,9 +53,9 @@ const ProductList = () => {
     const handleRemoveCompare = (productId) => {
         // Xóa sản phẩm khỏi danh sách so sánh
         setCompareList((prevList) => prevList.filter(product => product.id !== productId));
-        if(compareList.length == 0){
+        if (compareList.length == 0) {
             setShowCompareBox(false);
-        } 
+        }
     };
 
     const handleCloseCompareBox = () => {
@@ -198,7 +198,7 @@ const ProductList = () => {
 
                                 <div className={styles['button-group']}>
                                     <button className={styles['compare-button']} onClick={() => handleAddToCompare(product)}>
-                                    <i class="fa-solid fa-plus"></i> {/* Icon So sánh */}
+                                        <i class="fa-solid fa-plus"></i> {/* Icon So sánh */}
                                     </button>
                                     <button className={styles['add-to-cart-button']} onClick={() => handleAddToCart(product)}>
                                         <i class="fa-solid fa-cart-shopping"></i>
@@ -223,7 +223,7 @@ const ProductList = () => {
 
                     <div className={styles['compare-box-body']}>
                         {compareList.map((product) => (
-                            <div key={product.id}>
+                            <div key={product.id} className={`${styles.producToCompare}`}>
                                 <p>{product.name}</p>
                                 <button onClick={() => handleRemoveCompare(product.id)}>Xóa</button>
                             </div>

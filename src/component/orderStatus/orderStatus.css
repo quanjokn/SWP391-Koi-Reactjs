@@ -31,10 +31,6 @@
     content: '\f058'; /* Biểu tượng đánh dấu */
 }
 
-/* #progressbar-2 #step4:before {
-    content: '\f111'; 
-} */
-
 #progressbar-2 li:before {
     line-height: 37px;
     display: block;
@@ -71,11 +67,6 @@
     left: 0;
     width: 37px;
 }
-
-/* #progressbar-2 li:nth-child(4):after {
-    left: 1%;
-    width: 100%;
-} */
 
 #progressbar-2 li.active:before,
 #progressbar-2 li.active:after {

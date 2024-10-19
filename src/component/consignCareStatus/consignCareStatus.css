@@ -31,10 +31,6 @@
     content: '\f058'; /* Biểu tượng đánh dấu */
 }
 
-/* #progressbar-2 #step4:before {
-    content: '\f111'; 
-} */
-
 #progressbar-2 li:before {
     line-height: 37px;
     display: block;
@@ -66,14 +62,9 @@
     width: 100%;
 }
 
-/* #progressbar-2 li:nth-child(4) {
-    left: 0;
-    width: 37px;
-} */
-
 #progressbar-2 li:nth-child(4):after {
-    left: 1%;
-    width: 100%;
+    left: 0;
+    width: 0;
 }
 
 #progressbar-2 li.active:before,
@@ -110,4 +101,16 @@
 /* Đổi màu chữ khi bị từ chối */
 .fw-bold.rejected-text {
     color: red;
+}
+
+.text-success {
+    color: green; /* Màu xanh lá cây cho trạng thái hoàn thành */
+}
+
+.text-danger {
+    color: red; /* Màu đỏ cho trạng thái bị từ chối */
+}
+
+.text-muted {
+    color: #6c757d; /* Màu nhạt cho trạng thái chưa đạt */
 }

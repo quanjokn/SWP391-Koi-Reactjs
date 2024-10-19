@@ -48,6 +48,24 @@ export default function ConsignSellStatus({ orderId, Date, status }) {
                 ? "text-muted"
                 : ""; // Trả về chuỗi rỗng nếu không thuộc trạng thái nào
     };
+    const getTextColorClass = (step) => {
+        const statusMap = {
+            Pending_confirmation: 1,
+            Receiving: 2,
+            Responded: 3,
+            Done: 4,
+            Shared: 5,
+            Rejected: 0,
+        };
+
+        const currentStep = statusMap[status] || 0;
+
+        if (status === "Rejected") {
+            return "text-danger"; // Màu đỏ cho chữ
+        }
+
+        return currentStep >= step ? "text-success" : "text-muted"; // Xanh lá cho chữ đã hoàn thành, màu nhạt cho chưa hoàn thành
+    };
 
     return (
         <>
@@ -72,7 +90,7 @@ export default function ConsignSellStatus({ orderId, Date, status }) {
                                     </div>
                                     <ul
                                         id="progressbar-sell"
-                                        className="d-flex justify-content-between mx-0 mt-0 mb-5 px-0 pt-0 pb-2"
+                                        className={`d-flex justify-content-between mx-0 mt-0 mb-5 px-0 pt-0 pb-2 ${status === 'Rejected' ? 'rejected' : ''}`}
                                     >
                                         <li
                                             className={`step0 ${getStatusClass(1)} text-center`}
@@ -99,30 +117,36 @@ export default function ConsignSellStatus({ orderId, Date, status }) {
                                     <div className="d-flex justify-content-between">
                                         <div className="d-flex flex-column align-items-center">
                                             <MDBIcon fas icon="clipboard-list" size="3x" />
-                                            <p
-                                                className={`fw-bold text-center mb-0 ${status === "Rejected" ? "rejected-text" : ""
-                                                    }`}
-                                            >
+                                            <p className={`fw-bold text-center mb-0 ${getTextColorClass(1)}`}>
                                                 Đợi Xác Nhận
                                             </p>
                                         </div>
                                         <div className="d-flex flex-column align-items-center">
                                             <MDBIcon fas icon="clipboard-check" size="3x" />
-                                            <p className="fw-bold text-center mb-0">Đang xác nhận</p>
+                                            <p className={`fw-bold text-center mb-0 ${getTextColorClass(2)}`}>
+                                                Đang xác nhận
+                                            </p>
                                         </div>
                                         <div className="d-flex flex-column align-items-center">
                                             <MDBIcon fas icon="reply" size="3x" />
-                                            <p className="fw-bold text-center mb-0">Đã phản hồi </p>
+                                            <p className={`fw-bold text-center mb-0 ${getTextColorClass(3)}`}>
+                                                Đã phản hồi
+                                            </p>
                                         </div>
                                         <div className="d-flex flex-column align-items-center">
                                             <MDBIcon fas icon="circle-check" size="3x" />
-                                            <p className="fw-bold text-center mb-0">Đã Hoàn Thành</p>
+                                            <p className={`fw-bold text-center mb-0 ${getTextColorClass(4)}`}>
+                                                Đã Hoàn Thành
+                                            </p>
                                         </div>
                                         <div className="d-flex flex-column align-items-center">
                                             <MDBIcon fas icon="coins" size="3x" />
-                                            <p className="fw-bold text-center mb-0">Đã Thanh toán</p>
+                                            <p className={`fw-bold text-center mb-0 ${getTextColorClass(5)}`}>
+                                                Đã Thanh toán
+                                            </p>
                                         </div>
                                     </div>
+
                                 </MDBCardBody>
                             </MDBCard>
                         </MDBCol>

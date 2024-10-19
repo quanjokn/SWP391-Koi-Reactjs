@@ -36,28 +36,36 @@ const Processing = () => {
         try {
             const staffId = user.id;
             const response = await api.post(`/staff/getAllOrder/${staffId}`);
-            console.log(response);
             const ordersData = response.data.order
-                .filter(order => order.status !== "Completed" && order.status !== "Rejected") // Lọc các đơn hàng có trạng thái không phải "Completed" hoặc "Rejected"
+
+                .filter(order => order.status !== "Completed" && order.status !== "Rejected")
                 .map(order => ({
                     id: order.id,
-                    totalPrice: order.total, // Tổng tiền
-                    orderDate: new Date(order.date).toLocaleDateString(), // Ngày đặt hàng
+                    totalPrice: order.total,
+                    orderDate: new Date(order.date), // Lưu lại dưới dạng đối tượng Date để dễ sắp xếp
                     status: order.status
-                }));
-            const caring = response.data.caringOrders.map(order => ({
-                id: order.id,
-                startDate: new Date(order.startDate).toLocaleDateString(),
-                endDate: new Date(order.endDate).toLocaleDateString(),
-                totalPrice: order.totalPrice, // Tổng tiền
-                status: order.status
-            }));
-            const consign = response.data.consignOrders.map(order => ({
-                id: order.id,
-                totalPrice: order.totalPrice, // Tổng tiền
-                date: new Date(order.date).toLocaleDateString(), // Ngày đặt hàng
-                status: order.status
-            }));
+                }))
+                .sort((a, b) => b.orderDate - a.orderDate); // Sắp xếp theo ngày, mới nhất trước
+
+            const caring = response.data.caringOrders
+                .map(order => ({
+                    id: order.id,
+                    startDate: new Date(order.startDate),
+                    endDate: new Date(order.endDate),
+                    totalPrice: order.totalPrice,
+                    status: order.status
+                }))
+                .sort((a, b) => b.startDate - a.startDate); // Sắp xếp theo ngày bắt đầu
+
+            const consign = response.data.consignOrders
+                .map(order => ({
+                    id: order.id,
+                    totalPrice: order.totalPrice,
+                    date: new Date(order.date),
+                    status: order.status
+                }))
+                .sort((a, b) => b.date - a.date); // Sắp xếp theo ngày
+
             setOrders(ordersData);
             setCaringOrders(caring);
             setConsignOrders(consign);
@@ -162,7 +170,7 @@ const Processing = () => {
                             {currentOrders.map(order => (
                                 <tr key={order.id} className={styles.row}>
                                     <td className={styles.textLeft}>{order.id}</td>
-                                    <td className={styles.textLeft}>{order.orderDate}</td>
+                                    <td className={styles.textLeft}>{order.orderDate.toLocaleDateString()}</td>
                                     <td className={styles.textRight}>{order.totalPrice}</td>
                                     <td className={styles.textLeft}>{order.status}</td>
                                     <td className={styles.textCenter}>
@@ -219,8 +227,8 @@ const Processing = () => {
                             {currentCareOrders.map(order => (
                                 <tr key={order.id} className={styles.row}>
                                     <td className={styles.textLeft}>{order.id}</td>
-                                    <td className={styles.textLeft}>{order.startDate}</td>
-                                    <td className={styles.textLeft}>{order.endDate}</td>
+                                    <td className={styles.textLeft}>{order.startDate.toLocaleDateString()}</td>
+                                    <td className={styles.textLeft}>{order.endDate.toLocaleDateString()}</td>
                                     <td className={styles.textRight}>{order.totalPrice}</td>
                                     <td className={styles.textLeft}>{order.status}</td>
                                     <td className={styles.textCenter}>
@@ -276,7 +284,7 @@ const Processing = () => {
                             {currentConsignOrders.map(order => (
                                 <tr key={order.id} className={styles.row}>
                                     <td className={styles.textLeft}>{order.id}</td>
-                                    <td className={styles.textLeft}>{order.date}</td>
+                                    <td className={styles.textLeft}>{order.date.toLocaleDateString()}</td>
                                     <td className={styles.textRight}>{order.totalPrice}</td>
                                     <td className={styles.textLeft}>{order.status}</td>
                                     <td className={styles.textCenter}>
