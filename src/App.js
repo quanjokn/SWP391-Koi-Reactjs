@@ -211,7 +211,7 @@ function App() {
       )
     },
     {
-      path: 'error',
+      path: '*',
       element: <ErrorPage />
     },
     {
