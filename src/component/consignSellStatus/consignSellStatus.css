@@ -33,10 +33,6 @@
     content: '\f058'; /* Biểu tượng đánh dấu */
 }
 
-#progressbar-sell #step5:before {
-    content: '\f111'; /* Biểu tượng hình tròn */
-}
-
 #progressbar-sell li:before {
     line-height: 37px;
     display: block;
@@ -113,4 +109,16 @@
 /* Đổi màu chữ khi bị từ chối */
 .fw-bold.rejected-text {
     color: red !important;
+}
+
+.text-success {
+    color: green; /* Màu xanh lá cây cho trạng thái hoàn thành */
+}
+
+.text-danger {
+    color: red; /* Màu đỏ cho trạng thái bị từ chối */
+}
+
+.text-muted {
+    color: #6c757d; /* Màu nhạt cho trạng thái chưa đạt */
 }

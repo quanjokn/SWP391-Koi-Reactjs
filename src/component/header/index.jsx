@@ -24,7 +24,7 @@ const Header = () => {
             <div className={styles.rightSection}>
                 <span onClick={(handleUserClick)} style={{ cursor: 'pointer' }}>
                     <i className="fas fa-user"></i>
-                    {user ? user.name : 'Login'}
+                    {user ? user.name : 'Đăng nhập'}
                 </span>
             </div>
         </div>

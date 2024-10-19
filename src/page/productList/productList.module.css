@@ -216,6 +216,11 @@ background-color: #45a049;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.compare-box button {
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
 .compare-box-header {
   display: flex;
   justify-content: space-between;
@@ -239,3 +244,6 @@ background-color: #45a049;
   margin-bottom: 10px;
 }
 
+.producToCompare {
+  margin-left: 10px;
+}

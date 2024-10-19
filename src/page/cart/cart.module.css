@@ -34,3 +34,18 @@ img{
 .remove-button{
   background-color: #f44336;
 }
+
+.textLeft {
+  text-align: left;
+}
+
+.textRight {
+  text-align: right;
+}
+
+.ifEmpty {
+  text-align: center;
+  height: 250px;
+  font-weight: bold;
+  font-size: xx-large;
+}
