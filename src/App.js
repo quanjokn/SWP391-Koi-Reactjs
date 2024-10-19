@@ -41,6 +41,7 @@ import PrivateRoute from './component/privateRoute';
 import OrderDetailConSignSell from './page/orderListConsignSellDt';
 import ManageEmployee from './page/manageEmployee';
 import BlogManager from './page/manageBlog';
+import Review from './page/review';
 
 
 function App() {
@@ -134,6 +135,14 @@ function App() {
       element: (
         <ProtectedRoute>
           <OrderList />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: '/review/:orderId/:fishId',
+      element: (
+        <ProtectedRoute>
+          <Review />
         </ProtectedRoute>
       )
     },

@@ -45,12 +45,17 @@ const WeeklySalesPieChart = () => {
                     .map(([name, quantity]) => ({ name, quantity })); // Chuyển đổi về dạng đối tượng
 
                 const topProducts = sortedProductSales.slice(0, 3); // Lấy 3 sản phẩm hàng đầu
-                const otherProductsQuantity = sortedProductSales.slice(3).reduce((acc, { quantity }) => acc + quantity, 0); // Tính tổng số lượng cho nhóm còn lại
 
                 // Tạo labels và data cho biểu đồ
-                const labels = topProducts.map(product => product.name).concat('Others');
-                const data = topProducts.map(product => product.quantity).concat(otherProductsQuantity);
+                const labels = topProducts.map(product => product.name);
+                const data = topProducts.map(product => product.quantity);
 
+                // Chỉ thêm 'Others' nếu có 4 sản phẩm khác nhau
+                if (sortedProductSales.length > 3) {
+                    const otherProductsQuantity = sortedProductSales.slice(3).reduce((acc, { quantity }) => acc + quantity, 0); // Tính tổng số lượng cho nhóm còn lại
+                    labels.push('Others');
+                    data.push(otherProductsQuantity);
+                }
                 setPieData({
                     labels,
                     datasets: [
@@ -94,7 +99,7 @@ const WeeklySalesPieChart = () => {
 
     return (
         <div>
-            <h4>Weekly Sales Distribution</h4>
+            <h4>Biểu đồ thể hiện top sản phẩm của tháng</h4>
             <Pie data={pieData} options={options} />
         </div>
     );
