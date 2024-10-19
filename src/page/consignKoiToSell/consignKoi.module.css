@@ -1,15 +1,16 @@
 .wrapper {
-    background-color: rgb(224, 213, 213);
+    background-color: rgb(100, 6, 6);
     padding: 40px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 90px 100px;
+    box-shadow: 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
 }
 
 .wrapper h1 {
     font-size: 40px;
     font-weight: bold;
-    
+    text-align: center;
+    color: aliceblue;
 }
 
 .wrapper input, .wrapper textarea {
@@ -35,9 +36,9 @@
     padding: 10px 20px; /* Tạo không gian thoải mái cho nút */
 }
 .closeButton{
-    color: black;
-    background-color: rgb(224, 213, 213);
-    margin-left: 520px;
+    color: aliceblue;
+    background: none;
+    margin-left: 650px;
 }
 .btAdd{
     border-radius: 10px;
@@ -46,11 +47,16 @@
 .title{
     font-size: 30px;
     font-weight: bold;
+    color: aliceblue;
+}
+
+.title2{
+    margin-bottom: 20px;
 }
 
 .fish-form {
     border: black solid 1px;
     padding: 40px;
-    margin: 30px 40px;
+    margin: 50px 40px;
     border-radius: 10px;
 }

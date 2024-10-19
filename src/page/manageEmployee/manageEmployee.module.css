@@ -1,6 +1,6 @@
 .container {
     width: 80%; /* Đặt chiều rộng container là 80% */
-    margin: 20px auto; /* Để container nằm giữa trang */
+    margin: 60px auto; /* Để container nằm giữa trang */
     padding: 20px; /* Thêm padding nếu cần */
     background-color: #f9f9f9; /* Tùy chọn: màu nền cho container */
     border-radius: 8px; /* Tùy chọn: bo góc cho container */
@@ -138,5 +138,45 @@ table {
 .filter-container2 .ap-dung:hover {
     background-color: #0056b3;
 }
+
+.tabContainer {
+    display: flex;
+    position: absolute;
+    top: 130px; /* Align to the top */
+    left: 0; /* Align to the left */
+    width: 100%; /* Full width */
+    background-color: #f1f1f1; /* Light background to resemble Chrome's tab background */
+    border-bottom: 2px solid #ccc; /* Border to simulate a tab bar */
+}
+
+.tabContainer button {
+    flex: 1;
+    padding: 10px 20px;
+    background-color: #e6e6e6; /* Inactive tab background */
+    border: 1px solid #ccc;
+    border-bottom: none; /* Remove bottom border */
+    border-radius: 8px ; /* Rounded top corners like browser tabs */
+    margin-right: 4px; /* Small gap between tabs */
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333; /* Text color */
+    transition: background-color 0.3s ease; /* Smooth transition on hover */
+}
+
+.tabContainer button:last-child {
+    margin-right: 0;
+}
+
+.tabContainer button:hover {
+    background-color: #d4d4d4; /* Slightly darker on hover */
+}
+
+.tabContainer button.activeTab {
+    background-color: #ffffff; /* Active tab background */
+    border-bottom: 2px solid #ffffff; /* Match background to simulate active tab */
+    color: #000; /* Darker text for active tab */
+}
+
 
 
