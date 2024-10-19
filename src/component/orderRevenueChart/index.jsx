@@ -19,7 +19,7 @@ const OrderRevenueChart = () => {
                 // Kiểm tra nếu không có dữ liệu cho tháng hiện tại
                 if (response.data.length === 0) {
                     // Nếu không có dữ liệu, có thể thêm dữ liệu mặc định hoặc thông báo
-                    const weeks = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+                    const weeks = ['Tuần 1', 'Tuần 2', 'Tuần 3', 'Tuần 4'];
                     const orders = [0, 0, 0, 0]; // Giả sử không có đơn hàng nào
                     const revenue = [0, 0, 0, 0]; // Giả sử không có doanh thu
 
@@ -27,14 +27,14 @@ const OrderRevenueChart = () => {
                         labels: weeks,
                         datasets: [
                             {
-                                label: 'Number of Orders',
+                                label: 'Số lượng đơn hàng',
                                 data: orders,
                                 borderColor: 'rgba(75, 192, 192, 1)',
                                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                                 yAxisID: 'y',
                             },
                             {
-                                label: 'Revenue ($)',
+                                label: 'Lợi nhuận (VND)',
                                 data: revenue,
                                 borderColor: 'rgba(153, 102, 255, 1)',
                                 backgroundColor: 'rgba(153, 102, 255, 0.2)',
@@ -44,7 +44,7 @@ const OrderRevenueChart = () => {
                     });
                 } else {
                     // Dữ liệu hợp lệ, xử lý dữ liệu như trước
-                    const weeks = response.data.map(item => `Week ${item.weekofMonth}`);
+                    const weeks = response.data.map(item => `Tuần ${item.weekofMonth}`);
                     const orders = response.data.map(item => item.totalOrders);
                     const revenue = response.data.map(item => item.totalRevenue);
 
@@ -52,14 +52,14 @@ const OrderRevenueChart = () => {
                         labels: weeks,
                         datasets: [
                             {
-                                label: 'Number of Orders',
+                                label: 'Số lượng đơn hàng',
                                 data: orders,
                                 borderColor: 'rgba(75, 192, 192, 1)',
                                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                                 yAxisID: 'y',
                             },
                             {
-                                label: 'Revenue ($)',
+                                label: 'Lợi nhuận (VND)',
                                 data: revenue,
                                 borderColor: 'rgba(153, 102, 255, 1)',
                                 backgroundColor: 'rgba(153, 102, 255, 0.2)',
@@ -82,20 +82,20 @@ const OrderRevenueChart = () => {
 
     return (
         <div>
-            <h4>Orders and Revenue by Week</h4>
+            <h4>Số lượng đơn hàng và lợi nhuận trong tháng</h4>
             <Line
                 data={chartData}
                 options={{
                     responsive: true,
                     plugins: {
                         legend: { position: 'top' },
-                        title: { display: true, text: 'Orders and Revenue by Week' },
+                        title: { display: true, text: 'Đơn hàng and lợi nhuận theo tuần' },
                     },
                     scales: {
                         y: {
                             type: 'linear',
                             position: 'left',
-                            title: { display: true, text: 'Number of Orders' },
+                            title: { display: true, text: 'Số lượng đơn hàng' },
                             ticks: {
                                 // Chỉ hiển thị số nguyên
                                 callback: function (value) {
@@ -106,7 +106,7 @@ const OrderRevenueChart = () => {
                         y1: {
                             type: 'linear',
                             position: 'right',
-                            title: { display: true, text: 'Revenue ($)' },
+                            title: { display: true, text: 'Lợi nhuận (VND)' },
                             grid: { drawOnChartArea: false },
                         },
                     },

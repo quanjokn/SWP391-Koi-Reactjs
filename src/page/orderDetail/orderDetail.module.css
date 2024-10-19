@@ -33,6 +33,21 @@
   margin-bottom: 30px;
 }
 
-h3 {
-  margin-bottom: 15px;
+.textLeft {
+  text-align: left;
+}
+
+.textRight {
+  text-align: right;
+}
+
+.orderDetailH3 {
+  margin-top: 30px;
+}
+
+.ReviewButton button{
+  margin-top: 30px;
+  width: 20%;
+  height: 50px;
+  font-weight: bold;
 }

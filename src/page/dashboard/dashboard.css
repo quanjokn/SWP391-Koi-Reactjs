@@ -4,15 +4,28 @@
   max-width: 900px;
 }
 
-.chart-box {
-  background-color: white; /* Màu nền nhạt */
+.chart-box, .info-box {
+  background-color: white;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .dashboard-container h1 {
   text-align: center;
   margin-bottom: 20px;
+}
+
+.info-box h4 {
+  text-align: center;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.info-box p {
+  text-align: center;
+  font-size: 24px;
+  color: #27ae60; /* Màu xanh biểu thị dữ liệu tăng trưởng */
 }
 
 .chart-box h4 {
