@@ -22,6 +22,7 @@ const OrderDetail = () => {
             try {
                 const response = await api.post(`/order/orderDetail/${orderId}`);
                 const orderDTO = response.data;
+                console.log(orderDTO)
                 if (orderDTO) {
                     setOrder(orderDTO);
                     setOrderItems(orderDTO.orderDetailsDTO);
@@ -39,25 +40,6 @@ const OrderDetail = () => {
 
         fetchOrderDetails();
     }, [orderId, navigate]);
-
-    // useEffect(() => {
-    //     if (orderItems.length > 0) {
-    //         const fetchFeedbacks = async () => {
-    //             try {
-    //                 // Thay đổi để kiểm tra feedback theo orderId
-    //                 const feedbackResponse = await api.get(`/feedback/order/${orderId}`);
-    //                 if (feedbackResponse.data) {
-    //                     setFeedbacks(feedbackResponse.data); // Lưu feedback cho toàn bộ order
-    //                 } else {
-    //                     setFeedbacks(null); // Nếu không có feedback
-    //                 }
-    //             } catch (error) {
-    //                 console.error('Error fetching feedbacks:', error);
-    //             }
-    //         };
-    //         fetchFeedbacks();
-    //     }
-    // }, [orderId, orderItems]);
 
     useEffect(() => {
         // Thiết lập khoảng cách giữa container và footer
@@ -95,8 +77,8 @@ const OrderDetail = () => {
                                 <th className={styles.textLeft}>Tên khách hàng</th>
                                 <th className={styles.textLeft}>Số điện thoại</th>
                                 <th className={styles.textLeft}>Địa chỉ</th>
-                                <th className={styles.textLeft}>Tổng số lượng</th>
-                                <th className={styles.textLeft}>Thành tiền VND</th>
+                                <th className={styles.textRight}>Tổng số lượng</th>
+                                <th className={styles.textRight}>Thành tiền VND</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -118,8 +100,8 @@ const OrderDetail = () => {
                         <thead>
                             <tr>
                                 <th className={styles.textLeft}>Tên cá</th>
-                                <th className={styles.textLeft}>Số lượng</th>
-                                <th className={styles.textLeft}>Giá tiền VND</th>
+                                <th className={styles.textRight}>Số lượng</th>
+                                <th className={styles.textRight}>Giá tiền VND</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -88,7 +88,7 @@ const OrderDetailConSignSell = () => {
                             <tr>
                                 <th className={styles.textLeft}>ID đơn ký gửi</th>
                                 <th className={styles.textLeft}>Ngày ký gửi</th>
-                                <th className={styles.textLeft}>Định giá VND</th>
+                                <th className={styles.textRight}>Định giá VND</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -109,7 +109,7 @@ const OrderDetailConSignSell = () => {
                             <tr>
                                 <th className={styles.textLeft}>Tên cá</th>
                                 <th className={styles.textLeft}>Giới tính</th>
-                                <th className={styles.textLeft}>Tuổi</th>
+                                <th className={styles.textRight}>Tuổi</th>
                                 <th className={styles.textLeft}>Kích cỡ</th>
                                 <th className={styles.textLeft}>Tình trạng sức khỏe</th>
                                 <th className={styles.textLeft}>Chế độ ăn</th>

@@ -29,6 +29,10 @@ const Review = () => {
         }
     };
 
+    const handleClick = (value) => {
+        setRating(value);
+    };
+
     return (
         <>
             <Header />
@@ -50,22 +54,28 @@ const Review = () => {
 
                     <div className={styles.formGroup}>
                         <label htmlFor="rating">Đánh giá (1-5):</label>
-                        <input
-                            type="number"
-                            id="rating"
-                            value={rating}
-                            onChange={(e) => {
-                                const value = Number(e.target.value);
-                                if (value >= 1 && value <= 5) {
-                                    setRating(value);
-                                }
-                            }}
-                            min="1"
-                            max="5"
-                            required
-                            className={styles.ratingInput}
-                            style={{ textAlign: 'center' }} // Căn giữa nội dung
-                        />
+                        <div id="rating" className={styles.starContainer}>
+                            {[...Array(5)].map((_, index) => {
+                                const starValue = index + 1; // Giá trị sao
+
+                                return (
+                                    <svg
+                                        key={starValue}
+                                        width="45"
+                                        height="45"
+                                        viewBox="0 0 45 45"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className={`${styles.starIcon} ${starValue <= rating ? styles.selectedStar : ''}`}
+                                        onClick={() => handleClick(starValue)}
+                                    >
+                                        <polygon
+                                            points="22.5,0 29.5,15 45,16.5 33,27.5 36.5,43.5 22.5,35 8.5,43.5 12,27.5 0,16.5 15.5,15"
+                                            fill={starValue <= rating ? '#ffd700' : '#e4e5e9'} // Vàng cho sao được chọn, xám cho sao chưa chọn
+                                        />
+                                    </svg>
+                                );
+                            })}
+                        </div>
                     </div>
 
 

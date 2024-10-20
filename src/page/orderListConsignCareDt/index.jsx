@@ -80,7 +80,7 @@ const OrderDetailConSignCare = () => {
                             <tr>
                                 <td className={styles.textLeft}>{order.customer?.name || 'N/A'}</td>
                                 <td className={styles.textLeft}>{order.customer?.phone || 'N/A'}</td>
-                                <td className={styles.textRight}>{order.customer?.address || 'N/A'}</td>
+                                <td className={styles.textLeft}>{order.customer?.address || 'N/A'}</td>
                                 <td className={styles.textLeft}>{order.customer?.email || 'N/A'}</td>
                             </tr>
                         </tbody>
@@ -96,7 +96,7 @@ const OrderDetailConSignCare = () => {
                                 <th className={styles.textLeft}>ID đơn ký gửi</th>
                                 <th className={styles.textLeft}>Ngày bắt đầu</th>
                                 <th className={styles.textLeft}>Ngày kết thúc</th>
-                                <th className={styles.textLeft}>Tổng giá VND</th>
+                                <th className={styles.textRight}>Tổng giá VND</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -118,7 +118,7 @@ const OrderDetailConSignCare = () => {
                             <tr>
                                 <th className={styles.textLeft}>Tên cá</th>
                                 <th className={styles.textLeft}>Giới tính</th>
-                                <th className={styles.textLeft}>Tuổi</th>
+                                <th className={styles.textRight}>Tuổi</th>
                                 <th className={styles.textLeft}>Kích cỡ</th>
                                 <th className={styles.textLeft}>Tình trạng sức khỏe</th>
                                 <th className={styles.textLeft}>Chế độ ăn</th>
@@ -153,7 +153,7 @@ const OrderDetailConSignCare = () => {
                         <tbody>
                             <tr>
                                 <td className={styles.textLeft}>{order.staff?.name || 'N/A'}</td>
-                                <td className={styles.textRight}>{order.staff?.phone || 'N/A'}</td>
+                                <td className={styles.textLeft}>{order.staff?.phone || 'N/A'}</td>
                                 <td className={styles.textLeft}>{order.staff?.email || 'N/A'}</td>
                             </tr>
                         </tbody>
