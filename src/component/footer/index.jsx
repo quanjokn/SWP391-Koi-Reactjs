@@ -21,7 +21,6 @@ const Footer = () => {
                         <h5>Koi farm Shop</h5>
                         <ul className="list-unstyled">
                             <li><a href="/gioi-thieu" className={styles.textWhite}>Về chúng tôi</a></li>
-                            <li><a href="#" className={styles.textWhite}>Đặt hàng online</a></li>
                             <li><a href="/fish/fishes-list" className={styles.textWhite}>Danh sách mặt hàng</a></li>
                             <li><a href="/tin-tuc" className={styles.textWhite}>Tin tức</a></li>
 
@@ -38,8 +37,6 @@ const Footer = () => {
                     <div className="col-md-4">
                         <h5>Dịch vụ</h5>
                         <ul className="list-unstyled">
-                            <li><a href="#" className={styles.textWhite}>Gói hàng cá online/offline</a></li>
-                            <li><a href="#" className={styles.textWhite}>Danh sách điểm giao nhận hàng</a></li>
                             <li><a href="/ki-gui-ban-ca" className={styles.textWhite}>Ký gửi bán cá</a></li>
                             <li><a href="/ki-gui-cham-soc" className={styles.textWhite}>Ký gửi chăm sóc cá</a></li>
                         </ul>

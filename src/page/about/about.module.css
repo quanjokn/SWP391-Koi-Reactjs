@@ -1,0 +1,14 @@
+.custom {
+    color: black;
+    font-family: "Calibri";
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: justify;
+}
+
+.videoContainer h3{
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
