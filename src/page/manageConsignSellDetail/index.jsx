@@ -130,7 +130,7 @@ const ManageConsignSellDetail = () => {
                                     <tr key={product.fishID}>
                                         <td className={styles.textLeft}>{product.name}</td>
                                         <td className={styles.textRight}>{product.quantity}</td>
-                                        <td className={styles.textRight}>{product.price}</td>
+                                        <td className={styles.textRight}>{product.price.toLocaleString('vi-VN')}</td>
                                         {status === 'Receiving' && (
                                             <td className={styles["actionColumn"]}>
                                                 <label>
@@ -157,11 +157,11 @@ const ManageConsignSellDetail = () => {
                                 ))}
                                 <tr>
                                     <td colSpan="2" className={styles.textLeft}><strong>Thành tiền:</strong></td>
-                                    <td className={styles.textRight}><strong>{order.request.totalPrice} VND</strong></td>
+                                    <td className={styles.textRight}><strong>{order.request.totalPrice.toLocaleString('vi-VN')}</strong></td>
                                 </tr>
                                 <tr>
                                     <td colSpan="2" className={styles.textLeft}><strong>Hoa hồng:</strong></td>
-                                    <td className={styles.textRight}><strong>{order.request.commission} VND</strong></td>
+                                    <td className={styles.textRight}><strong>{order.request.commission.toLocaleString('vi-VN')}</strong></td>
                                 </tr>
                             </tbody>
                         </table>

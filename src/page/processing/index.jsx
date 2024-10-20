@@ -48,6 +48,7 @@ const Processing = () => {
                 .sort((a, b) => b.orderDate - a.orderDate); // Sắp xếp theo ngày, mới nhất trước
 
             const caring = response.data.caringOrders
+                .filter(order => order.status !== "Done" && order.status !== "Rejected")
                 .map(order => ({
                     id: order.id,
                     startDate: new Date(order.startDate),
@@ -58,6 +59,7 @@ const Processing = () => {
                 .sort((a, b) => b.startDate - a.startDate); // Sắp xếp theo ngày bắt đầu
 
             const consign = response.data.consignOrders
+                .filter(order => order.status !== "Shared" && order.status !== "Rejected")
                 .map(order => ({
                     id: order.id,
                     totalPrice: order.totalPrice,
@@ -171,7 +173,7 @@ const Processing = () => {
                                 <tr key={order.id} className={styles.row}>
                                     <td className={styles.textLeft}>{order.id}</td>
                                     <td className={styles.textLeft}>{order.orderDate.toLocaleDateString()}</td>
-                                    <td className={styles.textRight}>{order.totalPrice}</td>
+                                    <td className={styles.textLeft}>{order.totalPrice.toLocaleString('vi-VN')}</td>
                                     <td className={styles.textLeft}>{order.status}</td>
                                     <td className={styles.textCenter}>
                                         <button
@@ -229,7 +231,7 @@ const Processing = () => {
                                     <td className={styles.textLeft}>{order.id}</td>
                                     <td className={styles.textLeft}>{order.startDate.toLocaleDateString()}</td>
                                     <td className={styles.textLeft}>{order.endDate.toLocaleDateString()}</td>
-                                    <td className={styles.textRight}>{order.totalPrice}</td>
+                                    <td className={styles.textLeft}>{order.totalPrice.toLocaleString('vi-VN')}</td>
                                     <td className={styles.textLeft}>{order.status}</td>
                                     <td className={styles.textCenter}>
                                         <button
@@ -285,7 +287,7 @@ const Processing = () => {
                                 <tr key={order.id} className={styles.row}>
                                     <td className={styles.textLeft}>{order.id}</td>
                                     <td className={styles.textLeft}>{order.date.toLocaleDateString()}</td>
-                                    <td className={styles.textRight}>{order.totalPrice}</td>
+                                    <td className={styles.textLeft}>{order.totalPrice.toLocaleString('vi-VN')}</td>
                                     <td className={styles.textLeft}>{order.status}</td>
                                     <td className={styles.textCenter}>
                                         <button

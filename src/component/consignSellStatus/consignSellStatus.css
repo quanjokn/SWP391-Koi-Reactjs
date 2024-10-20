@@ -91,11 +91,12 @@
 }
 
 .fw-bold.active-text {
-    color: green !important; /* Đổi màu chữ trạng thái active */
+    color: green; /* Đổi màu chữ trạng thái active */
 }
 
 /* Thêm màu đỏ cho trạng thái bị từ chối */
-#progressbar-sell li.rejected:before {
+#progressbar-sell li.rejected:before,
+#progressbar-sell li.rejected:after {
     background: red;
     color: white;
 }
@@ -108,7 +109,7 @@
 
 /* Đổi màu chữ khi bị từ chối */
 .fw-bold.rejected-text {
-    color: red !important;
+    color: red;
 }
 
 .text-success {

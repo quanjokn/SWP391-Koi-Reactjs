@@ -110,7 +110,7 @@ export const LoginForm = () => {
         <>
             <div className={styles.wrapper}>
                 <form onSubmit={handleLogin}>
-                    <h1>Đăng nhập</h1>
+                    <h1>Tài khoản</h1>
                     {errorMessage && <p className={styles.error}>{errorMessage}</p>} {/* Hiển thị thông báo lỗi */}
 
                     <div className={styles['input-box']}>

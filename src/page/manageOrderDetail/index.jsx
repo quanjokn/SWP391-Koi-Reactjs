@@ -34,7 +34,6 @@ const ManageOrderDetail = () => {
     const fetchOrderDetail = async () => {
         try {
             const response = await api.post(`/staff/orderDetail/${orderId}`);
-            console.log(response.data); // Kiểm tra dữ liệu nhận được
             if (response.data) {
                 // Cập nhật order với thông tin nhận được từ API
                 setOrder(response.data); // Cập nhật với đối tượng order
@@ -79,11 +78,13 @@ const ManageOrderDetail = () => {
 
     const handleAcceptOrder = async () => {
         try {
-            await api.post(`/staff/updateStatus`, { orderId, status: 'Preparing' });
+            const response = await api.post(`/staff/updateStatus`, { orderId, status: 'Preparing' });
+            if (response.status === 200) {
+                setIsOrderProcessed(true); // Đánh dấu đơn hàng đã được xử lý
+                fetchOrderDetail(); // Lấy lại dữ liệu mới từ API
+            }
             alert('Đơn hàng đã được chấp nhận thành công!');
-            setStatus('Preparing');
-            setIsOrderProcessed(true);
-            fetchOrderDetail();
+
         } catch (error) {
             console.error('Error accepting order:', error);
             alert('Đã xảy ra lỗi khi chấp nhận đơn hàng.');
@@ -152,21 +153,22 @@ const ManageOrderDetail = () => {
                     <thead>
                         <tr>
                             <th className={styles.textLeft}>Tên sản phẩm</th>
-                            <th className={styles.textLeft}>Số lượng</th>
-                            <th className={styles.textLeft}>Giá VND</th>
+                            <th className={styles.textRight}>Số lượng</th>
+                            <th className={styles.textRight}>Giá VND</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {order.orderDetailsDTO.map((item) => (
-                            <tr key={item.id}>
+                        {order.orderDetailsDTO.map((item, index) => (
+                            <tr key={`${item.id}-${index}`}>
                                 <td className={styles.textLeft}>{item.fishName}</td>
                                 <td className={styles.textRight}>{item.quantity}</td>
-                                <td className={styles.textRight}>{item.totalPrice}</td>
+                                <td className={styles.textRight}>{item.totalPrice.toLocaleString('vi-VN')}</td>
                             </tr>
                         ))}
+
                         <tr>
                             <td className={styles.textLeft} colSpan="2">Tổng giá trị</td>
-                            <td className={styles.textRight}>{totalPrice}</td>
+                            <td className={styles.textRight}>{totalPrice.toLocaleString('vi-VN')}</td>
                         </tr>
                     </tbody>
                 </table>
