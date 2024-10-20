@@ -38,7 +38,7 @@ export default function ConsignSellStatus({ orderId, Date, status }) {
 
         const currentStep = statusMap[status] || 0;
 
-        if (status === "Rejected" && step === 1) {
+        if (status === "Rejected") {
             return "rejected";
         }
 
