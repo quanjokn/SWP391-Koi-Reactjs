@@ -24,7 +24,7 @@ const ConsignedKoiToSell = () => {
         photo: '',
         video: '',
         certificate: '',
-        category: '',
+        type: '',
         origin: '',
         species: [],
         otherSpecies: ''
@@ -35,7 +35,7 @@ const ConsignedKoiToSell = () => {
 
     const handleAddNewForm = () => {
         setFishForm([...fishForm, {
-            name: '', quantity: '', description: '', sex: '', age: '', character: '', size: '', price: '', healthStatus: '', ration: '', photo: '', video: '', certificate: '', category: '', origin: '', species: [], otherSpecies: ''
+            name: '', quantity: '', description: '', sex: '', age: '', character: '', size: '', price: '', healthStatus: '', ration: '', photo: '', video: '', certificate: '', type: '', origin: '', species: [], otherSpecies: ''
         }]);
     };
     const handleRemoveForm = (index) => {
@@ -115,7 +115,7 @@ const ConsignedKoiToSell = () => {
                         photo: fishData.photo ? fishData.photo.name : '',
                         video: fishData.video ? fishData.video.name : '',
                         certificate: fishData.certificate ? fishData.certificate.name : '',
-                        category: fishData.category,
+                        type: fishData.type,
                         origin: fishData.origin,
                         species: combinedSpecies
                     };
@@ -296,8 +296,8 @@ const ConsignedKoiToSell = () => {
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
                                         <select
                                             className="form-control"
-                                            name="category"
-                                            value={fishData.category}
+                                            name="type"
+                                            value={fishData.type}
                                             onChange={(e) => handleInputChange(index, e)}
                                             required
                                         >
@@ -371,7 +371,7 @@ const ConsignedKoiToSell = () => {
                         </form>
                     ))}
                     <div>
-                        <button type="button" className={styles['btAdd']} onClick={handleAddNewForm}>
+                        <button type="button"className={`btn btn-success ${styles.submitButton}`} onClick={handleAddNewForm}>
                             <i className="fa-solid fa-plus"></i> Thêm cá để kí gửi
                         </button>
                     </div>

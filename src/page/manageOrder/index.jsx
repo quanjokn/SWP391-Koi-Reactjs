@@ -73,7 +73,10 @@ const ManageOrder = () => {
 
     // Thay đổi trang khi người dùng bấm số trang
     const paginate = (pageNumber) => {
-        setCurrentPage(pageNumber);
+        const totalPages = Math.ceil(orders.length / ordersPerPage);
+        if (pageNumber >= 1 && pageNumber <= totalPages) {
+            setCurrentPage(pageNumber);
+        }
     };
 
     // Tạo danh sách các trang
