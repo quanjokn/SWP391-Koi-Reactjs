@@ -1,6 +1,21 @@
 .date-form{
     margin: 20px;
 }
+
+.date-form label{
+    color: aliceblue;
+}
+
+.bang-gia{
+    color: rgb(202, 210, 219);
+    font-style: italic;
+}
+
+.temp-price{
+    color: rgb(45, 206, 72);
+    font-size: 20px;
+}
+
 .fish-form{
     border: black solid 1px;
     border-radius: 15px;
@@ -17,7 +32,7 @@
 }
 .btAdd{
     border-radius: 10px;
-    background-color: rgb(54, 26, 212);
+    background-color: rgb(91, 26, 212);
 }
 .closeButton{
     color: aliceblue;
