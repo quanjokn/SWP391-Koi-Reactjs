@@ -152,7 +152,7 @@ export const LoginForm = () => {
                     </div>
 
                     <div className={styles.titleLogin}>
-                        <h3>Đăng nhập với</h3>
+                        <h3>Hoặc</h3>
                     </div>
 
                     <div className={styles.socialLogin}>

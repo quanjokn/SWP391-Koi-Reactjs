@@ -42,6 +42,7 @@ import OrderDetailConSignSell from './page/orderListConsignSellDt';
 import ManageEmployee from './page/manageEmployee';
 import BlogManager from './page/manageBlog';
 import Review from './page/review';
+import History from './page/history';
 
 
 function App() {
@@ -259,6 +260,14 @@ function App() {
       element: (
         <PrivateRoute requiredRole="Staff">
           <Processing />
+        </PrivateRoute>
+      )
+    },
+    {
+      path: 'history',
+      element: (
+        <PrivateRoute requiredRole="Staff">
+          <History />
         </PrivateRoute>
       )
     },

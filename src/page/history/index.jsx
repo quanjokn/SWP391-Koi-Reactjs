@@ -5,10 +5,10 @@ import { UserContext } from '../../service/UserContext';
 import Tagbar from '../../component/tagbar';
 import Footer from '../../component/footer';
 import api from '../../config/axios';
-import styles from './processing.module.css';
+import styles from './history.module.css';
 import Loading from '../../component/loading';
 
-const Processing = () => {
+const History = () => {
     const { user, setUser } = useContext(UserContext);
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
@@ -38,7 +38,7 @@ const Processing = () => {
             const response = await api.post(`/staff/getAllOrder/${staffId}`);
             const ordersData = response.data.order
 
-                .filter(order => order.status !== "Completed" && order.status !== "Rejected")
+                .filter(order => order.status === "Completed" || order.status === "Rejected")
                 .map(order => ({
                     id: order.id,
                     totalPrice: order.total,
@@ -48,7 +48,7 @@ const Processing = () => {
                 .sort((a, b) => b.orderDate - a.orderDate); // Sắp xếp theo ngày, mới nhất trước
 
             const caring = response.data.caringOrders
-                .filter(order => order.status !== "Done" && order.status !== "Rejected")
+                .filter(order => order.status === "Done" || order.status === "Rejected")
                 .map(order => ({
                     id: order.id,
                     startDate: new Date(order.startDate),
@@ -59,7 +59,7 @@ const Processing = () => {
                 .sort((a, b) => b.startDate - a.startDate); // Sắp xếp theo ngày bắt đầu
 
             const consign = response.data.consignOrders
-                .filter(order => order.status !== "Shared" && order.status !== "Rejected")
+                .filter(order => order.status === "Shared" || order.status === "Rejected")
                 .map(order => ({
                     id: order.id,
                     totalPrice: order.totalPrice,
@@ -71,6 +71,9 @@ const Processing = () => {
             setOrders(ordersData);
             setCaringOrders(caring);
             setConsignOrders(consign);
+            console.log(ordersData)
+            console.log(caring)
+            console.log(consign)
         } catch (error) {
             console.error('Error fetching orders:', error);
         } finally {
@@ -146,20 +149,14 @@ const Processing = () => {
 
     const translateStatus = (status) => {
         switch (status) {
-            case 'Pending_confirmation':
-                return 'Đợi xác nhận';
-            case 'Preparing':
-                return 'Đang chuẩn bị';
-            case 'Shipping':
-                return 'Đang vận chuyển';
-            case "Pending":
-                return "Đang chờ xử lý";
-            case 'Receiving':
-                return 'Đang xác nhận';
-            case 'Responded':
-                return 'Đã phản hồi';
-            case "Completed":
-                return "Đã hoàn thành";
+            case 'Completed':
+                return { text: 'Đã hoàn thành', className: styles.done };
+            case 'Done':
+                return { text: 'Đã hoàn thành', className: styles.done };
+            case 'Rejected':
+                return { text: 'Đã bị từ chối', className: styles.rejected };
+            case 'Shared':
+                return { text: 'Đã thanh toán', className: styles.done };
             default:
                 return status;
         }
@@ -184,7 +181,7 @@ const Processing = () => {
                             <tr>
                                 <th className={styles.textLeft}>ID</th>
                                 <th className={styles.textLeft}>Ngày đặt hàng</th>
-                                <th className={styles.textLeft}>Thành tiền VND</th>
+                                <th className={styles.textRight}>Thành tiền VND</th>
                                 <th className={styles.textLeft}>Trạng thái</th>
                                 <th></th>
                             </tr>
@@ -194,8 +191,8 @@ const Processing = () => {
                                 <tr key={order.id} className={styles.row}>
                                     <td className={styles.textLeft}>{order.id}</td>
                                     <td className={styles.textLeft}>{order.orderDate.toLocaleDateString()}</td>
-                                    <td className={styles.textLeft}>{order.totalPrice.toLocaleString('vi-VN')}</td>
-                                    <td className={styles.textLeft}>{translateStatus(order.status)}</td>
+                                    <td className={styles.textRight}>{order.totalPrice.toLocaleString('vi-VN')}</td>
+                                    <td className={`${styles.textLeft} ${translateStatus(order.status).className}`}>{translateStatus(order.status).text}</td>
                                     <td className={styles.textCenter}>
                                         <button
                                             className={styles.button1}
@@ -241,7 +238,7 @@ const Processing = () => {
                                 <th className={styles.textLeft}>ID</th>
                                 <th className={styles.textLeft}>Ngày bắt đầu</th>
                                 <th className={styles.textLeft}>Ngày kết thúc</th>
-                                <th className={styles.textLeft}>Thành tiền VND</th>
+                                <th className={styles.textRight}>Thành tiền VND</th>
                                 <th className={translateStatus(styles.textLeft)}>Trạng thái</th>
                                 <th></th>
                             </tr>
@@ -252,8 +249,8 @@ const Processing = () => {
                                     <td className={styles.textLeft}>{order.id}</td>
                                     <td className={styles.textLeft}>{order.startDate.toLocaleDateString()}</td>
                                     <td className={styles.textLeft}>{order.endDate.toLocaleDateString()}</td>
-                                    <td className={styles.textLeft}>{order.totalPrice.toLocaleString('vi-VN')}</td>
-                                    <td className={styles.textLeft}>{translateStatus(order.status)}</td>
+                                    <td className={styles.textRight}>{order.totalPrice.toLocaleString('vi-VN')}</td>
+                                    <td className={`${styles.textLeft} ${translateStatus(order.status).className}`}>{translateStatus(order.status).text}</td>
                                     <td className={styles.textCenter}>
                                         <button
                                             className={styles.button1}
@@ -298,7 +295,7 @@ const Processing = () => {
                             <tr>
                                 <th className={styles.textLeft}>ID</th>
                                 <th className={styles.textLeft}>Ngày đặt hàng</th>
-                                <th className={styles.textLeft}>Thành tiền VND</th>
+                                <th className={styles.textRight}>Thành tiền VND</th>
                                 <th className={styles.textLeft}>Trạng thái</th>
                                 <th></th>
                             </tr>
@@ -308,8 +305,8 @@ const Processing = () => {
                                 <tr key={order.id} className={styles.row}>
                                     <td className={styles.textLeft}>{order.id}</td>
                                     <td className={styles.textLeft}>{order.date.toLocaleDateString()}</td>
-                                    <td className={styles.textLeft}>{order.totalPrice.toLocaleString('vi-VN')}</td>
-                                    <td className={styles.textLeft}>{translateStatus(order.status)}</td>
+                                    <td className={styles.textRight}>{order.totalPrice.toLocaleString('vi-VN')}</td>
+                                    <td className={`${styles.textLeft} ${translateStatus(order.status).className}`}>{translateStatus(order.status).text}</td>
                                     <td className={styles.textCenter}>
                                         <button
                                             className={styles.button1}
@@ -351,4 +348,4 @@ const Processing = () => {
     );
 };
 
-export default Processing;
+export default History;
