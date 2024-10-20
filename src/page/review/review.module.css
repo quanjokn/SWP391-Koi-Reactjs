@@ -71,10 +71,18 @@
     background-color: #0056b3;
 }
 
-.ratingInput {
-    width: 100px; /* Chiều rộng ô input */
-    padding: 8px; /* Khoảng cách bên trong */
-    border: 1px solid #ccc; /* Đường viền */
-    border-radius: 4px; /* Bo góc */
-    text-align: center; /* Căn giữa nội dung */
+.starContainer {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0; /* Khoảng cách cho phần đánh giá */
+}
+
+.starIcon {
+    cursor: pointer;
+    margin: 0 5px; /* Khoảng cách giữa các sao */
+    transition: fill 0.2s;
+}
+
+.selectedStar {
+    fill: #ffd700; /* Màu vàng cho sao đã chọn */
 }

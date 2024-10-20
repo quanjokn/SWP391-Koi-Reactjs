@@ -111,7 +111,7 @@ const OrderList = () => {
                                             <tr>
                                                 <th className={styles.textLeft}>Ngày</th>
                                                 <th className={styles.textLeft}>Mã đơn hàng</th>
-                                                <th className={styles.textLeft}>Giá VND</th>
+                                                <th className={styles.textRight}>Giá VND</th>
                                                 <th className={styles.textLeft}>Trạng thái đơn hàng</th>
                                             </tr>
                                         </thead>
@@ -137,7 +137,7 @@ const OrderList = () => {
                                                     >
                                                         <td className={styles.textLeft}>{order.date}</td>
                                                         <td className={styles.textLeft}>{order.id}</td>
-                                                        <td className={styles.textRight}>{totalPrice}</td>
+                                                        <td className={styles.textRight}>{totalPrice.toLocaleString('vi-VN')}</td>
                                                         <td className={`${styles.textLeft} ${translateStatus(order.status).className}`}>{translateStatus(order.status).text}</td>
                                                     </tr>
                                                 );

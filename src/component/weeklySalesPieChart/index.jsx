@@ -44,18 +44,39 @@ const WeeklySalesPieChart = () => {
                     .sort(([, a], [, b]) => b - a) // Sắp xếp giảm dần theo số lượng
                     .map(([name, quantity]) => ({ name, quantity })); // Chuyển đổi về dạng đối tượng
 
-                const topProducts = sortedProductSales.slice(0, 3); // Lấy 3 sản phẩm hàng đầu
+                // Xử lý dữ liệu cho biểu đồ
+                let labels = [];
+                let data = [];
 
-                // Tạo labels và data cho biểu đồ
-                const labels = topProducts.map(product => product.name);
-                const data = topProducts.map(product => product.quantity);
+                if (sortedProductSales.length === 1) {
+                    // Chỉ có 1 sản phẩm
+                    labels.push(sortedProductSales[0].name);
+                    data.push(sortedProductSales[0].quantity);
+                } else if (sortedProductSales.length === 2) {
+                    // Có 2 sản phẩm
+                    sortedProductSales.forEach(product => {
+                        labels.push(product.name);
+                        data.push(product.quantity);
+                    });
+                } else if (sortedProductSales.length === 3) {
+                    // Có 3 sản phẩm
+                    sortedProductSales.forEach(product => {
+                        labels.push(product.name);
+                        data.push(product.quantity);
+                    });
+                } else {
+                    // Có 4 sản phẩm trở lên, lấy top 3 và nhóm các sản phẩm còn lại vào "Others"
+                    const topProducts = sortedProductSales.slice(0, 3);
+                    topProducts.forEach(product => {
+                        labels.push(product.name);
+                        data.push(product.quantity);
+                    });
 
-                // Chỉ thêm 'Others' nếu có 4 sản phẩm khác nhau
-                if (sortedProductSales.length > 3) {
-                    const otherProductsQuantity = sortedProductSales.slice(3).reduce((acc, { quantity }) => acc + quantity, 0); // Tính tổng số lượng cho nhóm còn lại
+                    const otherProductsQuantity = sortedProductSales.slice(3).reduce((acc, { quantity }) => acc + quantity, 0);
                     labels.push('Others');
                     data.push(otherProductsQuantity);
                 }
+
                 setPieData({
                     labels,
                     datasets: [
