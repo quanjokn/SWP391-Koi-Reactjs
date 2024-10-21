@@ -41,6 +41,10 @@
   text-align: right;
 }
 
+.textCenter {
+  text-align: center;
+}
+
 .orderDetailH3 {
   margin-top: 30px;
 }

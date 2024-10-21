@@ -6,23 +6,21 @@ import Header from '../../component/header';
 import Tagbar from '../../component/tagbar';
 import Footer from '../../component/footer';
 import Loading from '../../component/loading';
-import { useNavigate, useParams } from 'react-router-dom'; // Thêm useParams để lấy orderId từ URL
+import { useNavigate, useParams } from 'react-router-dom';
 
 const OrderDetail = () => {
     const [order, setOrder] = useState({});
     const [orderItems, setOrderItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [containerStyle, setContainerStyle] = useState({});
-    const [feedbacks, setFeedbacks] = useState({});
     const navigate = useNavigate();
-    const { orderId } = useParams(); // Lấy orderId từ URL
+    const { orderId } = useParams();
 
     useEffect(() => {
         const fetchOrderDetails = async () => {
             try {
                 const response = await api.post(`/order/orderDetail/${orderId}`);
                 const orderDTO = response.data;
-                console.log(orderDTO)
                 if (orderDTO) {
                     setOrder(orderDTO);
                     setOrderItems(orderDTO.orderDetailsDTO);
@@ -42,20 +40,14 @@ const OrderDetail = () => {
     }, [orderId, navigate]);
 
     useEffect(() => {
-        // Thiết lập khoảng cách giữa container và footer
         setContainerStyle({
-            marginBottom: '48px', // Cách footer 48px
+            marginBottom: '48px',
         });
 
-        // Cleanup function để phục hồi trạng thái khi rời khỏi trang
         return () => {
-            setContainerStyle({}); // Phục hồi trạng thái ban đầu
+            setContainerStyle({});
         };
     }, []);
-
-    const handleReviewClick = () => {
-        navigate(`/review/${orderId}/${orderItems[0]?.fishId}`);
-    };
 
     if (isLoading) {
         return <Loading />;
@@ -65,10 +57,9 @@ const OrderDetail = () => {
         <>
             <Header />
             <Tagbar />
-            <div className="container mt-5" style={containerStyle}> {/* Áp dụng style cho container */}
+            <div className="container mt-5" style={containerStyle}>
                 <OrderStatus orderId={order.orderId} date={order.date} status={order.status} />
 
-                {/* Bảng hóa đơn */}
                 <h3 className={styles.orderDetailH3}>Hóa đơn</h3>
                 <div className="order-summary">
                     <table className="table-custom">
@@ -93,7 +84,6 @@ const OrderDetail = () => {
                     </table>
                 </div>
 
-                {/* Bảng thông tin các sản phẩm */}
                 <h3 className={styles.orderDetailH3}>Thông tin chi tiết</h3>
                 <div className="order-items">
                     <table className="table-custom">
@@ -102,6 +92,7 @@ const OrderDetail = () => {
                                 <th className={styles.textLeft}>Tên cá</th>
                                 <th className={styles.textRight}>Số lượng</th>
                                 <th className={styles.textRight}>Giá tiền VND</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -110,21 +101,22 @@ const OrderDetail = () => {
                                     <td className={styles.textLeft}>{item.fishName || 'N/A'}</td>
                                     <td className={styles.textRight}>{item.quantity || 0}</td>
                                     <td className={styles.textRight}>{item.unitPrice ? item.unitPrice.toLocaleString('vi-VN') : 0}</td>
+                                    {/* Nút đánh giá cho từng con cá */}
+                                    <td className={styles.textCenter}>
+                                        {order.status === 'Completed' && !item.evaluationStatus && (
+                                            <button
+                                                className="btn btn-primary"
+                                                onClick={() => navigate(`/review/${orderId}/${item.fishId}`)}
+                                            >
+                                                Nhận xét
+                                            </button>
+                                        )}
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
-                {/* Nút Nhận xét ở giữa trang */}
-                {order.status === 'Completed' && (
-                    <div className={styles.ReviewButton}>
-                        <div className="text-center mt-4">
-                            <button className="btn btn-primary" onClick={handleReviewClick}>
-                                Nhận xét đơn hàng
-                            </button>
-                        </div>
-                    </div>
-                )}
             </div>
             <Footer />
         </>
