@@ -120,6 +120,7 @@ const ManageConsignSellDetail = () => {
                                     <th className={styles.textLeft}>Tên cá</th>
                                     <th className={styles.textLeft}>Số lượng</th>
                                     <th className={styles.textLeft}>Giá bán VND</th>
+                                    <th className={styles.textLeft}>Trạng thái</th>
                                     {status === 'Receiving' && (
                                         <th className={styles["actionColumn"]}></th>
                                     )}
@@ -131,6 +132,7 @@ const ManageConsignSellDetail = () => {
                                         <td className={styles.textLeft}>{product.name}</td>
                                         <td className={styles.textRight}>{product.quantity}</td>
                                         <td className={styles.textRight}>{product.price.toLocaleString('vi-VN')}</td>
+                                        <td>{product.status}</td>
                                         {status === 'Receiving' && (
                                             <td className={styles["actionColumn"]}>
                                                 <label>
