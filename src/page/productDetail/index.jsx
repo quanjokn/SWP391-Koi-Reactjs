@@ -36,7 +36,7 @@ const ProductDetail = () => {
         // Fetch feedback for the product
         api.get(`/feedback/${productId}`)
             .then((response) => {
-                setFeedbacks(response.data);
+                setFeedbacks(response.data.evaluation);
             })
             .catch((error) => {
                 console.error("Error fetching feedback:", error);
@@ -216,8 +216,8 @@ const ProductDetail = () => {
                                         <span key={i} className={i < feedback.rating ? styles['star-filled'] : styles['star-empty']}>★</span>
                                     ))}
                                 </div>
-                                <p>{feedback.comment}</p>
-                                <small>{feedback.userEmail} - {new Date(feedback.created_at).toLocaleString()}</small>
+                                <p>{feedback.feedback}</p>
+                                <small>{feedback.userName} - {new Date(feedback.date).toLocaleString()}</small>
                             </div>
                         ))}
                     </div>
