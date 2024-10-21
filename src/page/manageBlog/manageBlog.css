@@ -4,8 +4,31 @@
     margin: auto;
 }
 
+.blog-list {
+    margin-bottom: 30px;
+}
+
+.blog-item {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+.blog-item h3 {
+    margin-top: 0;
+}
+
+.blog-item p {
+    font-size: 14px;
+}
+
 .form-group {
-    margin-bottom: 20px;
+    margin-top: 30px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
 }
 
 .form-group input,
@@ -27,37 +50,14 @@
 }
 
 .button-group button {
-    padding: 10px 15px;
-    background-color: #007bff;
-    border: none;
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
+    margin-left: 10px;
 }
 
 .button-group button:hover {
-    background-color: #0056b3;
+    opacity: 0.9;
 }
 
-.blog-list {
-    margin-top: 30px;
-}
-
-.blog-item {
-    border: 1px solid #ccc;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 4px;
-}
-
-.blog-item h3 {
-    margin-top: 0;
-}
-
-.blog-item p {
-    font-size: 14px;
-}
-
-.button-group button:first-child {
-    margin-right: 10px;
+/* Optional: Custom button styles using Bootstrap */
+.btn {
+    padding: 10px 15px;
 }
