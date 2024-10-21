@@ -211,13 +211,15 @@ const ProductDetail = () => {
                     <div className={styles['feedback-list']}>
                         {feedbacks.map((feedback, index) => (
                             <div key={index} className={styles['feedback-item']}>
+                                <img data-lazyloaded="1" data-placeholder-resp="30x30" src="https://secure.gravatar.com/avatar/f7e4c44b1063b3e3d19aef4d2e318a96?s=56&amp;d=mm&amp;r=g" alt="guest" data-src="https://secure.gravatar.com/avatar/f7e4c44b1063b3e3d19aef4d2e318a96?s=56&amp;d=mm&amp;r=g" data-srcset="https://secure.gravatar.com/avatar/f7e4c44b1063b3e3d19aef4d2e318a96?s=112&amp;d=mm&amp;r=g 2x" class="avatar avatar-56 photo entered litespeed-loaded" height="30" width="30" decoding="async" data-ll-status="loaded" srcset="https://secure.gravatar.com/avatar/f7e4c44b1063b3e3d19aef4d2e318a96?s=112&amp;d=mm&amp;r=g 2x"></img>
+                                <strong>{feedback.userName}</strong>
                                 <div className={styles['feedback-rating']}>
                                     {Array.from({ length: 5 }, (_, i) => (
                                         <span key={i} className={i < feedback.rating ? styles['star-filled'] : styles['star-empty']}>★</span>
                                     ))}
-                                </div>
+                                </div>                    
                                 <p>{feedback.feedback}</p>
-                                <small>{feedback.userName} - {new Date(feedback.date).toLocaleString()}</small>
+                                <small> {new Date(feedback.date).toLocaleString()}</small>
                             </div>
                         ))}
                     </div>
