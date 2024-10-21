@@ -21,6 +21,7 @@ const ManageConsignCare = () => {
                 totalPrice: order.totalPrice, // Tổng tiền
                 orderDate: new Date(order.startDate).toLocaleDateString()
             }));
+
             setOrders(ordersData);
         } catch (error) {
             console.error('Error fetching orders:', error);
@@ -87,7 +88,7 @@ const ManageConsignCare = () => {
                                 <tr key={order.id} className={styles.row}>
                                     <td className={styles.textLeft}>{order.id}</td>
                                     <td className={styles.textLeft}>{order.orderDate}</td>
-                                    <td className={styles.textRight}>{order.totalPrice.toLocaleDateString('vi-VN')}</td>
+                                    <td className={styles.textRight}>{order.totalPrice.toLocaleString('vi-VN')}</td>
                                     <td className={styles.textCenter}>
                                         <button
                                             className={styles.button1}

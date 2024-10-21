@@ -86,3 +86,14 @@
 .selectedStar {
     fill: #ffd700; /* Màu vàng cho sao đã chọn */
 }
+
+.fishImage {
+    width: 100%; /* Đảm bảo ảnh chiếm toàn bộ chiều rộng của cột */
+    height: 100%; /* Chiều cao tự điều chỉnh để đồng đều với card */
+    object-fit: cover; /* Đảm bảo ảnh không bị biến dạng, phần thừa bị cắt */
+    border-radius: 8px; /* Giữ độ bo tròn của ảnh */
+}
+
+.cardReview {
+    padding-left: 10px;
+}
