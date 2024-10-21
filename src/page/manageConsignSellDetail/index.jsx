@@ -89,12 +89,12 @@ const ManageConsignSellDetail = () => {
         console.log('Staff ID:', staffId);
         console.log('Order ID:', orderId);
         try {
-            await api.post(`/consignManagement/done/${staffId}/${orderId}`);
-            alert('Đơn hàng đã hoàn thành!');
-            fetchOrderDetail();
+            const response = await api.post(`/staff/generateOrderId`, {});
+            const type = 'consignOrder';
+            return navigate(`/vnpay/onlinePayment/${type}/${staffId}/${order.orderID}/${response.data}/${order.request.totalPrice}`);
         } catch (error) {
-            console.error('Error updating order status to Completed:', error);
-            alert('Đã xảy ra lỗi khi cập nhật trạng thái đơn hàng.');
+            alert("Có lỗi xảy ra khi lấy đường dẫn thanh toán. Vui lòng thử lại.");
+            return null; // Trả về null nếu có lỗi
         }
     };
 
@@ -206,9 +206,8 @@ const ManageConsignSellDetail = () => {
                     <div className={styles.updateStatus}>
                         <h2>Cập nhật trạng thái</h2>
                         <button
-                            className={status === 'Done' ? styles.buttonDisabled : styles.buttonCompleted}
-                            onClick={status !== 'Done' ? handleCompleteOrder : undefined}
-                            disabled={status === 'Done'}
+                            className={styles.buttonCompleted}
+                            onClick={handleCompleteOrder}
                         >
                             Thanh toán
                         </button>

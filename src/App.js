@@ -43,7 +43,7 @@ import ManageEmployee from './page/manageEmployee';
 import BlogManager from './page/manageBlog';
 import Review from './page/review';
 import History from './page/history';
-
+import CreateVNPay from './page/vnpay';
 
 function App() {
   const router = createBrowserRouter([
@@ -294,6 +294,14 @@ function App() {
     {
       path: '/oauth/callback',
       element: <OAuthCallback />, 
+    },
+    {
+      path: '/vnpay/onlinePayment/:type/:userId/:orderId/:vnpayCode/:money',
+      element:(
+        <ProtectedRoute>
+          <CreateVNPay />
+        </ProtectedRoute>
+      )
     },
   ]);
 
