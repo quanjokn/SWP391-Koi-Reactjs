@@ -28,8 +28,8 @@ const NavigationList = () => {
                 <li className={`${styles.listGroupItem} list-group-item ${isActive('/order-list-consign-care')}`}>
                     <Link to="/order-list-consign-care">Đơn ký gửi chăm sóc</Link>
                 </li>
-                <li className={`${styles.listGroupItem} list-group-item ${isActive('/order-list')}`}>
-                    <Link to="/order-list">Đơn ký gửi để bán</Link>
+                <li className={`${styles.listGroupItem} list-group-item ${isActive('/order-list-consign-sell')}`}>
+                    <Link to="/order-list-consign-sell">Đơn ký gửi để bán</Link>
                 </li>
                 <li className={`${styles.listGroupItem} list-group-item ${isActive('/tai-khoan')}`}>
                     <Link to="/tai-khoan">Trang tài khoản</Link>

@@ -6,6 +6,7 @@ const baseURL = "http://localhost:8080";
 // Tạo instance axios với baseURL
 const api = axios.create({
     baseURL: baseURL,
+    timeout: 15000
 });
 
 // Hàm xử lý trước khi gọi API (interceptor)

@@ -39,9 +39,6 @@ const Tagbar = () => {
                         {/* Cart layout */}
                         <div onClick={handleGoToCart} className={styles.header_cart}>
                             <i className={`fas fa-shopping-cart ${styles.customCartIcon}`}></i>
-                            <span className={styles.cartQuantity}>
-                                <sup className={`${styles.cartamount}`}>0</sup>
-                            </span>
                         </div>
                     </>
                 )}
@@ -54,9 +51,9 @@ const Tagbar = () => {
                                 <li><Link to="/manage-orders">Đơn hàng</Link></li>
                                 <li><Link to="/manage-consign-care">Ký gửi chăm sóc</Link></li>
                                 <li><Link to="/manage-consign-sell">Ký gửi bán</Link></li>
-                                <li><Link to="/">Tạo tin tức</Link></li>
+                                <li><Link to="/manage-blog">Tạo tin tức</Link></li>
                                 <li><Link to="/process-order">Đang xử lý</Link></li>
-                                <li><Link to="/">Lịch sử</Link></li>
+                                <li><Link to="/history">Lịch sử</Link></li>
                             </ul>
                         </nav>
                     </div>
@@ -68,10 +65,9 @@ const Tagbar = () => {
                         <nav>
                             <ul className={styles.navList}>
                                 <li><Link to="/dashboard">Dashboard</Link></li>
-                                <li><Link to="/">Nhân viên</Link></li>
-                                <li><Link to="/">Khách hàng</Link></li>
-                                <li><Link to="/">Hàng tồn kho</Link></li>
-                                <li><Link to="/">Tin tức</Link></li>
+                                <li><Link to="/nhan-vien">Users</Link></li>
+                                <li><Link to="/">Khuyến mãi</Link></li>
+                                <li><Link to="/">Kho</Link></li>                                
                             </ul>
                         </nav>
                     </div>

@@ -34,7 +34,6 @@ const ManageOrderDetail = () => {
     const fetchOrderDetail = async () => {
         try {
             const response = await api.post(`/staff/orderDetail/${orderId}`);
-            console.log(response.data); // Kiểm tra dữ liệu nhận được
             if (response.data) {
                 // Cập nhật order với thông tin nhận được từ API
                 setOrder(response.data); // Cập nhật với đối tượng order
@@ -79,10 +78,13 @@ const ManageOrderDetail = () => {
 
     const handleAcceptOrder = async () => {
         try {
-            await api.post(`/staff/updateStatus`, { orderId, status: 'Preparing' });
+            const response = await api.post(`/staff/updateStatus`, { orderId, status: 'Preparing' });
+            if (response.status === 200) {
+                setIsOrderProcessed(true); // Đánh dấu đơn hàng đã được xử lý
+                fetchOrderDetail(); // Lấy lại dữ liệu mới từ API
+            }
             alert('Đơn hàng đã được chấp nhận thành công!');
-            setIsOrderProcessed(true);
-            fetchOrderDetail();
+
         } catch (error) {
             console.error('Error accepting order:', error);
             alert('Đã xảy ra lỗi khi chấp nhận đơn hàng.');
@@ -127,36 +129,46 @@ const ManageOrderDetail = () => {
                 <h2>Ngày đặt hàng: {new Date(order.date).toLocaleDateString()}</h2>
                 <div className={styles.customerInfo}>
                     <h2>Thông tin khách hàng:</h2>
-                    {order.users ? (
-                        <>
-                            <p>Tên: {order.users.name}</p>
-                            <p>Số điện thoại: {order.users.phone}</p>
-                            <p>Địa chỉ: {order.users.address}</p>
-                        </>
-                    ) : (
-                        <p>Không có thông tin khách hàng</p>
-                    )}
+                    <table className={styles.table}>
+                        <thead>
+                            <tr>
+                                <th className={styles.textLeft}>Tên khách hàng</th>
+                                <th className={styles.textLeft}>Số điện thoại</th>
+                                <th className={styles.textLeft}>Địa chỉ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td className={styles.textLeft}>{order.users.name}</td>
+                                <td className={styles.textLeft}>{order.users.phone}</td>
+                                <td className={styles.textLeft}>{order.users.address}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
+
+
                 <h2>Sản phẩm:</h2>
                 <table className={styles.table}>
                     <thead>
                         <tr>
-                            <th>Tên sản phẩm</th>
-                            <th>Số lượng</th>
-                            <th>Giá</th>
+                            <th className={styles.textLeft}>Tên sản phẩm</th>
+                            <th className={styles.textRight}>Số lượng</th>
+                            <th className={styles.textRight}>Giá VND</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {order.orderDetailsDTO.map((item) => (
-                            <tr key={item.id}>
-                                <td>{item.fishName}</td>
-                                <td>{item.quantity}</td>
-                                <td>{item.price} VND</td>
+                        {order.orderDetailsDTO.map((item, index) => (
+                            <tr key={`${item.id}-${index}`}>
+                                <td className={styles.textLeft}>{item.fishName}</td>
+                                <td className={styles.textRight}>{item.quantity}</td>
+                                <td className={styles.textRight}>{item.totalPrice.toLocaleString('vi-VN')}</td>
                             </tr>
                         ))}
+
                         <tr>
-                            <td colSpan="2">Tổng giá trị</td>
-                            <td>{totalPrice} VND</td>
+                            <td className={styles.textLeft} colSpan="2">Tổng giá trị</td>
+                            <td className={styles.textRight}>{totalPrice.toLocaleString('vi-VN')}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -188,14 +200,14 @@ const ManageOrderDetail = () => {
                             onClick={status !== 'Shipping' ? handleShippingOrder : undefined}
                             disabled={status === 'Shipping'}
                         >
-                            Shipping
+                            Vận chuyển
                         </button>
                         <button
                             className={status === 'Completed' ? styles.buttonDisabled : styles.buttonCompleted}
                             onClick={status !== 'Completed' ? handleCompleteOrder : undefined}
                             disabled={status === 'Completed'}
                         >
-                            Completed
+                            Hoàn thành
                         </button>
                     </div>
                 )}

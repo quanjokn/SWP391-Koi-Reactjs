@@ -26,7 +26,7 @@ const OrderList = () => {
         });
     }, []);
 
-    // Lấy dữ liệu từ API
+    // Lấy dữ liệu từ API và sắp xếp theo ngày
     useEffect(() => {
         const fetchOrders = async () => {
             if (!user.id) {
@@ -39,7 +39,12 @@ const OrderList = () => {
                 const userid = user.id;
                 const response = await api.post(`/order/orderList/${userid}`);
                 if (response.data && Array.isArray(response.data)) {
-                    setOrders(response.data);
+                    const sortedOrders = response.data.sort((a, b) => {
+                        const dateA = new Date(a.date);
+                        const dateB = new Date(b.date);
+                        return dateB - dateA; // Sắp xếp từ mới đến cũ
+                    });
+                    setOrders(sortedOrders);
                 }
             } catch (error) {
                 console.error('Error fetching orders:', error);
@@ -71,6 +76,23 @@ const OrderList = () => {
         pageNumbers.push(i);
     }
 
+    const translateStatus = (status) => {
+        switch (status) {
+            case 'Pending_confirmation':
+                return { text: 'Đợi xác nhận' };
+            case 'Preparing':
+                return { text: 'Đang chuẩn bị' };
+            case 'Shipping':
+                return { text: 'Đang vận chuyển' };
+            case 'Completed':
+                return { text: 'Đã hoàn thành', className: styles.done }; // Sử dụng className cho trạng thái hoàn thành
+            case 'Rejected':
+                return { text: 'Đã bị từ chối', className: styles.rejected }; // Sử dụng className cho trạng thái từ chối
+            default:
+                return { text: status };
+        }
+    };
+
     return (
         <>
             <Header />
@@ -87,10 +109,10 @@ const OrderList = () => {
                                     <table className={styles.table}>
                                         <thead>
                                             <tr>
-                                                <th>Ngày</th>
-                                                <th>Mã đơn hàng</th>
-                                                <th>Giá</th>
-                                                <th>Trạng thái đơn hàng</th>
+                                                <th className={styles.textLeft}>Ngày</th>
+                                                <th className={styles.textLeft}>Mã đơn hàng</th>
+                                                <th className={styles.textRight}>Giá VND</th>
+                                                <th className={styles.textLeft}>Trạng thái đơn hàng</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -113,10 +135,10 @@ const OrderList = () => {
                                                         onClick={() => handleViewOrderDetail(order.id)}
                                                         style={{ cursor: 'pointer' }}
                                                     >
-                                                        <td>{order.date || 'N/A'}</td>
-                                                        <td>{'KFS_' + order.id}</td>
-                                                        <td>{totalPrice} VND</td>
-                                                        <td>{order.status || 'N/A'}</td>
+                                                        <td className={styles.textLeft}>{order.date}</td>
+                                                        <td className={styles.textLeft}>{order.id}</td>
+                                                        <td className={styles.textRight}>{totalPrice.toLocaleString('vi-VN')}</td>
+                                                        <td className={`${styles.textLeft} ${translateStatus(order.status).className}`}>{translateStatus(order.status).text}</td>
                                                     </tr>
                                                 );
                                             })}

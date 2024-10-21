@@ -3,6 +3,7 @@ import Footer from '../../component/footer';
 import Tagbar from '../../component/tagbar';
 import Header from '../../component/header';
 import Masthead from '../../component/masthead';
+import styles from './about.module.css';
 
 const About = () => {
     useEffect(() => {
@@ -27,18 +28,21 @@ const About = () => {
                     <div className="row gx-4 gx-lg-5 justify-content-center">
                         <div className="col-md-10 col-lg-8 col-xl-7">
                             <h2>Về KoiFarmShop</h2>
-                            <p>
-                                KoiFarmShop được thành lập với mục tiêu mang đến những sản phẩm và dịch vụ chất lượng trong lĩnh vực nuôi dưỡng và chăm sóc cá Koi.
-                                Chúng tôi chuyên cung cấp cá Koi Nhật Bản chính hãng, thiết kế và thi công hồ cá Koi, cùng các giải pháp tối ưu về thiết bị và vật tư cho hồ cá.
-                                Với kinh nghiệm nhiều năm, KoiFarmShop tự hào đã và đang đồng hành cùng những người yêu thích cá Koi, lan tỏa niềm đam mê này đến khắp mọi nơi.
-                            </p>
-                            <p>
-                                Sứ mệnh của chúng tôi là mang đến những chú cá Koi khỏe mạnh, dịch vụ tư vấn tận tâm, và các sản phẩm hỗ trợ tốt nhất cho hồ cá của bạn.
-                                KoiFarmShop không chỉ là nơi bán cá mà còn là nơi kết nối những người yêu thích cá Koi với niềm vui và sự thư giãn khi nuôi dưỡng chúng.
-                            </p>
+                            <div className={`${styles.custom}`}>
+                                <p>
+                                    KoiFarmShop được thành lập với mục tiêu mang đến những sản phẩm và dịch vụ chất lượng trong lĩnh vực nuôi dưỡng và chăm sóc cá Koi.
+                                    Chúng tôi chuyên cung cấp cá Koi Nhật Bản chính hãng, thiết kế và thi công hồ cá Koi, cùng các giải pháp tối ưu về thiết bị và vật tư cho hồ cá.
+                                    Với kinh nghiệm nhiều năm, KoiFarmShop tự hào đã và đang đồng hành cùng những người yêu thích cá Koi, lan tỏa niềm đam mê này đến khắp mọi nơi.
+                                </p>
+                                <p>
+                                    Sứ mệnh của chúng tôi là mang đến những chú cá Koi khỏe mạnh, dịch vụ tư vấn tận tâm, và các sản phẩm hỗ trợ tốt nhất cho hồ cá của bạn.
+                                    KoiFarmShop không chỉ là nơi bán cá mà còn là nơi kết nối những người yêu thích cá Koi với niềm vui và sự thư giãn khi nuôi dưỡng chúng.
+                                </p>
+                            </div>
+
 
                             {/* YouTube Videos */}
-                            <div className="video-container">
+                            <div className={`${styles.videoContainer}`}>
                                 <h3>Khám phá thêm về KoiFarmShop qua video</h3>
                                 <div className="row">
                                     <div className="col-md-6">

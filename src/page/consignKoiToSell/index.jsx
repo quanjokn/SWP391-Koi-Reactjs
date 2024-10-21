@@ -24,7 +24,7 @@ const ConsignedKoiToSell = () => {
         photo: '',
         video: '',
         certificate: '',
-        category: '',
+        type: '',
         origin: '',
         species: [],
         otherSpecies: ''
@@ -35,7 +35,7 @@ const ConsignedKoiToSell = () => {
 
     const handleAddNewForm = () => {
         setFishForm([...fishForm, {
-            name: '', quantity: '', description: '', sex: '', age: '', character: '', size: '', price: '', healthStatus: '', ration: '', photo: '', video: '', certificate: '', category: '', origin: '', species: [], otherSpecies: ''
+            name: '', quantity: '', description: '', sex: '', age: '', character: '', size: '', price: '', healthStatus: '', ration: '', photo: '', video: '', certificate: '', type: '', origin: '', species: [], otherSpecies: ''
         }]);
     };
     const handleRemoveForm = (index) => {
@@ -81,6 +81,12 @@ const ConsignedKoiToSell = () => {
             console.error("User not logged in!");
             return navigate('/login');
         }
+        // Kiểm tra tính hợp lệ của form
+        const form = e.target;
+        if (!form.checkValidity()) {
+            alert('Vui lòng điền đầy đủ thông tin trước khi gửi.');
+            return; // Dừng lại nếu form không hợp lệ
+        }
         try {
             const totalPrice = fishForm.reduce((total, fishData) => total + (fishData.price * fishData.quantity), 0);
             const commission = totalPrice * 0.1;
@@ -94,7 +100,7 @@ const ConsignedKoiToSell = () => {
                     // Nếu người dùng đã nhập giống loài khác, thêm nó vào mảng species
                     if (fishData.otherSpecies) {
                         combinedSpecies.push(fishData.otherSpecies);
-                    } 
+                    }
                     return {
                         name: fishData.name,
                         quantity: fishData.quantity,
@@ -109,7 +115,7 @@ const ConsignedKoiToSell = () => {
                         photo: fishData.photo ? fishData.photo.name : '',
                         video: fishData.video ? fishData.video.name : '',
                         certificate: fishData.certificate ? fishData.certificate.name : '',
-                        category: fishData.category,
+                        type: fishData.type,
                         origin: fishData.origin,
                         species: combinedSpecies
                     };
@@ -122,9 +128,10 @@ const ConsignedKoiToSell = () => {
                 },
             });
             alert('Gửi dữ liệu thành công!');
-            setFishForm([{ name: '', quantity: '', description: '', sex: '', age: '', character: '', size: '', price: '', healthStatus: '', ration: '', photo: '', video: '', certificate: '', category: '', origin: '', species: [],otherSpecies: '' }]);
+            setFishForm([{ name: '', quantity: '', description: '', sex: '', age: '', character: '', size: '', price: '', healthStatus: '', ration: '', photo: '', video: '', certificate: '', category: '', origin: '', species: [], otherSpecies: '' }]);
         } catch (error) {
             console.error('Lỗi khi gửi dữ liệu:', error);
+            alert('Vui lòng điền đầy đủ thông tin');
         }
     };
 
@@ -134,12 +141,12 @@ const ConsignedKoiToSell = () => {
             <Tagbar />
             <Masthead title="Kí gửi để bán" />
             <div className={`container ${styles.wrapper}`}>
-                <h1> Kí gửi để bán </h1>
+                <h1>Điền thông tin kí gửi để bán </h1>
                 <div >
                     {fishForm.map((fishData, index) => (
                         <form onSubmit={handleSubmit} className={styles['fish-form']}>
                             <div key={index}>
-                                <div>
+                                <div className={styles['title2']} >
                                     <span className={styles['title']}> Thông tin cá {index + 1}</span>
                                     {fishForm.length > 1 && (
                                         <button
@@ -289,8 +296,8 @@ const ConsignedKoiToSell = () => {
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
                                         <select
                                             className="form-control"
-                                            name="category"
-                                            value={fishData.category}
+                                            name="type"
+                                            value={fishData.type}
                                             onChange={(e) => handleInputChange(index, e)}
                                             required
                                         >
@@ -318,6 +325,7 @@ const ConsignedKoiToSell = () => {
                                             name="species"
                                             value={fishData.species}
                                             onChange={(e) => handleInputChange(index, e)}
+                                            size={2}
                                             multiple={true}
                                             required
                                         >
@@ -335,7 +343,7 @@ const ConsignedKoiToSell = () => {
                                     </div>
                                     {fishData.species.includes('other') && (
                                         <div>
-                                            <label>Nhập giống loài khác:</label>
+                                            <label>Vui lòng nhập tên loài:</label>
                                             <input
                                                 type="text"
                                                 name="otherSpecies"
@@ -363,7 +371,7 @@ const ConsignedKoiToSell = () => {
                         </form>
                     ))}
                     <div>
-                        <button type="button" className={styles['btAdd']} onClick={handleAddNewForm}>
+                        <button type="button"className={`btn btn-success ${styles.submitButton}`} onClick={handleAddNewForm}>
                             <i className="fa-solid fa-plus"></i> Thêm cá để kí gửi
                         </button>
                     </div>

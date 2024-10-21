@@ -31,10 +31,6 @@
     content: '\f058'; /* Biểu tượng đánh dấu */
 }
 
-/* #progressbar-2 #step4:before {
-    content: '\f111'; 
-} */
-
 #progressbar-2 li:before {
     line-height: 37px;
     display: block;
@@ -64,17 +60,12 @@
 #progressbar-2 li:nth-child(3):after {
     left: 1%;
     width: 100%;
-    background: grey;
+    /* background: grey; */
 }
 
-/* #progressbar-2 li:nth-child(4) {
+#progressbar-2 li:nth-child(4) {
     left: 0;
     width: 37px;
-} */
-
-#progressbar-2 li:nth-child(4):after {
-    left: 1%;
-    width: 100%;
 }
 
 #progressbar-2 li.active:before,
@@ -97,10 +88,15 @@
 }
 
 /* Thêm màu đỏ cho trạng thái bị từ chối */
-#progressbar-2 li.rejected:before {
-    background: red;
-    color: white;
+#progressbar-2.rejected li:before {
+    background: red; /* Màu nền cho các bước */
+    color: white; /* Màu chữ */
 }
+
+#progressbar-2.rejected li:after {
+    background: red; /* Màu nền cho các đường nối giữa các bước */
+}
+
 
 /* Đổi màu cho trạng thái active bình thường */
 #progressbar-2 li.active:before,
@@ -108,7 +104,14 @@
     background: green;
 }
 
-/* Đổi màu chữ khi bị từ chối */
-.fw-bold.rejected-text {
-    color: red;
+.text-success {
+    color: green; /* Màu xanh lá cây cho trạng thái hoàn thành */
+}
+
+.text-danger {
+    color: red; /* Màu đỏ cho trạng thái bị từ chối */
+}
+
+.text-muted {
+    color: #6c757d; /* Màu nhạt cho trạng thái chưa đạt */
 }

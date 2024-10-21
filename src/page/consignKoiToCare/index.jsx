@@ -22,18 +22,45 @@ const ConsignedKoiToCare = () => {
     }
     ]);
     const { user } = useContext(UserContext);
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
     const navigate = useNavigate();
 
     const handleStartDateChange = (event) => {
         const newDate = event.target.value;
-        setStartDate(newDate);
+        const today = new Date();
+        const selectedDate = new Date(newDate);
+
+        // Kiểm tra nếu selectedDate cách hôm nay 2 ngày
+        const diffTime = selectedDate - today;
+        const diffDays = diffTime / (1000 * 60 * 60 * 24); // Chuyển đổi thành số ngày
+
+        if (diffDays >= 2) {
+            setStartDate(newDate);
+            setEndDate('');// Reset endDate nếu startDate thay đổi
+        } else {
+            alert('Ngày bắt đầu phải cách hôm nay ít nhất 2 ngày.');
+        }
     };
     const handleEndDateChange = (event) => {
         const newDate = event.target.value;
-        setEndDate(newDate);
+        const selectedEndDate = new Date(newDate);
+        const selectedStartDate = new Date(startDate);
+
+        // Kiểm tra xem endDate có phải sau startDate không
+        if (selectedEndDate > selectedStartDate) {
+            setEndDate(newDate);
+        } else {
+            alert('Ngày kết thúc phải sau ngày bắt đầu.');
+        }
     };
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const timeDifference = end - start; // Time difference in milliseconds
+    const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24)); // Convert to days
+    const totalFishQuantity = fishForm.length;
+    const totalPrice = daysDifference * 100000 * totalFishQuantity;
 
 
     const handleInputChange = (index, event) => {
@@ -57,13 +84,13 @@ const ConsignedKoiToCare = () => {
             console.error("User not logged in!");
             return navigate('/login');
         }
+        // Kiểm tra tính hợp lệ của form
+        const form = e.target;
+        if (!form.checkValidity()) {
+            alert('Vui lòng điền đầy đủ thông tin trước khi gửi.');
+            return; // Dừng lại nếu form không hợp lệ
+        }
         try {
-            const start = new Date(startDate);
-            const end = new Date(endDate);
-            const timeDifference = end - start; // Time difference in milliseconds
-            const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24)); // Convert to days
-            const totalPrice = daysDifference * 100000;
-
             const fishData = {
                 startDate: startDate,
                 endDate: endDate,
@@ -87,6 +114,7 @@ const ConsignedKoiToCare = () => {
             setFishForm([{ name: '', sex: '', age: '', size: '', ration: '', healthStatus: '', photo: '' }]);
         } catch (error) {
             console.error('Lỗi khi gửi dữ liệu:', error);
+            alert('Vui lòng điền đầy đủ thông tin');
         }
     };
     const handleAddNewForm = () => {
@@ -108,11 +136,13 @@ const ConsignedKoiToCare = () => {
             <Tagbar />
             <Masthead title="Kí gửi để chăm sóc" />
 
-            <div className={`container ${styles.wrapper}`} >
+            <div >
                 <div className={styles['form-container']}>
-                    <h1 className={styles['title']}> Kí gửi để chăm sóc </h1>
+                    <h1 className={styles['title']}>Điền thông tin kí gửi chăm sóc </h1>
+                    <span className={styles['bang-gia']}>Bảng giá:</span> <br />
+                    <span className={styles['bang-gia']}>1 ngày / 100.000Đ / 1 con</span>
                     <form onSubmit={handleSubmit} className={styles['date-form']}>
-                        <label htmlFor="startDate">Ngày bắt đầu:  </label>
+                        <label htmlFor="startDate">Ngày bắt đầu: </label>
                         <input
                             type="date"
                             id="startDate"
@@ -120,18 +150,23 @@ const ConsignedKoiToCare = () => {
                             onChange={handleStartDateChange}
                             required // Bắt buộc chọn ngày
                         />
-
                     </form>
                     <form onSubmit={handleSubmit} className={styles['date-form']}>
-                        <label htmlFor="endDate">Ngày kết thúc:  </label>
+                        <label htmlFor="endDate">Ngày kết thúc: </label>
                         <input
                             type="date"
                             id="endDate"
                             value={endDate}
                             onChange={handleEndDateChange}
                             required // Bắt buộc chọn ngày
+                            disabled={!startDate}
                         />
                     </form>
+                    {startDate && endDate && (
+                        <div className={styles['temp-price']}>
+                            <strong>Tạm tính: </strong> {totalPrice.toLocaleString()} Đ
+                        </div>
+                    )}
 
                     {fishForm.map((fishData, index) => (
                         <form onSubmit={handleSubmit} className={styles['fish-form']}>
@@ -239,7 +274,7 @@ const ConsignedKoiToCare = () => {
                     ))}
 
                     <div>
-                        <button type="button" className={styles['btAdd']} onClick={handleAddNewForm}>
+                        <button type="button" className={`btn btn-success ${styles.submitButton}`} onClick={handleAddNewForm}>
                             <i className="fa-solid fa-plus"></i> Thêm cá để kí gửi
                         </button>
                     </div>

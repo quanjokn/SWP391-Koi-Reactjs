@@ -13,7 +13,7 @@ const Orders = () => {
 
     const [paymentMethod, setPaymentMethod] = useState("COD"); // Mặc định là thanh toán khi nhận hàng
     const location = useLocation();
-    const [paymentURL, setPaymentURL] = useState("");
+    const [generateId, setGenerateId] = useState('');
     const cart = location.state?.cart;
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
@@ -22,12 +22,11 @@ const Orders = () => {
         setPaymentMethod(event.target.value);
     };
 
-    const handleGetLink = async () =>{
+    const handleVnpayClick = async () =>{
         try{
-            const response = await api.post(`/api/payment/create_payment/${user.id}`,{});
-            setPaymentURL(response.data);
+            const response = await api.post(`/staff/generateOrderId`,{});
+            setGenerateId(response.data);
         }catch (error) {
-            console.error("Error fetching payment URL:", error);
             alert("Có lỗi xảy ra khi lấy đường dẫn thanh toán. Vui lòng thử lại.");
             return null; // Trả về null nếu có lỗi
         }
@@ -42,7 +41,9 @@ const Orders = () => {
             }
 
             if(paymentMethod == "VNPAY"){
-                return window.location.href = paymentURL;
+                const type = 'order';
+                const orderId = '0';
+                return navigate(`/vnpay/onlinePayment/${type}/${userId}/${orderId}/${generateId}/${cart.totalPrice}`);
             }else{
                 // Gửi yêu cầu POST đến API để đặt hàng
                 api.post(`/order/placeOrder`, {
@@ -114,7 +115,7 @@ const Orders = () => {
                                         Thanh toán khi nhận hàng
                                     </label>
                                     <br />
-                                    <label onClick={handleGetLink}>
+                                    <label onClick={handleVnpayClick}>
                                         <input
                                             type="radio"
                                             value="VNPAY"

@@ -19,12 +19,12 @@ const Header = () => {
         <div className={styles.tagbar}>
             <div className={styles.leftSection}>
                 <img src="/imagines/logo/koi-farm-shop-logo-3.png" alt="Koi farm logo" className={styles.logo} onClick={() => navigate('/')} />
-                <h1 className={styles.siteTitle}>Koi farm Shop</h1>
+                <h1 className={styles.siteTitle}>Koi Farm Shop</h1>
             </div>
             <div className={styles.rightSection}>
                 <span onClick={(handleUserClick)} style={{ cursor: 'pointer' }}>
                     <i className="fas fa-user"></i>
-                    {user ? user.name : 'Login'}
+                    {user ? user.name : 'Đăng nhập'}
                 </span>
             </div>
         </div>

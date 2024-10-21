@@ -70,6 +70,19 @@ const ProfilePage = () => {
         }
     };
 
+    const translateRole = (role) => {
+        switch (role) {
+            case 'Customer':
+                return 'Khách Hàng';
+            case 'Staff':
+                return 'Nhân Viên';
+            case 'Manager':
+                return 'Quản Lý';
+            default:
+                return role;
+        }
+    };
+
     return (
         <>
             <Header />
@@ -98,12 +111,12 @@ const ProfilePage = () => {
                                 </div>
 
                                 <div className="col-md-12">
-                                    <label className={styles.labels}>Role</label>
+                                    <label className={styles.labels}>Vai trò</label>
                                     <input
                                         type="text"
                                         className={`form-control ${styles.inputField}`}
                                         name="role"
-                                        value={userProfile.role}
+                                        value={translateRole(userProfile.role)}
                                         readOnly
                                     />
                                 </div>

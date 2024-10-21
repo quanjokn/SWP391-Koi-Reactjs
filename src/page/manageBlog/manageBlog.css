@@ -1,0 +1,63 @@
+.container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.blog-list {
+    margin-bottom: 30px;
+}
+
+.blog-item {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+.blog-item h3 {
+    margin-top: 0;
+}
+
+.blog-item p {
+    font-size: 14px;
+}
+
+.form-group {
+    margin-top: 30px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-group textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+.button-group {
+    text-align: right;
+}
+
+.button-group button {
+    margin-left: 10px;
+}
+
+.button-group button:hover {
+    opacity: 0.9;
+}
+
+/* Optional: Custom button styles using Bootstrap */
+.btn {
+    padding: 10px 15px;
+}

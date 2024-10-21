@@ -37,9 +37,10 @@ const OrderListConsignCare = () => {
             setIsLoading(true);
             try {
                 const response = await api.post(`/caringOrder/getList/${user.id}`);
-                console.log(response);
                 if (response.data && Array.isArray(response.data)) {
-                    setOrders(response.data);
+                    // Sắp xếp các đơn hàng theo ngày giảm dần (mới nhất lên đầu)
+                    const sortedOrders = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    setOrders(sortedOrders);
                 }
             } catch (error) {
                 console.error('Error fetching orders:', error);
@@ -52,7 +53,7 @@ const OrderListConsignCare = () => {
     }, [user]);
 
     const handleViewOrderDetail = (orderId) => {
-        navigate(`/order-detail/${orderId}`);
+        navigate(`/order-consign-care/${orderId}`);
     };
 
     // Tính toán các chỉ số để hiển thị đơn hàng trên trang hiện tại
@@ -71,6 +72,23 @@ const OrderListConsignCare = () => {
         pageNumbers.push(i);
     }
 
+    const translateStatus = (status) => {
+        switch (status) {
+            case 'Pending_confirmation':
+                return { text: 'Đợi xác nhận' };
+            case 'Receiving':
+                return { text: 'Đang xác nhận' };
+            case 'Responded':
+                return { text: 'Đã phản hồi' };
+            case 'Done':
+                return { text: 'Đã hoàn thành', className: styles.done };
+            case 'Rejected':
+                return { text: 'Đã bị từ chối', className: styles.rejected };
+            default:
+                return { text: status, className: '' };
+        }
+    };
+
     return (
         <>
             <Header />
@@ -87,10 +105,10 @@ const OrderListConsignCare = () => {
                                     <table className={styles.table}>
                                         <thead>
                                             <tr>
-                                                <th>Ngày</th>
-                                                <th>Mã đơn ký gửi</th>
-                                                <th>Giá</th>
-                                                <th>Trạng thái ký gửi</th>
+                                                <th className={styles.textLeft}>Ngày</th>
+                                                <th className={styles.textLeft}>Mã đơn ký gửi</th>
+                                                <th className={styles.textRight}>Giá VND</th>
+                                                <th className={styles.textLeft}>Trạng thái ký gửi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -105,7 +123,7 @@ const OrderListConsignCare = () => {
                                                         ? order.orderDetails.reduce((total, product) => total + product.quantity, 0)
                                                         : 0;
 
-                                                const totalPrice = order.total || 0;
+                                                const totalPrice = order.totalPrice || 0;
 
                                                 return (
                                                     <tr
@@ -113,10 +131,10 @@ const OrderListConsignCare = () => {
                                                         onClick={() => handleViewOrderDetail(order.id)}
                                                         style={{ cursor: 'pointer' }}
                                                     >
-                                                        <td>{order.date || 'N/A'}</td>
-                                                        <td>{order.id}</td>
-                                                        <td>{totalPrice} VND</td>
-                                                        <td>{order.status || 'N/A'}</td>
+                                                        <td className={styles.textLeft}>{order.date}</td>
+                                                        <td className={styles.textLeft}>{order.id}</td>
+                                                        <td className={styles.textRight}>{totalPrice.toLocaleString('vi-VN')}</td>
+                                                        <td className={`${styles.textLeft} ${translateStatus(order.status).className}`}>{translateStatus(order.status).text}</td>
                                                     </tr>
                                                 );
                                             })}

@@ -36,28 +36,38 @@ const Processing = () => {
         try {
             const staffId = user.id;
             const response = await api.post(`/staff/getAllOrder/${staffId}`);
-            console.log(response);
             const ordersData = response.data.order
-                .filter(order => order.status !== "Completed" && order.status !== "Rejected") // Lọc các đơn hàng có trạng thái không phải "Completed" hoặc "Rejected"
+
+                .filter(order => order.status !== "Completed" && order.status !== "Rejected")
                 .map(order => ({
                     id: order.id,
-                    totalPrice: order.total, // Tổng tiền
-                    orderDate: new Date(order.date).toLocaleDateString(), // Ngày đặt hàng
+                    totalPrice: order.total,
+                    orderDate: new Date(order.date), // Lưu lại dưới dạng đối tượng Date để dễ sắp xếp
                     status: order.status
-                }));
-            const caring = response.data.caringOrders.map(order => ({
-                id: order.id,
-                startDate: new Date(order.startDate).toLocaleDateString(),
-                endDate: new Date(order.endDate).toLocaleDateString(),
-                totalPrice: order.totalPrice, // Tổng tiền
-                status: order.status
-            }));
-            const consign = response.data.consignOrders.map(order => ({
-                id: order.id,
-                totalPrice: order.totalPrice, // Tổng tiền
-                date: new Date(order.date).toLocaleDateString(), // Ngày đặt hàng
-                status: order.status
-            }));
+                }))
+                .sort((a, b) => b.orderDate - a.orderDate); // Sắp xếp theo ngày, mới nhất trước
+
+            const caring = response.data.caringOrders
+                .filter(order => order.status !== "Done" && order.status !== "Rejected")
+                .map(order => ({
+                    id: order.id,
+                    startDate: new Date(order.startDate),
+                    endDate: new Date(order.endDate),
+                    totalPrice: order.totalPrice,
+                    status: order.status
+                }))
+                .sort((a, b) => b.startDate - a.startDate); // Sắp xếp theo ngày bắt đầu
+
+            const consign = response.data.consignOrders
+                .filter(order => order.status !== "Shared" && order.status !== "Rejected")
+                .map(order => ({
+                    id: order.id,
+                    totalPrice: order.totalPrice,
+                    date: new Date(order.date),
+                    status: order.status
+                }))
+                .sort((a, b) => b.date - a.date); // Sắp xếp theo ngày
+
             setOrders(ordersData);
             setCaringOrders(caring);
             setConsignOrders(consign);
@@ -134,6 +144,31 @@ const Processing = () => {
         return <Loading />;
     }
 
+    const translateStatus = (status) => {
+        switch (status) {
+            case 'Pending_confirmation':
+                return 'Đợi xác nhận';
+            case 'Preparing':
+                return 'Đang chuẩn bị';
+            case 'Shipping':
+                return 'Đang vận chuyển';
+            case "Pending":
+                return "Đang chờ xử lý";
+            case 'Receiving':
+                return 'Đang xác nhận';
+            case 'Responded':
+                return 'Đã phản hồi';
+            case "Completed":
+                return "Đã hoàn thành";
+            case "Done":
+                return "Đã hoàn thành";
+            case "Paid":
+                return "Đã thanh toán";
+            default:
+                return status;
+        }
+    };
+
     return (
         <>
             <Header />
@@ -151,21 +186,21 @@ const Processing = () => {
                     <table className={styles.table}>
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Ngày đặt hàng</th>
-                                <th>Thành tiền</th>
-                                <th>Trạng thái</th>
-                                <th>Action</th>
+                                <th className={styles.textLeft}>ID</th>
+                                <th className={styles.textLeft}>Ngày đặt hàng</th>
+                                <th className={styles.textLeft}>Thành tiền VND</th>
+                                <th className={styles.textLeft}>Trạng thái</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             {currentOrders.map(order => (
                                 <tr key={order.id} className={styles.row}>
-                                    <td>{order.id}</td>
-                                    <td>{order.orderDate}</td>
-                                    <td>{order.totalPrice} VND</td>
-                                    <td>{order.status}</td>
-                                    <td>
+                                    <td className={styles.textLeft}>{order.id}</td>
+                                    <td className={styles.textLeft}>{order.orderDate.toLocaleDateString()}</td>
+                                    <td className={styles.textLeft}>{order.totalPrice.toLocaleString('vi-VN')}</td>
+                                    <td className={styles.textLeft}>{translateStatus(order.status)}</td>
+                                    <td className={styles.textCenter}>
                                         <button
                                             className={styles.button1}
                                             onClick={() => handleOrderClick(order.id)}
@@ -207,23 +242,23 @@ const Processing = () => {
                     <table className={styles.table}>
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Ngày bắt đầu</th>
-                                <th>Ngày kết thúc</th>
-                                <th>Thành tiền</th>
-                                <th>Trạng thái</th>
-                                <th>Action</th>
+                                <th className={styles.textLeft}>ID</th>
+                                <th className={styles.textLeft}>Ngày bắt đầu</th>
+                                <th className={styles.textLeft}>Ngày kết thúc</th>
+                                <th className={styles.textLeft}>Thành tiền VND</th>
+                                <th className={translateStatus(styles.textLeft)}>Trạng thái</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             {currentCareOrders.map(order => (
                                 <tr key={order.id} className={styles.row}>
-                                    <td>{order.id}</td>
-                                    <td>{order.startDate}</td>
-                                    <td>{order.endDate}</td>
-                                    <td>{order.totalPrice} VND</td>
-                                    <td>{order.status}</td>
-                                    <td>
+                                    <td className={styles.textLeft}>{order.id}</td>
+                                    <td className={styles.textLeft}>{order.startDate.toLocaleDateString()}</td>
+                                    <td className={styles.textLeft}>{order.endDate.toLocaleDateString()}</td>
+                                    <td className={styles.textLeft}>{order.totalPrice.toLocaleString('vi-VN')}</td>
+                                    <td className={styles.textLeft}>{translateStatus(order.status)}</td>
+                                    <td className={styles.textCenter}>
                                         <button
                                             className={styles.button1}
                                             onClick={() => handleCaringClick(order.id)}
@@ -265,21 +300,21 @@ const Processing = () => {
                     <table className={styles.table}>
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Ngày đặt hàng</th>
-                                <th>Thành tiền</th>
-                                <th>Trạng thái</th>
-                                <th>Action</th>
+                                <th className={styles.textLeft}>ID</th>
+                                <th className={styles.textLeft}>Ngày đặt hàng</th>
+                                <th className={styles.textLeft}>Thành tiền VND</th>
+                                <th className={styles.textLeft}>Trạng thái</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             {currentConsignOrders.map(order => (
                                 <tr key={order.id} className={styles.row}>
-                                    <td>{order.id}</td>
-                                    <td>{order.date}</td>
-                                    <td>{order.totalPrice} VND</td>
-                                    <td>{order.status}</td>
-                                    <td>
+                                    <td className={styles.textLeft}>{order.id}</td>
+                                    <td className={styles.textLeft}>{order.date.toLocaleDateString()}</td>
+                                    <td className={styles.textLeft}>{order.totalPrice.toLocaleString('vi-VN')}</td>
+                                    <td className={styles.textLeft}>{translateStatus(order.status)}</td>
+                                    <td className={styles.textCenter}>
                                         <button
                                             className={styles.button1}
                                             onClick={() => handleConsignClick(order.id)}

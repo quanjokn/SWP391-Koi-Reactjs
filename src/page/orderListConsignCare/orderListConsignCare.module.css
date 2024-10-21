@@ -38,3 +38,24 @@
     background-color: white;
 }
 
+.table th, td {
+    border: 1px solid black;
+}
+
+.textLeft {
+    text-align: left;
+}
+
+.textRight {
+    text-align: right;
+}
+
+.done {
+    color: green; /* Màu xanh lá cây */
+    font-weight: bold;
+}
+
+.rejected {
+    color: red; /* Màu đỏ */
+    font-weight: bold;
+}

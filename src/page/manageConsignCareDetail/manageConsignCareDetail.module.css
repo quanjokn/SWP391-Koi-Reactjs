@@ -117,3 +117,11 @@ td.actionColumn span {
     border-radius: 5px;
     width: 15%;
 }
+
+.textLeft {
+    text-align: left;
+}
+
+.textRight {
+    text-align: right;
+}

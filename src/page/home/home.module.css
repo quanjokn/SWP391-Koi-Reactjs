@@ -77,7 +77,11 @@
 .contentText {
   color: black;
   font-family: "Calibri";
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: justify;
   padding-left: 210px;
   padding-right: 140px;
   font-weight: 500;

@@ -35,11 +35,15 @@ const ManageOrder = () => {
                 totalPrice: order.total, // Tổng tiền
                 orderDate: new Date(order.date).toLocaleDateString() // Ngày đặt hàng
             }));
+
+            // Sắp xếp theo ngày giảm dần
+            ordersData.sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));
+
             setOrders(ordersData);
             setIsLoading(false); // Đặt isLoading thành false sau khi tải xong
         } catch (error) {
             console.error('Error fetching orders:', error);
-            setIsLoading(false); // Cũng đặt là false nếu có lỗi
+            setIsLoading(false);
         }
     };
 
@@ -65,7 +69,6 @@ const ManageOrder = () => {
         }
     };
 
-
     // Tính toán các chỉ số để hiển thị đơn hàng trên trang hiện tại
     const indexOfLastOrder = currentPage * ordersPerPage;
     const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
@@ -73,7 +76,10 @@ const ManageOrder = () => {
 
     // Thay đổi trang khi người dùng bấm số trang
     const paginate = (pageNumber) => {
-        setCurrentPage(pageNumber);
+        const totalPages = Math.ceil(orders.length / ordersPerPage);
+        if (pageNumber >= 1 && pageNumber <= totalPages) {
+            setCurrentPage(pageNumber);
+        }
     };
 
     // Tạo danh sách các trang
@@ -103,19 +109,19 @@ const ManageOrder = () => {
                     <table className={styles.table}>
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Ngày đặt hàng</th>
-                                <th>Thành tiền</th>
-                                <th>Action</th>
+                                <th className={styles.textLeft}>ID</th>
+                                <th className={styles.textLeft}>Ngày đặt hàng</th>
+                                <th className={styles.textRight}>Thành tiền VND</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             {currentOrders.map(order => (
                                 <tr key={order.id} className={styles.row}>
-                                    <td>{order.id}</td>
-                                    <td>{order.orderDate}</td>
-                                    <td>{order.totalPrice} VND</td>
-                                    <td>
+                                    <td className={styles.textLeft}>{order.id}</td>
+                                    <td className={styles.textLeft}>{order.orderDate}</td>
+                                    <td className={styles.textRight}>{order.totalPrice.toLocaleString('vi-VN')}</td>
+                                    <td className={styles.textCenter}>
                                         <button
                                             className={styles.button1}
                                             onClick={() => handleOrderClick(order.id)}

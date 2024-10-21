@@ -110,7 +110,7 @@ export const LoginForm = () => {
         <>
             <div className={styles.wrapper}>
                 <form onSubmit={handleLogin}>
-                    <h1>Đăng nhập</h1>
+                    <h1>Tài khoản</h1>
                     {errorMessage && <p className={styles.error}>{errorMessage}</p>} {/* Hiển thị thông báo lỗi */}
 
                     <div className={styles['input-box']}>
@@ -152,7 +152,7 @@ export const LoginForm = () => {
                     </div>
 
                     <div className={styles.titleLogin}>
-                        <h3>Đăng nhập với</h3>
+                        <h3>Hoặc</h3>
                     </div>
 
                     <div className={styles.socialLogin}>

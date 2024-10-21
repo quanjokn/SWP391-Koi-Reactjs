@@ -34,9 +34,16 @@ import OrderListConsignCare from './page/orderListConsignCare';
 import Dashboard from './page/dashboard';
 import Processing from './page/processing';
 import ThankYou from './page/thankYou';
+import OrderListConsignSell from './page/orderListConsignSell';
+import OrderDetailConSignCare from './page/orderListConsignCareDt';
 import ProtectedRoute from './component/protectedRoute';
 import PrivateRoute from './component/privateRoute';
-
+import OrderDetailConSignSell from './page/orderListConsignSellDt';
+import ManageEmployee from './page/manageEmployee';
+import BlogManager from './page/manageBlog';
+import Review from './page/review';
+import History from './page/history';
+import CreateVNPay from './page/vnpay';
 
 function App() {
   const router = createBrowserRouter([
@@ -133,10 +140,42 @@ function App() {
       )
     },
     {
+      path: '/review/:orderId/:fishId',
+      element: (
+        <ProtectedRoute>
+          <Review />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'order-list-consign-sell',
+      element: (
+        <ProtectedRoute>
+          <OrderListConsignSell />
+        </ProtectedRoute>
+      )
+    },
+    {
       path: 'order-list-consign-care',
       element: (
         <ProtectedRoute>
           <OrderListConsignCare />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'order-consign-sell/:orderId',
+      element: (
+        <ProtectedRoute>
+          <OrderDetailConSignSell />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: 'order-consign-care/:orderId' ,
+      element: (
+        <ProtectedRoute>
+          <OrderDetailConSignCare />
         </ProtectedRoute>
       )
     },
@@ -146,6 +185,14 @@ function App() {
         <ProtectedRoute>
           <OrderDetail />
         </ProtectedRoute>
+      )
+    },
+    {
+      path: 'manage-blog',
+      element: (
+        <PrivateRoute requiredRole="Staff">
+          <BlogManager />
+        </PrivateRoute>
       )
     },
     {
@@ -165,7 +212,7 @@ function App() {
       )
     },
     {
-      path: 'error',
+      path: '*',
       element: <ErrorPage />
     },
     {
@@ -217,6 +264,14 @@ function App() {
       )
     },
     {
+      path: 'history',
+      element: (
+        <PrivateRoute requiredRole="Staff">
+          <History />
+        </PrivateRoute>
+      )
+    },
+    {
       path: 'thank-you',
       element: <ThankYou />
     },
@@ -229,8 +284,24 @@ function App() {
       )
     },
     {
+      path: '/nhan-vien',
+      element: (
+        <PrivateRoute requiredRole="Manager">
+          <ManageEmployee/>
+        </PrivateRoute>
+      )
+    },
+    {
       path: '/oauth/callback',
       element: <OAuthCallback />, 
+    },
+    {
+      path: '/vnpay/onlinePayment/:type/:userId/:orderId/:vnpayCode/:money',
+      element:(
+        <ProtectedRoute>
+          <CreateVNPay />
+        </ProtectedRoute>
+      )
     },
   ]);
 
