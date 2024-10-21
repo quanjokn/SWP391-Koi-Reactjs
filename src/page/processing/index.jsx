@@ -160,6 +160,10 @@ const Processing = () => {
                 return 'Đã phản hồi';
             case "Completed":
                 return "Đã hoàn thành";
+            case "Done":
+                return "Đã hoàn thành";
+            case "Paid":
+                return "Đã thanh toán";
             default:
                 return status;
         }

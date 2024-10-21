@@ -59,6 +59,22 @@ const ManageConsignCareDetail = () => {
         }
     }, [user, orderId, navigate]);
 
+    const translateStatus = (status) => {
+        switch (status) {
+            case 'Pending_confirmation':
+                return 'Đợi xác nhận';
+            case 'Accepted_caring':
+                return 'Đang chăm sóc';
+            case "Done":
+                return "Đã hoàn thành";
+            case "Paid":
+                return "Đã thanh toán";
+            case "Rejected":
+                return "Đã bị từ chối";
+            default:
+                return status;
+        }
+    };
 
     const handleDecision = (koiId, value) => {
         setDecision((prevState) => {
@@ -152,7 +168,7 @@ const ManageConsignCareDetail = () => {
                                             <tr key={koi.id}>
                                                 <td className={styles.textLeft}>{koi.name}</td>
                                                 <td className={styles.textLeft}>{koi.sex}</td>
-                                                <td className={styles.textLeft}>{koi.status}</td>
+                                                <td className={styles.textLeft}>{translateStatus(koi.status)}</td>
                                                 {status === 'Receiving' && (
                                                     <td className={styles["actionColumn"]}>
                                                         <label>
@@ -204,7 +220,12 @@ const ManageConsignCareDetail = () => {
                 )}
 
                 {/* Bảng cập nhật trạng thái */}
-                {(status === 'Responded') && status !== 'Done' && (
+                {(status === 'Responded') && (
+                    <div className={styles.updateStatus}>
+                        <h2>Chờ thanh toán</h2>        
+                    </div>
+                )}
+                {(status === 'Paid') && (
                     <div className={styles.updateStatus}>
                         <h2>Cập nhật trạng thái</h2>
                         <button

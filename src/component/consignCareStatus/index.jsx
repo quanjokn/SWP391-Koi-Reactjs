@@ -31,7 +31,8 @@ export default function ConsignCareStatus({ orderId, startDate, endDate, status 
             Pending_confirmation: 1,
             Receiving: 2,
             Responded: 3,
-            Done: 4,
+            Paid: 4,
+            Done: 5,
             Rejected: 0,
         };
 
@@ -53,7 +54,8 @@ export default function ConsignCareStatus({ orderId, startDate, endDate, status 
             Pending_confirmation: 1,
             Receiving: 2,
             Responded: 3,
-            Done: 4,
+            Paid: 4,
+            Done: 5,
             Rejected: 0,
         };
 
@@ -88,7 +90,7 @@ export default function ConsignCareStatus({ orderId, startDate, endDate, status 
                                         </div>
                                     </div>
                                     <ul
-                                        id="progressbar-2"
+                                        id="progressbar-care"
                                         className={`d-flex justify-content-between mx-0 mt-0 mb-5 px-0 pt-0 pb-2 ${status === 'Rejected' ? 'rejected' : ''}`}
                                     >
                                         <li
@@ -104,8 +106,12 @@ export default function ConsignCareStatus({ orderId, startDate, endDate, status 
                                             id="step3"
                                         ></li>
                                         <li
-                                            className={`step0 ${getStatusClass(4)} text-end`}
+                                            className={`step0 ${getStatusClass(4)} text-center`}
                                             id="step4"
+                                        ></li>
+                                        <li
+                                            className={`step0 ${getStatusClass(5)} text-end`}
+                                            id="step5"
                                         ></li>
                                     </ul>
 
@@ -117,16 +123,20 @@ export default function ConsignCareStatus({ orderId, startDate, endDate, status 
                                             </p>
                                         </div>
                                         <div className="d-flex flex-column align-items-center">
-                                            <MDBIcon fas icon="box-open" size="3x" />
+                                            <MDBIcon fas icon="clipboard-check" size="3x" />
                                             <p className={`fw-bold text-center mb-0 ${getTextColorClass(2)}`}>Đang xác nhận</p>
                                         </div>
                                         <div className="d-flex flex-column align-items-center">
-                                            <MDBIcon fas icon="shipping-fast" size="3x" />
+                                            <MDBIcon fas icon="reply" size="3x" />
                                             <p className={`fw-bold text-center mb-0 ${getTextColorClass(3)}`}>Đã phản hồi</p>
                                         </div>
                                         <div className="d-flex flex-column align-items-center">
-                                            <MDBIcon fas icon="home" size="3x" />
-                                            <p className={`fw-bold text-center mb-0 ${getTextColorClass(4)}`}>Đã Hoàn Thành</p>
+                                            <MDBIcon fas icon="coins" size="3x" />
+                                            <p className={`fw-bold text-center mb-0 ${getTextColorClass(4)}`}>Đã thanh toán</p>
+                                        </div>
+                                        <div className="d-flex flex-column align-items-center">
+                                            <MDBIcon fas icon="circle-check" size="3x" />
+                                            <p className={`fw-bold text-center mb-0 ${getTextColorClass(5)}`}>Đã Hoàn Thành</p>
                                         </div>
                                     </div>
                                 </MDBCardBody>
