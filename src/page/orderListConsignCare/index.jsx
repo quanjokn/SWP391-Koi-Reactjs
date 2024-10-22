@@ -8,6 +8,7 @@ import Loading from '../../component/loading';
 import { UserContext } from '../../service/UserContext';
 import { useNavigate } from 'react-router-dom';
 import api from '../../config/axios';
+import ConsignCareSearch from '../../component/consignCareSearch';
 
 const OrderListConsignCare = () => {
     const [containerStyle, setContainerStyle] = useState({});
@@ -17,8 +18,6 @@ const OrderListConsignCare = () => {
     const [isLoading, setIsLoading] = useState(true);
     const { user } = useContext(UserContext);
     const [filteredOrders, setFilteredOrders] = useState([]);
-    const [searchDate, setSearchDate] = useState('');
-    const [searchStatus, setSearchStatus] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -71,7 +70,7 @@ const OrderListConsignCare = () => {
         pageNumbers.push(i);
     }
 
-    const handleSearch = () => {
+    const handleSearch = (searchDate, searchStatus) => {
         const filtered = orders.filter(order => {
             const matchesDate = searchDate ? order.date.startsWith(searchDate) : true;
             const matchesStatus = searchStatus ? order.status === searchStatus : true;
@@ -108,28 +107,8 @@ const OrderListConsignCare = () => {
                     <div className="col-md-9">
                         <div className="p-3 py-5">
 
-                            <div className="d-flex mb-3">
-                                <input
-                                    type="date"
-                                    value={searchDate}
-                                    onChange={(e) => setSearchDate(e.target.value)}
-                                    className="form-control me-2"
-                                    placeholder="Tìm kiếm theo ngày"
-                                />
-                                <select
-                                    value={searchStatus}
-                                    onChange={(e) => setSearchStatus(e.target.value)}
-                                    className="form-select me-2"
-                                >
-                                    <option value="">Tất cả trạng thái</option>
-                                    <option value="Pending_confirmation">Đợi xác nhận</option>
-                                    <option value="Receiving">Đang xác nhận</option>
-                                    <option value="Responded">Đã phản hồi</option>
-                                    <option value="Done">Đã hoàn thành</option>
-                                    <option value="Rejected">Đã bị từ chối</option>
-                                </select>
-                                <button className="btn btn-primary" onClick={handleSearch}>Tìm kiếm</button>
-                            </div>
+                            {/* Thay thế phần tìm kiếm bằng component ConsignCareSearch */}
+                            <ConsignCareSearch onSearch={handleSearch} />
 
                             {isLoading ? (
                                 <Loading />

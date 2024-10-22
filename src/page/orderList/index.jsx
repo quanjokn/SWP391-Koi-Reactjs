@@ -8,6 +8,7 @@ import Loading from '../../component/loading';
 import { UserContext } from '../../service/UserContext';
 import { useNavigate } from 'react-router-dom';
 import api from '../../config/axios';
+import OrderSearch from '../../component/orderSearch';
 
 const OrderList = () => {
     const [containerStyle, setContainerStyle] = useState({});
@@ -18,9 +19,6 @@ const OrderList = () => {
     const [isLoading, setIsLoading] = useState(true);
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
-
-    const [searchDate, setSearchDate] = useState('');
-    const [searchStatus, setSearchStatus] = useState('');
 
     useEffect(() => {
         setContainerStyle({
@@ -63,7 +61,8 @@ const OrderList = () => {
         navigate(`/order-detail/${orderId}`);
     };
 
-    const handleSearch = () => {
+    // Hàm xử lý tìm kiếm khi gọi từ component OrderSearch
+    const handleSearch = (searchDate, searchStatus) => {
         const filtered = orders.filter(order => {
             const matchesDate = searchDate ? order.date.includes(searchDate) : true;
             const matchesStatus = searchStatus ? order.status === searchStatus : true;
@@ -112,28 +111,9 @@ const OrderList = () => {
                     <NavigationList />
                     <div className="col-md-9">
                         <div className="p-3 py-5">
-                            <div className="d-flex mb-3">
-                                <input
-                                    type="date"
-                                    value={searchDate}
-                                    onChange={(e) => setSearchDate(e.target.value)}
-                                    className="form-control me-2"
-                                    placeholder="Tìm kiếm theo ngày"
-                                />
-                                <select
-                                    value={searchStatus}
-                                    onChange={(e) => setSearchStatus(e.target.value)}
-                                    className="form-select me-2"
-                                >
-                                    <option value="">Tất cả trạng thái</option>
-                                    <option value="Pending_confirmation">Đợi xác nhận</option>
-                                    <option value="Preparing">Đang chuẩn bị</option>
-                                    <option value="Shipping">Đang vận chuyển</option>
-                                    <option value="Completed">Đã hoàn thành</option>
-                                    <option value="Rejected">Đã bị từ chối</option>
-                                </select>
-                                <button className="btn btn-primary" onClick={handleSearch}>Tìm kiếm</button>
-                            </div>
+                            {/* Component tìm kiếm */}
+                            <OrderSearch onSearch={handleSearch} />
+
                             {isLoading ? (
                                 <Loading />
                             ) : currentOrders.length > 0 ? (

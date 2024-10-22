@@ -161,12 +161,12 @@ const ManageOrderDetail = () => {
                         {order.orderDetailsDTO.map((item, index) => (
                             <tr key={`${item.id}-${index}`}>
                                 <td className={`${styles.textCenter} ${styles.pictureColum}`}>
-                                        <img
-                                            src={item.photo}
-                                            alt={item.fishName || 'Hình ảnh sản phẩm'}
-                                            style={{ maxWidth: '150px', maxHeight: '150px', objectFit: 'cover' }}
-                                        />
-                                    </td>
+                                    <img
+                                        src={item.photo}
+                                        alt={item.fishName || 'Hình ảnh sản phẩm'}
+                                        style={{ maxWidth: '150px', maxHeight: '150px', objectFit: 'cover' }}
+                                    />
+                                </td>
                                 <td className={styles.textLeft}>{item.fishName}</td>
                                 <td className={`${styles.textRight} ${styles.quantityColumn}`}>{item.quantity}</td>
                                 <td className={styles.textRight}>{item.totalPrice.toLocaleString('vi-VN')}</td>
@@ -174,8 +174,8 @@ const ManageOrderDetail = () => {
                         ))}
 
                         <tr>
-                            <td className={styles.textLeft} colSpan="3">Tổng giá trị</td>
-                            <td className={styles.textRight}>{totalPrice.toLocaleString('vi-VN')}</td>
+                            <td colSpan="3" className={styles.textLeft}><strong>Thành tiền:</strong></td>
+                            <td className={styles.textRight}><strong>{totalPrice.toLocaleString('vi-VN')}</strong></td>
                         </tr>
                     </tbody>
                 </table>

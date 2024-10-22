@@ -8,10 +8,12 @@ import Loading from '../../component/loading';
 import { UserContext } from '../../service/UserContext';
 import { useNavigate } from 'react-router-dom';
 import api from '../../config/axios';
+import ConsignSellSearch from '../../component/consignSellSearch';
 
 const OrderListConsignSell = () => {
     const [containerStyle, setContainerStyle] = useState({});
     const [orders, setOrders] = useState([]);
+    const [filteredOrders, setFilteredOrders] = useState([]); // Danh sách đơn hàng sau khi lọc
     const [currentPage, setCurrentPage] = useState(1);
     const [ordersPerPage] = useState(10);
     const [isLoading, setIsLoading] = useState(true);
@@ -36,9 +38,9 @@ const OrderListConsignSell = () => {
             try {
                 const response = await api.post(`/consignOrder/getList/${user.id}`);
                 if (response.data && Array.isArray(response.data)) {
-                    // Sắp xếp đơn hàng theo ngày (mới nhất trước)
                     const sortedOrders = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
                     setOrders(sortedOrders);
+                    setFilteredOrders(sortedOrders); // Set mặc định cho filteredOrders
                 }
             } catch (error) {
                 console.error('Error fetching orders:', error);
@@ -50,20 +52,35 @@ const OrderListConsignSell = () => {
         fetchOrders();
     }, [user]);
 
+    const handleSearch = (searchDate, searchStatus) => {
+        let filtered = [...orders]; // Bắt đầu với danh sách đầy đủ
+
+        if (searchDate) {
+            filtered = filtered.filter(order => order.date && order.date.startsWith(searchDate));
+        }
+
+        if (searchStatus) {
+            filtered = filtered.filter(order => order.status === searchStatus);
+        }
+
+        setFilteredOrders(filtered);
+        setCurrentPage(1); // Reset về trang 1 khi có tìm kiếm mới
+    };
+
     const handleViewOrderDetail = (orderId) => {
         navigate(`/order-consign-sell/${orderId}`);
     };
 
     const indexOfLastOrder = currentPage * ordersPerPage;
     const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-    const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+    const currentOrders = filteredOrders.slice(indexOfFirstOrder, indexOfLastOrder);
 
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
 
     const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(orders.length / ordersPerPage); i++) {
+    for (let i = 1; i <= Math.ceil(filteredOrders.length / ordersPerPage); i++) {
         pageNumbers.push(i);
     }
 
@@ -95,6 +112,9 @@ const OrderListConsignSell = () => {
                     <NavigationList />
                     <div className="col-md-9">
                         <div className="p-3 py-5">
+                            {/* Tích hợp component tìm kiếm */}
+                            <ConsignSellSearch onSearch={handleSearch} />
+
                             {isLoading ? (
                                 <Loading />
                             ) : currentOrders.length > 0 ? (
@@ -147,7 +167,7 @@ const OrderListConsignSell = () => {
                                 </>
                             ) : (
                                 <div className={`${styles.noOrdersMessage} p-3 py-5`}>
-                                    <h4 className='text-center'>Bạn chưa đặt đơn hàng.</h4>
+                                    <h4 className='text-center'>Không tìm thấy đơn hàng nào.</h4>
                                 </div>
                             )}
                         </div>
