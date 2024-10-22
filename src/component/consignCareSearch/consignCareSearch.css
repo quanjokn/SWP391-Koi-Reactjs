@@ -1,0 +1,33 @@
+.consign-care-search-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px; /* Khoảng cách giữa các phần tử */
+    margin-bottom: 20px; /* Khoảng cách dưới thanh search */
+}
+
+.search-input, .search-select {
+    width: 150px; /* Thu nhỏ width */
+    padding: 5px; /* Giảm padding để gọn hơn */
+    font-size: 14px; /* Thu nhỏ font-size */
+}
+
+.search-button {
+    padding: 5px 10px; /* Thu gọn button */
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .consign-care-search-container {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .search-input, .search-select {
+        width: 100%;
+    }
+
+    .search-button {
+        width: 100%;
+    }
+}
