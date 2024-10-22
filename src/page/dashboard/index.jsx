@@ -52,7 +52,7 @@ const Dashboard = () => {
                     <div className="col-md-6 mb-6">
                         <div className="info-box p-3">
                             <h4>Doanh thu tuần này</h4>
-                            <p>${weeklyData.revenue.toLocaleString('vi-VN')} VND</p>
+                            <p>{weeklyData.revenue.toLocaleString('vi-VN')} VND</p>
                         </div>
                     </div>
 
