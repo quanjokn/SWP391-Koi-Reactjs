@@ -55,3 +55,11 @@
   height: 50px;
   font-weight: bold;
 }
+
+.quantityColumn {
+  width: 110px; /* Bạn có thể thay đổi giá trị này để phù hợp */
+}
+
+.pictureColum {
+  width: 160px;
+}

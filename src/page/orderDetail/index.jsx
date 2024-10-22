@@ -21,6 +21,7 @@ const OrderDetail = () => {
             try {
                 const response = await api.post(`/order/orderDetail/${orderId}`);
                 const orderDTO = response.data;
+                console.log(orderDTO)
                 if (orderDTO) {
                     setOrder(orderDTO);
                     setOrderItems(orderDTO.orderDetailsDTO);
@@ -89,8 +90,9 @@ const OrderDetail = () => {
                     <table className="table-custom">
                         <thead>
                             <tr>
+                                <th className={`${styles.textCenter} ${styles.pictureColum}`}>Hình ảnh</th>
                                 <th className={styles.textLeft}>Tên cá</th>
-                                <th className={styles.textRight}>Số lượng</th>
+                                <th className={`${styles.textRight} ${styles.quantityColumn}`}>Số lượng</th>
                                 <th className={styles.textRight}>Giá tiền VND</th>
                                 <th></th>
                             </tr>
@@ -98,8 +100,15 @@ const OrderDetail = () => {
                         <tbody>
                             {orderItems.map((item) => (
                                 <tr key={item.fishId}>
+                                    <td className={`${styles.textCenter} ${styles.pictureColum}`}>
+                                        <img
+                                            src={item.photo}
+                                            alt={item.fishName || 'Hình ảnh sản phẩm'}
+                                            style={{ maxWidth: '150px', maxHeight: '150px', objectFit: 'cover' }}
+                                        />
+                                    </td>
                                     <td className={styles.textLeft}>{item.fishName || 'N/A'}</td>
-                                    <td className={styles.textRight}>{item.quantity || 0}</td>
+                                    <td className={`${styles.textRight} ${styles.quantityColumn}`}>{item.quantity || 0}</td>
                                     <td className={styles.textRight}>{item.unitPrice ? item.unitPrice.toLocaleString('vi-VN') : 0}</td>
                                     {/* Nút đánh giá cho từng con cá */}
                                     <td className={styles.textCenter}>
