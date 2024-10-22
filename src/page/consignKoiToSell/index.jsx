@@ -343,7 +343,7 @@ const ConsignedKoiToSell = () => {
                                     </div>
                                     {fishData.species.includes('other') && (
                                         <div>
-                                            <label>Vui lòng nhập tên loài:</label>
+                                            <label className={styles["khac"]}>Vui lòng nhập tên loài:</label>
                                             <input
                                                 type="text"
                                                 name="otherSpecies"

@@ -13,3 +13,8 @@
 .textRight {
     text-align: right;
 }
+.ten{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

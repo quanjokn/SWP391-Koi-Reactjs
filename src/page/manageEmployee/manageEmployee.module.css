@@ -23,6 +23,10 @@
     font-weight: bold; /* Make labels bold */
 }
 
+.form-create-account h2{
+    text-align: center;
+}
+
 .form-create-account input[type="text"],
 .form-create-account input[type="email"],
 .form-create-account select {
@@ -51,11 +55,18 @@ table {
     background-color: #ccc ;
 }
 
+.create{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .btn-create {
     background-color: rgb(0, 80, 253);
     color: #f9f9f9;
     border: #333 solid 1px;
     border-radius: 5px;
+    
 }
 
 .btn-create:hover{
@@ -177,6 +188,47 @@ table {
     border-bottom: 2px solid #ffffff; /* Match background to simulate active tab */
     color: #000; /* Darker text for active tab */
 }
-
+.online-icon {
+    width: 20px;
+    height: 20px;
+    background-color: #28a745; /* Green color */
+    border-radius: 50%;
+    position: relative;
+    margin: 0 auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .online-icon::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    background-color: white;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .offline-icon {
+    width: 20px;
+    height: 20px;
+    background-color: #dc3545; /* Red color */
+    border-radius: 50%;
+    margin: 0 auto;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .offline-icon::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: white;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
 
 

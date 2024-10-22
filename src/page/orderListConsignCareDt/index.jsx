@@ -80,9 +80,9 @@ const OrderDetailConSignCare = () => {
                 />
 
                 {(order.status === 'Responded') && (
-                    <div className={styles.updateStatus}>                        
+                    <div className = {`${styles.ten}`} >                        
                         <button
-                            className={order.status === 'Done' ? styles.buttonDisabled : styles.buttonCompleted}
+                            className={order.status === 'Done' ? styles.buttonDisabled : `btn btn-success ${styles.submitButton}`}
                             onClick={order.status !== 'Done' ? handleCompleteOrder : undefined}
                             disabled={order.status === 'Done'}
                         >
