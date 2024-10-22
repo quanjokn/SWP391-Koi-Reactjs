@@ -3,18 +3,21 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
 }
-.title{
+
+.title {
   position: sticky;
   top: 59px;
   background-color: rgb(80, 0, 0);
   z-index: 1000;
   color: white;
 }
-.price{
-  font-size: 1.5em; 
-  font-weight: bold; 
-  color: #c0392b; 
+
+.price {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #c0392b;
 }
+
 .product-detail {
   display: flex;
   flex-direction: column;
@@ -70,12 +73,18 @@ footer.footer {
 }
 
 .product-info {
-  background-color: #f9f9f9; /* Nền sáng cho container */
-  border: 1px solid #020202; /* Đường viền xung quanh */
-  border-radius: 8px; /* Bo tròn các góc */
-  padding: 20px; /* Khoảng cách giữa các phần tử và viền */
-  margin-top: 15px; /* Khoảng cách giữa các thành phần khác */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+  background-color: #f9f9f9;
+  /* Nền sáng cho container */
+  border: 1px solid #020202;
+  /* Đường viền xung quanh */
+  border-radius: 8px;
+  /* Bo tròn các góc */
+  padding: 20px;
+  /* Khoảng cách giữa các phần tử và viền */
+  margin-top: 15px;
+  /* Khoảng cách giữa các thành phần khác */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  /* Đổ bóng nhẹ */
   width: 50%;
 }
 
@@ -128,13 +137,30 @@ footer.footer {
 }
 
 .feedback-list {
-  border-top: 1px solid #ddd;
+  border-top: 1px solid #c7c6c6;
   padding-top: 10px;
 }
 
 .feedback-item {
   padding: 10px 0;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #c7c6c6;
+}
+
+.feedback-item strong {
+  margin-left: 15px;
+}
+
+.feedback-item img {
+  width: 48px;
+  height: 48px;
+  max-width: 48px;
+  border-radius: 0;
+  border: none;
+  border-bottom: 2px solid #0aff3f;
+  padding: 1px;
+  background-color: #fff;
+  vertical-align: middle;
+  text-align: center;
 }
 
 .feedback-rating {
@@ -164,6 +190,7 @@ button {
   border: none;
   cursor: pointer;
 }
+
 .product-gallery {
   position: relative;
   width: 100%;
