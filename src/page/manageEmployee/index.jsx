@@ -35,7 +35,6 @@ const ManageEmployee = () => {
                 console.error('Error fetching users:', error);
             }
         };
-
         fetchUsers();
     }, []);
 
@@ -104,7 +103,7 @@ const ManageEmployee = () => {
             <Header />
             <Tagbar />
             <div className={styles.container}>
-                    <h1>Manage Users</h1> 
+                    <h1>Quản lý người dùng</h1> 
 
                 {/* Tab Navigation */}
                 <div className={styles.tabContainer}>
@@ -112,13 +111,13 @@ const ManageEmployee = () => {
                         className={activeTab === 'Customers' ? styles.activeTab : ''}
                         onClick={() => setActiveTab('Customers')}
                     >
-                        Customers
+                        Khách hàng
                     </button>
                     <button
                         className={activeTab === 'Staff/Manager' ? styles.activeTab : ''}
                         onClick={() => setActiveTab('Staff/Manager')}
                     >
-                        Staff/Manager
+                        Nhân viên/Quản lý
                     </button>
                 </div>
 
@@ -129,7 +128,7 @@ const ManageEmployee = () => {
                         <div className={styles["search-filter-container2"]}>
                             <div className={styles["search-container2"]}>
                                 <label>
-                                    Search by Name:
+                                    Tìm kiếm theo tên:
                                     <input
                                         type="text"
                                         value={searchTerm}
