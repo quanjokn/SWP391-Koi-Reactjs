@@ -11,12 +11,16 @@ import api from '../../config/axios';
 
 const OrderList = () => {
     const [containerStyle, setContainerStyle] = useState({});
-    const [orders, setOrders] = useState([]); // Khởi tạo mảng đơn hàng
-    const [currentPage, setCurrentPage] = useState(1); // Quản lý trang hiện tại
-    const [ordersPerPage] = useState(10); // Số đơn hàng hiển thị mỗi trang
+    const [orders, setOrders] = useState([]);
+    const [filteredOrders, setFilteredOrders] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [ordersPerPage] = useState(10);
     const [isLoading, setIsLoading] = useState(true);
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
+
+    const [searchDate, setSearchDate] = useState('');
+    const [searchStatus, setSearchStatus] = useState('');
 
     useEffect(() => {
         setContainerStyle({
@@ -26,11 +30,9 @@ const OrderList = () => {
         });
     }, []);
 
-    // Lấy dữ liệu từ API và sắp xếp theo ngày
     useEffect(() => {
         const fetchOrders = async () => {
             if (!user.id) {
-                // Nếu user hoặc user.id không tồn tại, không gọi API
                 setIsLoading(false);
                 return;
             }
@@ -42,9 +44,10 @@ const OrderList = () => {
                     const sortedOrders = response.data.sort((a, b) => {
                         const dateA = new Date(a.date);
                         const dateB = new Date(b.date);
-                        return dateB - dateA; // Sắp xếp từ mới đến cũ
+                        return dateB - dateA;
                     });
                     setOrders(sortedOrders);
+                    setFilteredOrders(sortedOrders);
                 }
             } catch (error) {
                 console.error('Error fetching orders:', error);
@@ -60,19 +63,26 @@ const OrderList = () => {
         navigate(`/order-detail/${orderId}`);
     };
 
-    // Tính toán các chỉ số để hiển thị đơn hàng trên trang hiện tại
+    const handleSearch = () => {
+        const filtered = orders.filter(order => {
+            const matchesDate = searchDate ? order.date.includes(searchDate) : true;
+            const matchesStatus = searchStatus ? order.status === searchStatus : true;
+            return matchesDate && matchesStatus;
+        });
+        setFilteredOrders(filtered);
+        setCurrentPage(1); // Reset về trang đầu khi tìm kiếm
+    };
+
     const indexOfLastOrder = currentPage * ordersPerPage;
     const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-    const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+    const currentOrders = filteredOrders.slice(indexOfFirstOrder, indexOfLastOrder);
 
-    // Thay đổi trang khi người dùng bấm số trang
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
 
-    // Tạo danh sách các trang
     const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(orders.length / ordersPerPage); i++) {
+    for (let i = 1; i <= Math.ceil(filteredOrders.length / ordersPerPage); i++) {
         pageNumbers.push(i);
     }
 
@@ -85,9 +95,9 @@ const OrderList = () => {
             case 'Shipping':
                 return { text: 'Đang vận chuyển' };
             case 'Completed':
-                return { text: 'Đã hoàn thành', className: styles.done }; // Sử dụng className cho trạng thái hoàn thành
+                return { text: 'Đã hoàn thành', className: styles.done };
             case 'Rejected':
-                return { text: 'Đã bị từ chối', className: styles.rejected }; // Sử dụng className cho trạng thái từ chối
+                return { text: 'Đã bị từ chối', className: styles.rejected };
             default:
                 return { text: status };
         }
@@ -102,8 +112,30 @@ const OrderList = () => {
                     <NavigationList />
                     <div className="col-md-9">
                         <div className="p-3 py-5">
+                            <div className="d-flex mb-3">
+                                <input
+                                    type="date"
+                                    value={searchDate}
+                                    onChange={(e) => setSearchDate(e.target.value)}
+                                    className="form-control me-2"
+                                    placeholder="Tìm kiếm theo ngày"
+                                />
+                                <select
+                                    value={searchStatus}
+                                    onChange={(e) => setSearchStatus(e.target.value)}
+                                    className="form-select me-2"
+                                >
+                                    <option value="">Tất cả trạng thái</option>
+                                    <option value="Pending_confirmation">Đợi xác nhận</option>
+                                    <option value="Preparing">Đang chuẩn bị</option>
+                                    <option value="Shipping">Đang vận chuyển</option>
+                                    <option value="Completed">Đã hoàn thành</option>
+                                    <option value="Rejected">Đã bị từ chối</option>
+                                </select>
+                                <button className="btn btn-primary" onClick={handleSearch}>Tìm kiếm</button>
+                            </div>
                             {isLoading ? (
-                                <Loading /> // Hiển thị Loading khi đang tải
+                                <Loading />
                             ) : currentOrders.length > 0 ? (
                                 <>
                                     <table className={styles.table}>
@@ -116,47 +148,25 @@ const OrderList = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {currentOrders.map((order) => {
-                                                const productNames =
-                                                    order.orderDetails && order.orderDetails.length > 0
-                                                        ? order.orderDetails.map((product) => product.title).join(', ')
-                                                        : 'Chưa có sản phẩm';
-
-                                                const totalQuantity =
-                                                    order.orderDetails && order.orderDetails.length > 0
-                                                        ? order.orderDetails.reduce((total, product) => total + product.quantity, 0)
-                                                        : 0;
-
-                                                const totalPrice = order.total || 0;
-
-                                                return (
-                                                    <tr
-                                                        key={order.id}
-                                                        onClick={() => handleViewOrderDetail(order.id)}
-                                                        style={{ cursor: 'pointer' }}
-                                                    >
-                                                        <td className={styles.textLeft}>{order.date}</td>
-                                                        <td className={styles.textLeft}>{order.id}</td>
-                                                        <td className={styles.textRight}>{totalPrice.toLocaleString('vi-VN')}</td>
-                                                        <td className={`${styles.textLeft} ${translateStatus(order.status).className}`}>{translateStatus(order.status).text}</td>
-                                                    </tr>
-                                                );
-                                            })}
+                                            {currentOrders.map((order) => (
+                                                <tr
+                                                    key={order.id}
+                                                    onClick={() => handleViewOrderDetail(order.id)}
+                                                    style={{ cursor: 'pointer' }}
+                                                >
+                                                    <td className={styles.textLeft}>{order.date}</td>
+                                                    <td className={styles.textLeft}>{order.id}</td>
+                                                    <td className={styles.textRight}>{order.total.toLocaleString('vi-VN')}</td>
+                                                    <td className={`${styles.textLeft} ${translateStatus(order.status).className}`}>{translateStatus(order.status).text}</td>
+                                                </tr>
+                                            ))}
                                         </tbody>
                                     </table>
-
-                                    {/* Hiển thị nút phân trang */}
                                     <nav>
                                         <ul className="pagination justify-content-center">
                                             {pageNumbers.map(number => (
-                                                <li
-                                                    key={number}
-                                                    className={`page-item ${number === currentPage ? 'active' : ''}`}
-                                                >
-                                                    <button
-                                                        onClick={() => paginate(number)}
-                                                        className="page-link"
-                                                    >
+                                                <li key={number} className={`page-item ${number === currentPage ? 'active' : ''}`}>
+                                                    <button onClick={() => paginate(number)} className="page-link">
                                                         {number}
                                                     </button>
                                                 </li>
@@ -166,7 +176,7 @@ const OrderList = () => {
                                 </>
                             ) : (
                                 <div className={`${styles.noOrdersMessage} p-3 py-5`}>
-                                    <h4 className='text-center'>Bạn chưa đặt đơn hàng.</h4>
+                                    <h4 className='text-center'>Không có đơn hàng.</h4>
                                 </div>
                             )}
                         </div>
