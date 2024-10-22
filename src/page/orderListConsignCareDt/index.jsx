@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import api from '../../config/axios';
 import ConsignCareStatus from '../../component/consignCareStatus';
 import Header from '../../component/header';
@@ -7,6 +7,7 @@ import Footer from '../../component/footer';
 import Loading from '../../component/loading';
 import styles from './orderListConsignCareDt.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
+import { UserContext } from '../../service/UserContext';
 
 const OrderDetailConSignCare = () => {
     const [order, setOrder] = useState(null);
@@ -15,6 +16,7 @@ const OrderDetailConSignCare = () => {
     const [containerStyle, setContainerStyle] = useState({});
     const navigate = useNavigate();
     const { orderId } = useParams();
+    const { user } = useContext(UserContext);
 
     useEffect(() => {
         const fetchOrderDetails = async () => {
@@ -52,6 +54,19 @@ const OrderDetailConSignCare = () => {
     if (isLoading) {
         return <Loading />;
     }
+    
+    const handleCompleteOrder = async () => {
+        const userId = user ? user.id : null;
+        try {
+            const response = await api.post(`/staff/generateOrderId`, {});
+            const type = 'caringOrder';
+            navigate(`/vnpay/onlinePayment/${type}/${userId}/${orderId}/${response.data}/${order.totalPrice}`);
+            
+        } catch (error) {
+            console.error('Error updating order status to Completed:', error);
+            
+        }
+    };
 
     return (
         <>
@@ -63,6 +78,18 @@ const OrderDetailConSignCare = () => {
                     date={new Date(order.date).toLocaleDateString()}
                     status={order.status || 'N/A'}
                 />
+
+                {(order.status === 'Responded') && (
+                    <div className={styles.updateStatus}>                        
+                        <button
+                            className={order.status === 'Done' ? styles.buttonDisabled : styles.buttonCompleted}
+                            onClick={order.status !== 'Done' ? handleCompleteOrder : undefined}
+                            disabled={order.status === 'Done'}
+                        >
+                            Thanh toán
+                        </button>
+                    </div>
+                )}
 
                 {/* Bảng thông tin khách hàng */}
                 <div className="order-summary">
@@ -137,28 +164,7 @@ const OrderDetailConSignCare = () => {
                             ))}
                         </tbody>
                     </table>
-                </div>
-
-                {/* Thông tin nhân viên phụ trách */}
-                <h3 className="mt-4">Thông tin nhân viên phụ trách</h3>
-                <div className="staff-info">
-                    <table className="table-custom">
-                        <thead>
-                            <tr>
-                                <th className={styles.textLeft}>Tên nhân viên</th>
-                                <th className={styles.textLeft}>Số điện thoại</th>
-                                <th className={styles.textLeft}>Email</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td className={styles.textLeft}>{order.staff?.name || 'N/A'}</td>
-                                <td className={styles.textLeft}>{order.staff?.phone || 'N/A'}</td>
-                                <td className={styles.textLeft}>{order.staff?.email || 'N/A'}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                </div>                
             </div>
             <Footer />
         </>
