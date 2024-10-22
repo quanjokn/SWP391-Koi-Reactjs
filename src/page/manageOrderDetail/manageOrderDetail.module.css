@@ -99,3 +99,14 @@
 .textRight {
     text-align: right;
 }
+
+.textCenter {
+    text-align: center;
+}
+.quantityColumn {
+    width: 110px; /* Bạn có thể thay đổi giá trị này để phù hợp */
+  }
+
+  .pictureColum {
+    width: 160px;
+  }
