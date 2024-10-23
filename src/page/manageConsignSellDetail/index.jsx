@@ -117,6 +117,8 @@ const ManageConsignSellDetail = () => {
                         <table className={styles.table}>
                             <thead>
                                 <tr>
+                                    <th className={styles.textLeft}>Ảnh cá</th>
+                                    <th className={styles.textLeft}>Ảnh giấy chứng nhận</th>
                                     <th className={styles.textLeft}>Tên cá</th>
                                     <th className={styles.textLeft}>Số lượng</th>
                                     <th className={styles.textLeft}>Giá bán VND</th>
@@ -129,6 +131,18 @@ const ManageConsignSellDetail = () => {
                             <tbody>
                                 {order.request.ConsignList.map(product => (
                                     <tr key={product.fishID}>
+                                        <td className={styles.textLeft}>
+                                            {<img
+                                                src={product.photo}
+                                                alt={product.name || 'Hình ảnh sản phẩm'}
+                                                style={{ maxWidth: '150px', maxHeight: '150px', objectFit: 'cover' }}
+                                            />}</td>
+                                        <td className={styles.textLeft}>
+                                            {<img
+                                                src={product.certificate}
+                                                alt={product.name || 'Giấy chứng nhận'}
+                                                style={{ maxWidth: '150px', maxHeight: '150px', objectFit: 'cover' }}
+                                            />}</td>
                                         <td className={styles.textLeft}>{product.name}</td>
                                         <td className={styles.textRight}>{product.quantity}</td>
                                         <td className={styles.textRight}>{product.price.toLocaleString('vi-VN')}</td>

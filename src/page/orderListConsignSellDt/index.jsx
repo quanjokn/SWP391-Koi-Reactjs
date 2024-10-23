@@ -107,6 +107,8 @@ const OrderDetailConSignSell = () => {
                     <table className="table-custom">
                         <thead>
                             <tr>
+                                <th className={styles.textLeft}>Hình ảnh</th>
+                                <th className={styles.textLeft}>Giấy chứng nhận</th>
                                 <th className={styles.textLeft}>Tên cá</th>
                                 <th className={styles.textLeft}>Giới tính</th>
                                 <th className={styles.textRight}>Tuổi</th>
@@ -118,6 +120,20 @@ const OrderDetailConSignSell = () => {
                         <tbody>
                             {(order.request?.ConsignList || []).map((koi) => (
                                 <tr key={koi.fishID}>
+                                    <td className={styles.textLeft}>
+                                        {<img
+                                            src={koi.photo}
+                                            alt={koi.name || 'Hình ảnh'}
+                                            style={{ maxWidth: '150px', maxHeight: '150px', objectFit: 'cover' }}
+                                        />}
+                                    </td>
+                                    <td className={styles.textLeft}>
+                                        {<img
+                                            src={koi.certificate}
+                                            alt={koi.name || 'Giấy chứng nhận'}
+                                            style={{ maxWidth: '150px', maxHeight: '150px', objectFit: 'cover' }}
+                                        />}
+                                    </td>
                                     <td className={styles.textLeft}>{koi.name || 'N/A'}</td>
                                     <td className={styles.textLeft}>{koi.sex || 'N/A'}</td>
                                     <td className={styles.textRight}>{koi.age || 'N/A'}</td>
@@ -129,7 +145,7 @@ const OrderDetailConSignSell = () => {
 
                             {(!order.request?.ConsignList || order.request.ConsignList.length === 0) && (
                                 <tr>
-                                    <td colSpan="6">Không có cá Koi được chăm sóc</td>
+                                    <td colSpan="6">Không có cá Koi được bán</td>
                                 </tr>
                             )}
                         </tbody>
