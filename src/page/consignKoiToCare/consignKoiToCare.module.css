@@ -22,6 +22,11 @@
     padding: 15px;
     margin: 20px;
 }
+
+.fish-form label{
+    color: aliceblue;
+}
+
 .form-container{
     border: black solid 1px;
     border-radius: 10px;
