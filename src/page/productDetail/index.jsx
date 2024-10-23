@@ -178,7 +178,7 @@ const ProductDetail = () => {
                         </div>
 
                         <div className={styles["product-info "]} class="col-md-7">
-                            <p className={styles['price']}>Giá bán: {product.price} VND</p>
+                            <p className={styles['price']}>Giá bán: {product.price.toLocaleString('vi-VN')} VND</p>
                             {product.discount > 0 && (
                                 <p>Giá khuyến mãi: {promotionPrice.toFixed(2)} VND</p>
                             )}
