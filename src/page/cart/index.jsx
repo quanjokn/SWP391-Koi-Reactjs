@@ -6,12 +6,14 @@ import Tagbar from "../../component/tagbar";   // Reused Tagbar
 import styles from "./cart.module.css";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../service/UserContext";
+import { CartContext } from "../../service/CartContext";
 
 const Cart = () => {
     const [cart, setCart] = useState(null);
     const { user } = useContext(UserContext);
     const userId = user ? user.id : null;
     const navigate = useNavigate();
+    const { fetchCart } = useContext(CartContext);
 
     useEffect(() => {
         api.post(`/cart/${userId}`)
@@ -27,6 +29,8 @@ const Cart = () => {
         api.delete(`/cart/remove/${fishId}?userId=${userId}`)
             .then(response => {
                 setCart(response.data);
+                // Cập nhật giỏ hàng
+                fetchCart(); // Gọi lại để cập nhật giỏ hàng
             })
             .catch(error => {
                 console.error("Error removing item from cart:", error);
@@ -44,6 +48,8 @@ const Cart = () => {
         })
             .then(response => {
                 setCart(response.data);
+                // Cập nhật giỏ hàng
+                fetchCart(); // Gọi lại để cập nhật giỏ hàng
             })
             .catch(error => {
                 console.error("Error updating quantity:", error);

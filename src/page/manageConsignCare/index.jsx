@@ -79,7 +79,7 @@ const ManageConsignCare = () => {
                             <tr>
                                 <th className={styles.textLeft}>ID</th>
                                 <th className={styles.textLeft}>Ngày đặt hàng</th>
-                                <th className={styles.textRight}>Thành tiền VND</th>
+                                <th className={styles.textLeft}>Thành tiền VND</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -88,7 +88,7 @@ const ManageConsignCare = () => {
                                 <tr key={order.id} className={styles.row}>
                                     <td className={styles.textLeft}>{order.id}</td>
                                     <td className={styles.textLeft}>{order.orderDate}</td>
-                                    <td className={styles.textRight}>{order.totalPrice.toLocaleString('vi-VN')}</td>
+                                    <td className={styles.textLeft}>{order.totalPrice.toLocaleString('vi-VN')}</td>
                                     <td className={styles.textCenter}>
                                         <button
                                             className={styles.button1}

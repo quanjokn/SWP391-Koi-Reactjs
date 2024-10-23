@@ -1,0 +1,46 @@
+import React, { createContext, useState, useEffect, useContext } from 'react';
+import api from '../config/axios';
+import { UserContext } from './UserContext';
+
+export const CartContext = createContext();
+
+export const CartProvider = ({ children }) => {
+    const { user } = useContext(UserContext);
+    const [cart, setCart] = useState(null);
+    const userId = user ? user.id : null;
+
+    useEffect(() => {
+        if (userId) {
+            api.post(`/cart/${userId}`)
+                .then(response => {
+                    setCart(response.data);
+                })
+                .catch(error => {
+                    console.error("Error fetching cart:", error);
+                });
+        }
+    }, [userId]);
+
+    const updateCart = (newCart) => {
+        setCart(newCart);
+    };
+
+    // Thêm phương thức để cập nhật giỏ hàng
+    const fetchCart = () => {
+        if (userId) {
+            api.post(`/cart/${userId}`)
+                .then(response => {
+                    setCart(response.data);
+                })
+                .catch(error => {
+                    console.error("Error fetching cart:", error);
+                });
+        }
+    };
+
+    return (
+        <CartContext.Provider value={{ cart, setCart: updateCart, fetchCart }}>
+            {children}
+        </CartContext.Provider>
+    );
+};

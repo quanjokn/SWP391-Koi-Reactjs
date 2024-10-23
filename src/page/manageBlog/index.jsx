@@ -9,7 +9,7 @@ import './manageBlog.css';
 // API calls
 const createBlog = async (blog) => {
     try {
-        const response = await api.post('/blogManagement/create', blog);
+        await api.post('/blogManagement/create', blog);
     } catch (error) {
         console.error('Error creating blog:', error);
     }
@@ -34,7 +34,7 @@ const getBlogDetails = async (blogID) => {
 
 const updateBlog = async (blog) => {
     try {
-        const response = await api.post('/blogManagement/update', blog);
+        await api.post('/blogManagement/update', blog);
     } catch (error) {
         console.error('Error updating blog:', error);
     }
@@ -86,12 +86,16 @@ function BlogManager() {
     useEffect(() => {
         const fetchBlogs = async () => {
             const blogsData = await getAllBlogs();
-
-            const sortedBlogs = blogsData.sort((a, b) => new Date(b.date) - new Date(a.date));
+            const sortedBlogs = sortBlogs(blogsData);
             setBlogs(sortedBlogs);
         };
         fetchBlogs();
     }, []);
+
+    // Sắp xếp các blog theo ngày
+    const sortBlogs = (blogsData) => {
+        return blogsData.sort((a, b) => new Date(b.date) - new Date(a.date));
+    };
 
     // Kiểm tra dữ liệu hợp lệ
     const validateForm = () => {
@@ -107,14 +111,14 @@ function BlogManager() {
         if (!validateForm()) return;  // Dừng nếu form không hợp lệ
         await createBlog(formData);
         const updatedBlogs = await getAllBlogs();
-        setBlogs(updatedBlogs);
+        setBlogs(sortBlogs(updatedBlogs));
         resetForm();
     };
 
     const handleDelete = async (id) => {
         await deleteBlog(id);
         const updatedBlogs = await getAllBlogs();
-        setBlogs(updatedBlogs);
+        setBlogs(sortBlogs(updatedBlogs));
     };
 
     const handleUpdate = async () => {
@@ -122,7 +126,7 @@ function BlogManager() {
         try {
             await updateBlog(formData);
             const updatedBlogs = await getAllBlogs();
-            setBlogs(updatedBlogs);
+            setBlogs(sortBlogs(updatedBlogs));
             resetForm();
         } catch (error) {
             console.error('Error updating blog:', error);
@@ -257,20 +261,11 @@ function BlogManager() {
                         value={formData.content_2}
                         onChange={(e) => setFormData({ ...formData, content_2: e.target.value })}
                     />
-                    <input
-                        type="date"
-                        value={formData.date}
-                        max={getCurrentDate()} // Chặn chọn ngày vượt quá ngày hiện tại
-                        onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                    />
-                    <div className="button-group">
-                        {selectedBlog ? (
-                            <button className="btn btn-success" onClick={handleUpdate}>Update</button>
-                        ) : (
-                            <button className="btn btn-primary" onClick={handleCreate}>Create</button>
-                        )}
-                        <button className="btn btn-secondary" onClick={resetForm}>Reset</button>
-                    </div>
+                    {selectedBlog ? (
+                        <button className="btn btn-primary" onClick={handleUpdate}>Cập nhật</button>
+                    ) : (
+                        <button className="btn btn-primary" onClick={handleCreate}>Tạo mới</button>
+                    )}
                 </div>
             </div>
             <Footer />
