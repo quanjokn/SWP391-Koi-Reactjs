@@ -143,8 +143,9 @@ const ConsignedKoiToSell = () => {
             <div className={`container ${styles.wrapper}`}>
                 <h1>Điền thông tin kí gửi để bán </h1>
                 <div >
-                    {fishForm.map((fishData, index) => (
-                        <form onSubmit={handleSubmit} className={styles['fish-form']}>
+
+                    <form onSubmit={handleSubmit} className={styles['fish-form']}>
+                        {fishForm.map((fishData, index) => (
                             <div key={index}>
                                 <div className={styles['title2']} >
                                     <span className={styles['title']}> Thông tin cá {index + 1}</span>
@@ -161,82 +162,94 @@ const ConsignedKoiToSell = () => {
 
                                 <div className="row mb-3">
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
+                                        <label>Tên cá:</label>
                                         <input
                                             type="text"
                                             className="form-control"
                                             name="name"
-                                            placeholder="Tên cá"
                                             value={fishData.name}
                                             onChange={(e) => handleInputChange(index, e)}
                                             required
                                         />
                                     </div>
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
+                                        <label>Tuổi cá:</label>
                                         <input
                                             type="number"
                                             className="form-control"
                                             name="age"
-                                            placeholder="Tuổi cá"
+                                            min="0"
                                             value={fishData.age}
                                             onChange={(e) => handleInputChange(index, e)}
                                             required
                                         />
                                     </div>
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
+                                        <label>Giá cá:</label>
                                         <input
                                             type="number"
                                             className="form-control"
                                             name="price"
-                                            placeholder="Giá cá (VNĐ)"
+                                            placeholder="VNĐ"
                                             value={fishData.price}
                                             onChange={(e) => handleInputChange(index, e)}
+                                            min="0"
                                             required
                                         />
                                     </div>
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
+                                        <label>Hình ảnh cá:</label>
                                         <input
                                             type="file"
                                             className="form-control"
                                             name="photo"
-                                            placeholder="URL ảnh cá"
                                             onChange={(e) => handleFileChange(index, e)}
                                             required
                                         />
                                     </div>
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
+                                        <label>Số lượng:</label>
                                         <input
                                             type="number"
                                             className="form-control"
                                             name="quantity"
-                                            placeholder="Số lượng"
                                             value={fishData.quantity}
                                             onChange={(e) => handleInputChange(index, e)}
+                                            min="0"
                                             required
                                         />
                                     </div>
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
-                                        <input
-                                            type="text"
-                                            className="form-control"
+                                        <label>Giới tính:</label>
+                                        <select
                                             name="sex"
-                                            placeholder="Giới tính"
                                             value={fishData.sex}
+                                            className="form-control"
                                             onChange={(e) => handleInputChange(index, e)}
                                             required
-                                        />
+                                        >
+                                            <option value="" disabled>
+                                                Chọn giới tính
+                                            </option>
+                                            <option value="Koi Đực">Đực</option>
+                                            <option value="Koi Cái">Cái</option>
+
+                                        </select>
                                     </div>
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
+                                        <label>Kích thước:</label>
                                         <input
                                             type="text"
                                             className="form-control"
                                             name="size"
-                                            placeholder="Size (cm)"
+                                            placeholder="(cm)"
                                             value={fishData.size}
                                             onChange={(e) => handleInputChange(index, e)}
                                             required
                                         />
                                     </div>
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
+                                        <label>Hình ảnh giấy chứng nhận:</label>
                                         <input
                                             type="file"
                                             className="form-control"
@@ -247,37 +260,38 @@ const ConsignedKoiToSell = () => {
                                         />
                                     </div>
                                     <div className="col-12 col-md-6 col-lg-6 mb-3">
+                                        <label>Tính cách:</label>
                                         <input
                                             type="text"
                                             className="form-control"
                                             name="character"
-                                            placeholder="Tính cách cá"
                                             value={fishData.character}
                                             onChange={(e) => handleInputChange(index, e)}
                                             required
                                         />
                                     </div>
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
+                                        <label>Tình trạng sức khoẻ:</label>
                                         <input
                                             type="text"
                                             className="form-control"
                                             name="healthStatus"
-                                            placeholder="Tình trạng sức khoẻ"
                                             value={fishData.healthStatus}
                                             onChange={(e) => handleInputChange(index, e)}
                                             required
                                         />
                                     </div>
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
-                                        <input
-                                            type="file"
+                                        <label > Video: </label>                                        <input
+                                            type="text"
                                             className="form-control"
                                             name="video"
-                                            placeholder="URL video về cá"
-                                            onChange={(e) => handleFileChange(index, e)}
+                                            placeholder="Nhập đường link URL"
+                                            onChange={(e) => handleInputChange(index, e)}
                                         />
                                     </div>
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
+                                        <label > Nguồn gốc: </label>
                                         <select
                                             className="form-control"
                                             name="origin"
@@ -294,6 +308,7 @@ const ConsignedKoiToSell = () => {
                                         </select>
                                     </div>
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
+                                        <label > Loại: </label>
                                         <select
                                             className="form-control"
                                             name="type"
@@ -310,16 +325,17 @@ const ConsignedKoiToSell = () => {
                                         </select>
                                     </div>
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
+                                        <label > Chế độ ăn: </label>
                                         <input
                                             className="form-control"
                                             name="ration"
-                                            placeholder="Chế độ ăn của cá"
                                             value={fishData.ration}
                                             onChange={(e) => handleInputChange(index, e)}
                                             required
                                         />
                                     </div>
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
+                                        <label > Giống loài: </label>
                                         <select
                                             className="form-control"
                                             name="species"
@@ -356,10 +372,10 @@ const ConsignedKoiToSell = () => {
                                 </div>
                                 <div className="row mb-3">
                                     <div className="col-12">
+                                        <label > Mô tả: </label>
                                         <textarea
                                             className="form-control"
                                             name="description"
-                                            placeholder="Mô tả cá"
                                             value={fishData.description}
                                             onChange={(e) => handleInputChange(index, e)}
                                             required
@@ -368,20 +384,23 @@ const ConsignedKoiToSell = () => {
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                    ))}
-                    <div>
-                        <button type="button"className={`btn btn-success ${styles.submitButton}`} onClick={handleAddNewForm}>
-                            <i className="fa-solid fa-plus"></i> Thêm cá để kí gửi
-                        </button>
-                    </div>
-                    <div className="row">
-                        <div className="col-12 d-flex justify-content-center">
-                            <button onClick={handleSubmit} type="submit" className={`btn btn-success ${styles.submitButton}`}>
-                                Gửi
+                        ))}
+                        {/* button */}
+                        <div>
+                            <button type="button" className={`btn btn-success ${styles.submitButton}`} onClick={handleAddNewForm}>
+                                <i className="fa-solid fa-plus"></i> Thêm cá để kí gửi
                             </button>
                         </div>
-                    </div>
+                        <div className="row">
+                            <div className="col-12 d-flex justify-content-center">
+                                <button type="submit" className={`btn btn-success ${styles.submitButton}`}>
+                                    Gửi
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+
 
                 </div>
 

@@ -44,6 +44,7 @@ import BlogManager from './page/manageBlog';
 import Review from './page/review';
 import History from './page/history';
 import CreateVNPay from './page/vnpay';
+import ManageProduct from './page/manageProduct';
 
 function App() {
   const router = createBrowserRouter([
@@ -288,6 +289,14 @@ function App() {
       element: (
         <PrivateRoute requiredRole="Manager">
           <ManageEmployee/>
+        </PrivateRoute>
+      )
+    },
+    {
+      path: '/quan-li-san-pham',
+      element: (
+        <PrivateRoute requiredRole="Manager">
+          <ManageProduct/>
         </PrivateRoute>
       )
     },
