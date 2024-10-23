@@ -9,7 +9,7 @@ import { UserContext } from '../../service/UserContext';
 import Masthead from "../../component/masthead";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-
+import { CartContext } from "../../service/CartContext";
 
 
 const ProductList = () => {
@@ -28,6 +28,8 @@ const ProductList = () => {
     const { user } = useContext(UserContext);
     const [compareList, setCompareList] = useState([]);
     const [showCompareBox, setShowCompareBox] = useState(false);
+
+    const { fetchCart } = useContext(CartContext);
 
     useEffect(() => {
         api.get('/fish/fishes-list')
@@ -117,6 +119,9 @@ const ProductList = () => {
                 setTimeout(() => {
                     setShowMessage(false);
                 }, 3000);
+
+                // Cập nhật giỏ hàng
+                fetchCart(); // Gọi lại để cập nhật giỏ hàng
             })
             .catch((error) => {
                 console.error("Error adding product to cart!", error);

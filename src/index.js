@@ -4,13 +4,16 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import { UserProvider } from './service/UserContext'; // Import UserProvider
+import { UserProvider } from './service/UserContext'; 
+import { CartProvider } from './service/CartContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <UserProvider>
-      <App />
+      <CartProvider>
+        <App />
+      </CartProvider>
     </UserProvider>
   </React.StrictMode>
 );
