@@ -138,6 +138,11 @@
 .textWrapperText {
   margin: 0.5rem 0; /* Khoảng cách cho văn bản */
   color: #333; /* Màu chữ */
+  font-family: "Calibri";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: justify;
 }
 
 .directionsBus, .check {
@@ -209,3 +214,4 @@
   font-size: 1rem; /* Kích thước chữ cho đoạn văn */
   height: 25px;
 }
+

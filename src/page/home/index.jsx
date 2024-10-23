@@ -136,7 +136,7 @@ const Home = () => {
             </div>
 
             <div className='align-items-center'>
-                <h2>Top dòng cá bán chạy</h2>
+                <h2>Top 5 dòng cá bán chạy</h2>
             </div>
             <div className={styles.productList}>
                 <button onClick={prevProduct} className={styles.navButton}>←</button>
