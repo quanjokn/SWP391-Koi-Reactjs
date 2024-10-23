@@ -19,7 +19,7 @@ const ManageConsignCare = () => {
             const ordersData = response.data.map(order => ({
                 id: order.id,
                 totalPrice: order.totalPrice, // Tổng tiền
-                orderDate: new Date(order.startDate).toLocaleDateString()
+                orderDate: new Date(order.date).toLocaleDateString()
             }));
 
             setOrders(ordersData);
