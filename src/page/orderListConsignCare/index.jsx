@@ -8,14 +8,16 @@ import Loading from '../../component/loading';
 import { UserContext } from '../../service/UserContext';
 import { useNavigate } from 'react-router-dom';
 import api from '../../config/axios';
+import ConsignCareSearch from '../../component/consignCareSearch';
 
 const OrderListConsignCare = () => {
     const [containerStyle, setContainerStyle] = useState({});
-    const [orders, setOrders] = useState([]); // Khởi tạo mảng đơn hàng
-    const [currentPage, setCurrentPage] = useState(1); // Quản lý trang hiện tại
-    const [ordersPerPage] = useState(10); // Số đơn hàng hiển thị mỗi trang
+    const [orders, setOrders] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [ordersPerPage] = useState(10);
     const [isLoading, setIsLoading] = useState(true);
     const { user } = useContext(UserContext);
+    const [filteredOrders, setFilteredOrders] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -30,7 +32,6 @@ const OrderListConsignCare = () => {
     useEffect(() => {
         const fetchOrders = async () => {
             if (!user.id) {
-                // Nếu user hoặc user.id không tồn tại, không gọi API
                 setIsLoading(false);
                 return;
             }
@@ -38,9 +39,9 @@ const OrderListConsignCare = () => {
             try {
                 const response = await api.post(`/caringOrder/getList/${user.id}`);
                 if (response.data && Array.isArray(response.data)) {
-                    // Sắp xếp các đơn hàng theo ngày giảm dần (mới nhất lên đầu)
                     const sortedOrders = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
                     setOrders(sortedOrders);
+                    setFilteredOrders(sortedOrders); // Khởi tạo danh sách đơn hàng đã lọc với toàn bộ đơn hàng ban đầu
                 }
             } catch (error) {
                 console.error('Error fetching orders:', error);
@@ -56,21 +57,28 @@ const OrderListConsignCare = () => {
         navigate(`/order-consign-care/${orderId}`);
     };
 
-    // Tính toán các chỉ số để hiển thị đơn hàng trên trang hiện tại
     const indexOfLastOrder = currentPage * ordersPerPage;
     const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-    const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+    const currentOrders = filteredOrders.slice(indexOfFirstOrder, indexOfLastOrder);
 
-    // Thay đổi trang khi người dùng bấm số trang
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
 
-    // Tạo danh sách các trang
     const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(orders.length / ordersPerPage); i++) {
+    for (let i = 1; i <= Math.ceil(filteredOrders.length / ordersPerPage); i++) {
         pageNumbers.push(i);
     }
+
+    const handleSearch = (searchDate, searchStatus) => {
+        const filtered = orders.filter(order => {
+            const matchesDate = searchDate ? order.date.startsWith(searchDate) : true;
+            const matchesStatus = searchStatus ? order.status === searchStatus : true;
+            return matchesDate && matchesStatus;
+        });
+        setFilteredOrders(filtered);
+        setCurrentPage(1);
+    };
 
     const translateStatus = (status) => {
         switch (status) {
@@ -98,8 +106,12 @@ const OrderListConsignCare = () => {
                     <NavigationList />
                     <div className="col-md-9">
                         <div className="p-3 py-5">
+
+                            {/* Thay thế phần tìm kiếm bằng component ConsignCareSearch */}
+                            <ConsignCareSearch onSearch={handleSearch} />
+
                             {isLoading ? (
-                                <Loading /> // Hiển thị Loading khi đang tải
+                                <Loading />
                             ) : currentOrders.length > 0 ? (
                                 <>
                                     <table className={styles.table}>
@@ -113,16 +125,6 @@ const OrderListConsignCare = () => {
                                         </thead>
                                         <tbody>
                                             {currentOrders.map((order) => {
-                                                const productNames =
-                                                    order.orderDetails && order.orderDetails.length > 0
-                                                        ? order.orderDetails.map((product) => product.title).join(', ')
-                                                        : 'Chưa có sản phẩm';
-
-                                                const totalQuantity =
-                                                    order.orderDetails && order.orderDetails.length > 0
-                                                        ? order.orderDetails.reduce((total, product) => total + product.quantity, 0)
-                                                        : 0;
-
                                                 const totalPrice = order.totalPrice || 0;
 
                                                 return (
@@ -141,7 +143,6 @@ const OrderListConsignCare = () => {
                                         </tbody>
                                     </table>
 
-                                    {/* Hiển thị nút phân trang */}
                                     <nav>
                                         <ul className="pagination justify-content-center">
                                             {pageNumbers.map(number => (
@@ -162,7 +163,7 @@ const OrderListConsignCare = () => {
                                 </>
                             ) : (
                                 <div className={`${styles.noOrdersMessage} p-3 py-5`}>
-                                    <h4 className='text-center'>Bạn chưa đặt đơn hàng.</h4>
+                                    <h4 className='text-center'>Không có đơn ký gửi.</h4>
                                 </div>
                             )}
                         </div>

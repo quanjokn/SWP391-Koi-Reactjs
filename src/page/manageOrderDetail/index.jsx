@@ -84,7 +84,6 @@ const ManageOrderDetail = () => {
                 fetchOrderDetail(); // Lấy lại dữ liệu mới từ API
             }
             alert('Đơn hàng đã được chấp nhận thành công!');
-
         } catch (error) {
             console.error('Error accepting order:', error);
             alert('Đã xảy ra lỗi khi chấp nhận đơn hàng.');
@@ -152,23 +151,31 @@ const ManageOrderDetail = () => {
                 <table className={styles.table}>
                     <thead>
                         <tr>
+                            <th className={styles.textLeft}>Hình ảnh</th>
                             <th className={styles.textLeft}>Tên sản phẩm</th>
-                            <th className={styles.textRight}>Số lượng</th>
+                            <th className={`${styles.textRight} ${styles.quantityColumn}`}>Số lượng</th>
                             <th className={styles.textRight}>Giá VND</th>
                         </tr>
                     </thead>
                     <tbody>
                         {order.orderDetailsDTO.map((item, index) => (
                             <tr key={`${item.id}-${index}`}>
+                                <td className={`${styles.textCenter} ${styles.pictureColum}`}>
+                                    <img
+                                        src={item.photo}
+                                        alt={item.fishName || 'Hình ảnh sản phẩm'}
+                                        style={{ maxWidth: '150px', maxHeight: '150px', objectFit: 'cover' }}
+                                    />
+                                </td>
                                 <td className={styles.textLeft}>{item.fishName}</td>
-                                <td className={styles.textRight}>{item.quantity}</td>
+                                <td className={`${styles.textRight} ${styles.quantityColumn}`}>{item.quantity}</td>
                                 <td className={styles.textRight}>{item.totalPrice.toLocaleString('vi-VN')}</td>
                             </tr>
                         ))}
 
                         <tr>
-                            <td className={styles.textLeft} colSpan="2">Tổng giá trị</td>
-                            <td className={styles.textRight}>{totalPrice.toLocaleString('vi-VN')}</td>
+                            <td colSpan="3" className={styles.textLeft}><strong>Thành tiền:</strong></td>
+                            <td className={styles.textRight}><strong>{totalPrice.toLocaleString('vi-VN')}</strong></td>
                         </tr>
                     </tbody>
                 </table>

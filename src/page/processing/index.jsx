@@ -20,6 +20,13 @@ const Processing = () => {
     const [currentPageConsign, setCurrentPageConsign] = useState(1);
     const [ordersPerPage] = useState(5);
 
+    const [searchOrderDate, setSearchOrderDate] = useState('');
+    const [searchCareDate, setSearchCareDate] = useState('');
+    const [searchConsignDate, setSearchConsignDate] = useState('');
+    const [searchOrderStatus, setSearchOrderStatus] = useState('');
+    const [searchCareStatus, setSearchCareStatus] = useState('');
+    const [searchConsignStatus, setSearchConsignStatus] = useState('');
+
     useEffect(() => {
         // Kiểm tra token (hoặc user) có hết hạn không
         const tokenExpiryTime = localStorage.getItem('tokenExpiryTime');
@@ -169,6 +176,37 @@ const Processing = () => {
         }
     };
 
+    // Hàm lọc đơn hàng theo ngày và trạng thái
+    const filterOrders = (orders, date, status) => {
+        return orders.filter(order => {
+            const matchesDate = date ? order.orderDate.toLocaleDateString() === new Date(date).toLocaleDateString() : true;
+            const matchesStatus = status ? order.status === status : true;
+            return matchesDate && matchesStatus;
+        });
+    };
+
+    // Hàm lọc đơn chăm sóc theo ngày và trạng thái
+    const filterCaringOrders = (caringOrders, date, status) => {
+        return caringOrders.filter(order => {
+            const matchesDate = date ? order.startDate.toLocaleDateString() === new Date(date).toLocaleDateString() : true;
+            const matchesStatus = status ? order.status === status : true;
+            return matchesDate && matchesStatus;
+        });
+    };
+
+    // Hàm lọc đơn ký gửi bán theo ngày và trạng thái
+    const filterConsignOrders = (consignOrders, date, status) => {
+        return consignOrders.filter(order => {
+            const matchesDate = date ? order.date.toLocaleDateString() === new Date(date).toLocaleDateString() : true;
+            const matchesStatus = status ? order.status === status : true;
+            return matchesDate && matchesStatus;
+        });
+    };
+
+    const filteredOrders = filterOrders(orders, searchOrderDate, searchOrderStatus);
+    const filteredCaringOrders = filterCaringOrders(caringOrders, searchCareDate, searchCareStatus);
+    const filteredConsignOrders = filterConsignOrders(consignOrders, searchConsignDate, searchConsignStatus);
+
     return (
         <>
             <Header />
@@ -178,7 +216,26 @@ const Processing = () => {
 
                 {/* Kiểm tra xem có đơn hàng không */}
                 <h2>Danh sách đơn mua</h2>
-                {orders.length === 0 ? (
+                <div className="order-search-container">
+                    <input
+                        type="date"
+                        value={searchOrderDate}
+                        onChange={(e) => setSearchOrderDate(e.target.value)}
+                        className="form-control me-2 search-input"
+                        placeholder="Tìm kiếm theo ngày"
+                    />
+                    <select
+                        value={searchOrderStatus}
+                        onChange={(e) => setSearchOrderStatus(e.target.value)}
+                        className="form-select me-2 search-select"
+                    >
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="Pending_confirmation">Đợi xác nhận</option>
+                        <option value="Preparing">Đang chuẩn bị</option>
+                        <option value="Shipping">Đang vận chuyển</option>
+                    </select>
+                </div>
+                {filteredOrders.length === 0 ? (
                     <div className={styles.noOrdersMessage}>
                         Hiện tại bạn không có đơn tiếp nhận.
                     </div>
@@ -189,32 +246,23 @@ const Processing = () => {
                                 <th className={styles.textLeft}>ID</th>
                                 <th className={styles.textLeft}>Ngày đặt hàng</th>
                                 <th className={styles.textLeft}>Thành tiền VND</th>
-                                <th className={styles.textLeft}>Trạng thái</th>
-                                <th></th>
+                                <th className={styles.textCenter}>Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {currentOrders.map(order => (
-                                <tr key={order.id} className={styles.row}>
+                            {filteredOrders.slice(indexOfFirstOrder, indexOfLastOrder).map((order) => (
+                                <tr key={order.id} onClick={() => handleOrderClick(order.id)}>
                                     <td className={styles.textLeft}>{order.id}</td>
                                     <td className={styles.textLeft}>{order.orderDate.toLocaleDateString()}</td>
                                     <td className={styles.textLeft}>{order.totalPrice.toLocaleString('vi-VN')}</td>
-                                    <td className={styles.textLeft}>{translateStatus(order.status)}</td>
-                                    <td className={styles.textCenter}>
-                                        <button
-                                            className={styles.button1}
-                                            onClick={() => handleOrderClick(order.id)}
-                                        >
-                                            Chi tiết
-                                        </button>
-                                    </td>
+                                    <td className={`${styles.textCenter}`}>{translateStatus(order.status)}</td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 )}
                 {/* Hiển thị nút phân trang nếu có đơn hàng */}
-                {orders.length > 0 && (
+                {filteredOrders.length > 0 && (
                     <nav>
                         <ul className="pagination justify-content-center">
                             {pageNumbersOrder.map(number => (
@@ -234,7 +282,27 @@ const Processing = () => {
                     </nav>
                 )}
                 <h2>Danh sách đơn ký gửi chăm sóc</h2>
-                {caringOrders.length === 0 ? (
+                <div className="order-search-container">
+                    <input
+                        type="date"
+                        value={searchCareDate}
+                        onChange={(e) => setSearchCareDate(e.target.value)}
+                        className="form-control me-2 search-input"
+                        placeholder="Tìm kiếm theo ngày"
+                    />
+                    <select
+                        value={searchCareStatus}
+                        onChange={(e) => setSearchCareStatus(e.target.value)}
+                        className="form-select me-2 search-select"
+                    >
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="Pending_confirmation">Đợi xác nhận</option>
+                        <option value="Receiving">Đang xác nhận</option>
+                        <option value="Responded">Đã phản hồi</option>
+                        <option value="Paid">Đã thanh toán</option>
+                    </select>
+                </div>
+                {filteredCaringOrders.length === 0 ? (
                     <div className={styles.noOrdersMessage}>
                         Hiện tại bạn không có đơn tiếp nhận.
                     </div>
@@ -246,33 +314,24 @@ const Processing = () => {
                                 <th className={styles.textLeft}>Ngày bắt đầu</th>
                                 <th className={styles.textLeft}>Ngày kết thúc</th>
                                 <th className={styles.textLeft}>Thành tiền VND</th>
-                                <th className={translateStatus(styles.textLeft)}>Trạng thái</th>
-                                <th></th>
+                                <th className={styles.textCenter}>Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {currentCareOrders.map(order => (
-                                <tr key={order.id} className={styles.row}>
-                                    <td className={styles.textLeft}>{order.id}</td>
-                                    <td className={styles.textLeft}>{order.startDate.toLocaleDateString()}</td>
-                                    <td className={styles.textLeft}>{order.endDate.toLocaleDateString()}</td>
-                                    <td className={styles.textLeft}>{order.totalPrice.toLocaleString('vi-VN')}</td>
-                                    <td className={styles.textLeft}>{translateStatus(order.status)}</td>
-                                    <td className={styles.textCenter}>
-                                        <button
-                                            className={styles.button1}
-                                            onClick={() => handleCaringClick(order.id)}
-                                        >
-                                            Chi tiết
-                                        </button>
-                                    </td>
+                            {filteredCaringOrders.slice(indexOfFirstCare, indexOfLastCare).map(order => (
+                                <tr key={order.id} className={styles.row} onClick={() => handleCaringClick(order.id)}>
+                                    <td className={`${styles.textLeft}`}>{order.id}</td>
+                                    <td className={`${styles.textLeft}`}>{new Date(order.startDate).toLocaleDateString()}</td>
+                                    <td className={`${styles.textLeft}`}>{new Date(order.endDate).toLocaleDateString()}</td>
+                                    <td className={`${styles.textLeft}`}>{order.totalPrice.toLocaleString('vi-VN')}</td>
+                                    <td className={styles.textCenter}>{translateStatus(order.status)}</td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 )}
                 {/* Hiển thị nút phân trang nếu có đơn hàng */}
-                {caringOrders.length > 0 && (
+                {filteredCaringOrders.length > 0 && (
                     <nav>
                         <ul className="pagination justify-content-center">
                             {pageNumbersCaring.map(number => (
@@ -292,7 +351,27 @@ const Processing = () => {
                     </nav>
                 )}
                 <h2>Danh sách đơn ký gửi bán</h2>
-                {consignOrders.length === 0 ? (
+                <div className="order-search-container">
+                    <input
+                        type="date"
+                        value={searchConsignDate}
+                        onChange={(e) => setSearchConsignDate(e.target.value)}
+                        className="form-control me-2 search-input"
+                        placeholder="Tìm kiếm theo ngày"
+                    />
+                    <select
+                        value={searchConsignStatus}
+                        onChange={(e) => setSearchConsignStatus(e.target.value)}
+                        className="form-select me-2 search-select"
+                    >
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="Pending_confirmation">Đợi xác nhận</option>
+                        <option value="Receiving">Đang xác nhận</option>
+                        <option value="Responded">Đã phản hồi</option>
+                        <option value="Done">Đã hoàn thành</option>
+                    </select>
+                </div>
+                {filteredConsignOrders.length === 0 ? (
                     <div className={styles.noOrdersMessage}>
                         Hiện tại bạn không có đơn tiếp nhận.
                     </div>
@@ -303,25 +382,16 @@ const Processing = () => {
                                 <th className={styles.textLeft}>ID</th>
                                 <th className={styles.textLeft}>Ngày đặt hàng</th>
                                 <th className={styles.textLeft}>Thành tiền VND</th>
-                                <th className={styles.textLeft}>Trạng thái</th>
-                                <th></th>
+                                <th className={styles.textCenter}>Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {currentConsignOrders.map(order => (
-                                <tr key={order.id} className={styles.row}>
-                                    <td className={styles.textLeft}>{order.id}</td>
+                            {filteredConsignOrders.slice(indexOfFirstConsign, indexOfLastConsign).map((order) => (
+                                <tr key={order.id} onClick={() => handleConsignClick(order.id)}>
+                                    <td className={`${styles.textLeft}`}>{order.id}</td>
                                     <td className={styles.textLeft}>{order.date.toLocaleDateString()}</td>
                                     <td className={styles.textLeft}>{order.totalPrice.toLocaleString('vi-VN')}</td>
-                                    <td className={styles.textLeft}>{translateStatus(order.status)}</td>
-                                    <td className={styles.textCenter}>
-                                        <button
-                                            className={styles.button1}
-                                            onClick={() => handleConsignClick(order.id)}
-                                        >
-                                            Chi tiết
-                                        </button>
-                                    </td>
+                                    <td className={styles.textCenter}>{translateStatus(order.status)}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -330,7 +400,7 @@ const Processing = () => {
 
 
                 {/* Hiển thị nút phân trang nếu có đơn hàng */}
-                {consignOrders.length > 0 && (
+                {filteredConsignOrders.length > 0 && (
                     <nav>
                         <ul className="pagination justify-content-center">
                             {pageNumbersConsign.map(number => (

@@ -86,7 +86,9 @@ function BlogManager() {
     useEffect(() => {
         const fetchBlogs = async () => {
             const blogsData = await getAllBlogs();
-            setBlogs(blogsData);
+
+            const sortedBlogs = blogsData.sort((a, b) => new Date(b.date) - new Date(a.date));
+            setBlogs(sortedBlogs);
         };
         fetchBlogs();
     }, []);
@@ -205,8 +207,9 @@ function BlogManager() {
                             <div key={blog.id} className="blog-item">
                                 <h3>{blog.title}</h3>
                                 <p>{blog.content}</p>
+                                <p><strong>Ngày đăng:</strong> {blog.date}</p>
                                 <div className="button-group">
-                                    <button className="btn btn-warning" onClick={() => handleEdit(blog.id)}>Edit</button>
+                                    <button className="btn btn-secondary" onClick={() => handleEdit(blog.id)}>Edit</button>
                                     <button className="btn btn-danger" onClick={() => handleDelete(blog.id)}>Delete</button>
                                 </div>
                             </div>

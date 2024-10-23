@@ -1,17 +1,31 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styles from './tagbar.module.css';
 import { useNavigate, Link } from 'react-router-dom';
-import { UserContext } from '../../service/UserContext'; // Import UserContext
+import api from '../../config/axios';
+import { UserContext } from '../../service/UserContext';
 
 const Tagbar = () => {
     const navigate = useNavigate();
     const { user } = useContext(UserContext);
-
+    const [numberQuanity, setNumberQuanity] = useState(null);
+    const userId = user ? user.id : null;
     const handleGoToCart = () => {
         navigate('/cart');
     };
 
+    useEffect(() => {
+        if (userId) {
+            api.post(`/cart/${userId}`)
+                .then(response => {
+                    const cartItems = response.data.cartItems;
+                    const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
+                    setNumberQuanity(totalQuantity);
+                })
+                .catch(error => {
 
+                });
+        }
+    }, [userId]);
 
     return (
         <>
@@ -39,6 +53,7 @@ const Tagbar = () => {
                         {/* Cart layout */}
                         <div onClick={handleGoToCart} className={styles.header_cart}>
                             <i className={`fas fa-shopping-cart ${styles.customCartIcon}`}></i>
+                            <span>{numberQuanity !== null ? numberQuanity : 0}</span>
                         </div>
                     </>
                 )}

@@ -20,6 +20,13 @@ const History = () => {
     const [currentPageConsign, setCurrentPageConsign] = useState(1);
     const [ordersPerPage] = useState(5);
 
+    const [searchOrderDate, setSearchOrderDate] = useState('');
+    const [searchCareDate, setSearchCareDate] = useState('');
+    const [searchConsignDate, setSearchConsignDate] = useState('');
+    const [searchOrderStatus, setSearchOrderStatus] = useState('');
+    const [searchCareStatus, setSearchCareStatus] = useState('');
+    const [searchConsignStatus, setSearchConsignStatus] = useState('');
+
     useEffect(() => {
         // Kiểm tra token (hoặc user) có hết hạn không
         const tokenExpiryTime = localStorage.getItem('tokenExpiryTime');
@@ -107,15 +114,12 @@ const History = () => {
     // Tính toán các chỉ số để hiển thị đơn hàng trên trang hiện tại
     const indexOfLastOrder = currentPageOrder * ordersPerPage;
     const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-    const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
 
     const indexOfLastCare = currentPageCare * ordersPerPage;
     const indexOfFirstCare = indexOfLastCare - ordersPerPage;
-    const currentCareOrders = caringOrders.slice(indexOfFirstCare, indexOfLastCare);
 
     const indexOfLastConsign = currentPageConsign * ordersPerPage;
     const indexOfFirstConsign = indexOfLastConsign - ordersPerPage;
-    const currentConsignOrders = consignOrders.slice(indexOfFirstConsign, indexOfLastConsign);
 
     // Thay đổi trang khi người dùng bấm số trang
     const paginateOrder = (pageNumber) => {
@@ -162,6 +166,37 @@ const History = () => {
         }
     };
 
+    // Hàm lọc đơn hàng theo ngày và trạng thái
+    const filterOrders = (orders, date, status) => {
+        return orders.filter(order => {
+            const matchesDate = date ? order.orderDate.toLocaleDateString() === new Date(date).toLocaleDateString() : true;
+            const matchesStatus = status ? order.status === status : true;
+            return matchesDate && matchesStatus;
+        });
+    };
+
+    // Hàm lọc đơn chăm sóc theo ngày và trạng thái
+    const filterCaringOrders = (caringOrders, date, status) => {
+        return caringOrders.filter(order => {
+            const matchesDate = date ? order.startDate.toLocaleDateString() === new Date(date).toLocaleDateString() : true;
+            const matchesStatus = status ? order.status === status : true;
+            return matchesDate && matchesStatus;
+        });
+    };
+
+    // Hàm lọc đơn ký gửi bán theo ngày và trạng thái
+    const filterConsignOrders = (consignOrders, date, status) => {
+        return consignOrders.filter(order => {
+            const matchesDate = date ? order.date.toLocaleDateString() === new Date(date).toLocaleDateString() : true;
+            const matchesStatus = status ? order.status === status : true;
+            return matchesDate && matchesStatus;
+        });
+    };
+
+    const filteredOrders = filterOrders(orders, searchOrderDate, searchOrderStatus);
+    const filteredCaringOrders = filterCaringOrders(caringOrders, searchCareDate, searchCareStatus);
+    const filteredConsignOrders = filterConsignOrders(consignOrders, searchConsignDate, searchConsignStatus);
+
     return (
         <>
             <Header />
@@ -171,7 +206,27 @@ const History = () => {
 
                 {/* Kiểm tra xem có đơn hàng không */}
                 <h2>Danh sách đơn mua</h2>
-                {orders.length === 0 ? (
+
+                <div className="order-search-container">
+                    <input
+                        type="date"
+                        value={searchOrderDate}
+                        onChange={(e) => setSearchOrderDate(e.target.value)}
+                        className="form-control me-2 search-input"
+                        placeholder="Tìm kiếm theo ngày"
+                    />
+                    <select
+                        value={searchOrderStatus}
+                        onChange={(e) => setSearchOrderStatus(e.target.value)}
+                        className="form-select me-2 search-select"
+                    >
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="Completed">Đã hoàn thành</option>
+                        <option value="Rejected">Đã bị từ chối</option>
+                    </select>
+                </div>
+
+                {filteredOrders.length === 0 ? (
                     <div className={styles.noOrdersMessage}>
                         Hiện tại bạn không có đơn tiếp nhận.
                     </div>
@@ -181,33 +236,29 @@ const History = () => {
                             <tr>
                                 <th className={styles.textLeft}>ID</th>
                                 <th className={styles.textLeft}>Ngày đặt hàng</th>
-                                <th className={styles.textRight}>Thành tiền VND</th>
-                                <th className={styles.textLeft}>Trạng thái</th>
-                                <th></th>
+                                <th className={styles.textLeft}>Thành tiền VND</th>
+                                <th className={styles.textCenter}>Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {currentOrders.map(order => (
-                                <tr key={order.id} className={styles.row}>
+                            {filteredOrders.slice(indexOfFirstOrder, indexOfLastOrder).map((order) => (
+                                <tr key={order.id} onClick={() => handleOrderClick(order.id)}>
                                     <td className={styles.textLeft}>{order.id}</td>
                                     <td className={styles.textLeft}>{order.orderDate.toLocaleDateString()}</td>
-                                    <td className={styles.textRight}>{order.totalPrice.toLocaleString('vi-VN')}</td>
-                                    <td className={`${styles.textLeft} ${translateStatus(order.status).className}`}>{translateStatus(order.status).text}</td>
-                                    <td className={styles.textCenter}>
-                                        <button
-                                            className={styles.button1}
-                                            onClick={() => handleOrderClick(order.id)}
-                                        >
-                                            Chi tiết
-                                        </button>
+                                    <td className={styles.textLeft}>{order.totalPrice.toLocaleString('vi-VN')}</td>
+                                    <td className={`${translateStatus(order.status).className} ${styles.textCenter}`}>
+                                        {translateStatus(order.status).text}
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 )}
+
+
+
                 {/* Hiển thị nút phân trang nếu có đơn hàng */}
-                {orders.length > 0 && (
+                {filteredOrders.length > 0 && (
                     <nav>
                         <ul className="pagination justify-content-center">
                             {pageNumbersOrder.map(number => (
@@ -226,57 +277,62 @@ const History = () => {
                         </ul>
                     </nav>
                 )}
+
                 <h2>Danh sách đơn ký gửi chăm sóc</h2>
-                {caringOrders.length === 0 ? (
+                <div className="order-search-container">
+                    <input
+                        type="date"
+                        value={searchCareDate}
+                        onChange={(e) => setSearchCareDate(e.target.value)}
+                        className="form-control me-2 search-input"
+                        placeholder="Tìm kiếm theo ngày"
+                    />
+                    <select
+                        value={searchCareStatus}
+                        onChange={(e) => setSearchCareStatus(e.target.value)}
+                        className="form-select me-2 search-select"
+                    >
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="Done">Đã hoàn thành</option>
+                        <option value="Rejected">Đã bị từ chối</option>
+                    </select>
+                </div>
+
+                {filteredCaringOrders.length === 0 ? (
                     <div className={styles.noOrdersMessage}>
                         Hiện tại bạn không có đơn tiếp nhận.
                     </div>
                 ) : (
-                    <table className={styles.table}>
+                    <table className={`${styles.table}`}>
                         <thead>
                             <tr>
-                                <th className={styles.textLeft}>ID</th>
-                                <th className={styles.textLeft}>Ngày bắt đầu</th>
-                                <th className={styles.textLeft}>Ngày kết thúc</th>
-                                <th className={styles.textRight}>Thành tiền VND</th>
-                                <th className={translateStatus(styles.textLeft)}>Trạng thái</th>
-                                <th></th>
+                                <th className={`${styles.textLeft}`}>ID</th>
+                                <th className={`${styles.textLeft}`}>Ngày bắt đầu</th>
+                                <th className={`${styles.textLeft}`}>Ngày kết thúc</th>
+                                <th className={`${styles.textLeft}`}>Thành tiền VND</th>
+                                <th className={`${translateStatus(styles.textCenter)}`}>Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {currentCareOrders.map(order => (
-                                <tr key={order.id} className={styles.row}>
-                                    <td className={styles.textLeft}>{order.id}</td>
-                                    <td className={styles.textLeft}>{order.startDate.toLocaleDateString()}</td>
-                                    <td className={styles.textLeft}>{order.endDate.toLocaleDateString()}</td>
-                                    <td className={styles.textRight}>{order.totalPrice.toLocaleString('vi-VN')}</td>
-                                    <td className={`${styles.textLeft} ${translateStatus(order.status).className}`}>{translateStatus(order.status).text}</td>
-                                    <td className={styles.textCenter}>
-                                        <button
-                                            className={styles.button1}
-                                            onClick={() => handleCaringClick(order.id)}
-                                        >
-                                            Chi tiết
-                                        </button>
-                                    </td>
+                            {filteredCaringOrders.slice(indexOfFirstCare, indexOfLastCare).map(order => (
+                                <tr key={order.id} className={styles.row} onClick={() => handleCaringClick(order.id)}>
+                                    <td className={`${styles.textLeft}`}>{order.id}</td>
+                                    <td className={`${styles.textLeft}`}>{new Date(order.startDate).toLocaleDateString()}</td>
+                                    <td className={`${styles.textLeft}`}>{new Date(order.endDate).toLocaleDateString()}</td>
+                                    <td className={`${styles.textLeft}`}>{order.totalPrice.toLocaleString('vi-VN')}</td>
+                                    <td className={`${translateStatus(order.status).className} text-center`}>{translateStatus(order.status).text}</td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 )}
                 {/* Hiển thị nút phân trang nếu có đơn hàng */}
-                {caringOrders.length > 0 && (
+                {filteredCaringOrders.length > 0 && (
                     <nav>
                         <ul className="pagination justify-content-center">
                             {pageNumbersCaring.map(number => (
-                                <li
-                                    key={number}
-                                    className={`page-item ${number === currentPageCare ? 'active' : ''}`}
-                                >
-                                    <button
-                                        onClick={() => paginateCaring(number)}
-                                        className="page-link"
-                                    >
+                                <li key={number} className={`page-item ${number === currentPageCare ? 'active' : ''}`}>
+                                    <button onClick={() => paginateCaring(number)} className="page-link">
                                         {number}
                                     </button>
                                 </li>
@@ -284,8 +340,27 @@ const History = () => {
                         </ul>
                     </nav>
                 )}
+
                 <h2>Danh sách đơn ký gửi bán</h2>
-                {consignOrders.length === 0 ? (
+                <div className="order-search-container">
+                    <input
+                        type="date"
+                        value={searchConsignDate}
+                        onChange={(e) => setSearchConsignDate(e.target.value)}
+                        className="form-control me-2 search-input"
+                        placeholder="Tìm kiếm theo ngày"
+                    />
+                    <select
+                        value={searchConsignStatus}
+                        onChange={(e) => setSearchConsignStatus(e.target.value)}
+                        className="form-select me-2 search-select"
+                    >
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="Shared">Đã thanh toán</option>
+                        <option value="Rejected">Đã bị từ chối</option>
+                    </select>
+                </div>
+                {filteredConsignOrders.length === 0 ? (
                     <div className={styles.noOrdersMessage}>
                         Hiện tại bạn không có đơn tiếp nhận.
                     </div>
@@ -295,35 +370,25 @@ const History = () => {
                             <tr>
                                 <th className={styles.textLeft}>ID</th>
                                 <th className={styles.textLeft}>Ngày đặt hàng</th>
-                                <th className={styles.textRight}>Thành tiền VND</th>
-                                <th className={styles.textLeft}>Trạng thái</th>
-                                <th></th>
+                                <th className={styles.textLeft}>Thành tiền VND</th>
+                                <th className={styles.textCenter}>Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {currentConsignOrders.map(order => (
-                                <tr key={order.id} className={styles.row}>
-                                    <td className={styles.textLeft}>{order.id}</td>
+                            {filteredConsignOrders.slice(indexOfFirstConsign, indexOfLastConsign).map((order) => (
+                                <tr key={order.id} onClick={() => handleConsignClick(order.id)}>
+                                    <td className={`${styles.textLeft}`}>{order.id}</td>
                                     <td className={styles.textLeft}>{order.date.toLocaleDateString()}</td>
-                                    <td className={styles.textRight}>{order.totalPrice.toLocaleString('vi-VN')}</td>
-                                    <td className={`${styles.textLeft} ${translateStatus(order.status).className}`}>{translateStatus(order.status).text}</td>
-                                    <td className={styles.textCenter}>
-                                        <button
-                                            className={styles.button1}
-                                            onClick={() => handleConsignClick(order.id)}
-                                        >
-                                            Chi tiết
-                                        </button>
-                                    </td>
+                                    <td className={styles.textLeft}>{order.totalPrice.toLocaleString('vi-VN')}</td>
+                                    <td className={`${translateStatus(order.status).className} text-center`}>{translateStatus(order.status).text}</td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 )}
 
-
                 {/* Hiển thị nút phân trang nếu có đơn hàng */}
-                {consignOrders.length > 0 && (
+                {filteredConsignOrders.length > 0 && (
                     <nav>
                         <ul className="pagination justify-content-center">
                             {pageNumbersConsign.map(number => (
