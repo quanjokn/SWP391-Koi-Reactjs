@@ -192,8 +192,8 @@ const ProductList = () => {
             <div className={styles['product-list']}>
 
                 <div className={styles['products-container']}>
-                    {filteredProducts.length > 0 ? (
-                        filteredProducts.map((product) => (
+                    {filteredProducts.fishDetailDTOList.length > 0 ? (
+                        filteredProducts.fishDetailDTOList.map((product) => (
                             <div key={product.id} className={styles['product-item']}>
                                 <img src={product.photo.replace(/\\/g, "/")} alt={product.name} onClick={() => handleNavigateToDetail(product.id)} />
                                 <h3 onClick={() => handleNavigateToDetail(product.id)}>{product.name}</h3>
