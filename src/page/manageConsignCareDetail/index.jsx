@@ -153,7 +153,8 @@ const ManageConsignCareDetail = () => {
                         <table className={styles.table}>
                             <thead>
                                 <tr>
-                                    <th className={styles.textLeft}>Tên sản phẩm</th>
+                                    <th className={styles.textLeft}>Ảnh</th>
+                                    <th className={styles.textLeft}>Tên</th>
                                     <th className={styles.textLeft}>Giới tính</th>
                                     <th className={styles.textLeft}>Tình trạng</th>
                                     {status === 'Receiving' && (
@@ -166,6 +167,13 @@ const ManageConsignCareDetail = () => {
                                     order.caredKois.map((koi) =>
                                         koi !== null ? (
                                             <tr key={koi.id}>
+                                                <td className={styles.textLeft}>
+                                                    {<img
+                                                        src={koi.photo}
+                                                        alt={koi.name || 'Hình ảnh sản phẩm'}
+                                                        style={{ maxWidth: '150px', maxHeight: '150px', objectFit: 'cover' }}
+                                                    />}
+                                                    </td>
                                                 <td className={styles.textLeft}>{koi.name}</td>
                                                 <td className={styles.textLeft}>{koi.sex}</td>
                                                 <td className={styles.textLeft}>{translateStatus(koi.status)}</td>
@@ -222,7 +230,7 @@ const ManageConsignCareDetail = () => {
                 {/* Bảng cập nhật trạng thái */}
                 {(status === 'Responded') && (
                     <div className={styles.updateStatus}>
-                        <h2>Chờ thanh toán</h2>        
+                        <h2>Chờ thanh toán</h2>
                     </div>
                 )}
                 {(status === 'Paid') && (

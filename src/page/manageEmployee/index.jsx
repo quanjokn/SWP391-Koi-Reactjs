@@ -6,13 +6,15 @@ import Footer from '../../component/footer';
 import styles from './manageEmployee.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
 
 const ManageEmployee = () => {
     const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const [appliedSearchTerm, setAppliedSearchTerm] = useState(''); 
-    const [activeTab, setActiveTab] = useState('Customers'); 
+    const [appliedSearchTerm, setAppliedSearchTerm] = useState('');
+    const [activeTab, setActiveTab] = useState('Customers');
+    const navigate = useNavigate();
     const [newAccount, setNewAccount] = useState({
         id: 0,
         userName: '',
@@ -29,28 +31,43 @@ const ManageEmployee = () => {
             try {
                 const response = await api.get('/userManagement/allAccount');
                 const allUsers = [...response.data.customers, ...response.data.staff];
-                setUsers(allUsers); 
+                setUsers(allUsers);
                 setFilteredUsers(allUsers);
             } catch (error) {
                 console.error('Error fetching users:', error);
             }
         };
-
         fetchUsers();
     }, []);
+
+    useEffect(() => {
+        const filtered = users
+            .filter((user) => {
+                if (activeTab === 'Staff/Manager') return user.role !== 'Customer';
+                return user.role === 'Customer';
+            })
+            .filter((user) => {
+                const userName = user.name || '';
+                return userName.toLowerCase().includes(appliedSearchTerm.toLowerCase());
+            });
+        setFilteredUsers(filtered);
+    }, [appliedSearchTerm, activeTab, users]);
 
     const handleCreateAccount = async (e) => {
         e.preventDefault();
         try {
+            console.log(newAccount)
             const response = await api.post('/userManagement/createAccount', newAccount, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
             });
             alert('Create user successfully');
-            const updatedUsers = [...users, response.data];
-            setUsers(updatedUsers);
-            setFilteredUsers(updatedUsers); 
+            const reload = await api.get('/userManagement/allAccount');
+            const allUsers = [...reload.data.customers, ...reload.data.staff]; // Combine customers and staff again
+            setUsers(allUsers);
+            setFilteredUsers(allUsers);
+            navigate('/nhan-vien');
         } catch (error) {
             console.error('Error creating account:', error);
         }
@@ -64,16 +81,15 @@ const ManageEmployee = () => {
         }));
     };
 
-    const handleEdit = (id) => {
-        console.log(`Edit employee with ID: ${id}`);
-    };
-
     const handleRemove = async (id) => {
         try {
             const response = await api.delete(`/userManagement/deleteUser/${id}`);
             if (response.status === 200) {
                 alert('Delete user successfully');
-                setUsers((prevUsers) => prevUsers.filter(user => user.id !== id));
+                const updatedUsersResponse = await api.get('/userManagement/allAccount');
+                const allUsers = [...updatedUsersResponse.data.customers, ...updatedUsersResponse.data.staff];                
+                setUsers(allUsers);
+                setFilteredUsers(allUsers);
             } else {
                 alert('Failed to delete user');
             }
@@ -83,28 +99,31 @@ const ManageEmployee = () => {
     };
 
     const handleSearch = () => {
-        setAppliedSearchTerm(searchTerm); 
+        setAppliedSearchTerm(searchTerm);
     };
 
-    useEffect(() => {
-        const filtered = users
-            .filter((user) => {
-                if (activeTab === 'Staff/Manager') return user.role !== 'Customer';
-                return user.role === 'Customer';
-            })
-            .filter((user) => {
-                const userName = user.name || ''; 
-                return userName.toLowerCase().includes(appliedSearchTerm.toLowerCase());
-            });
-        setFilteredUsers(filtered);
-    }, [appliedSearchTerm, activeTab, users]);
+
+
+    const translate = (role) => {
+        switch (role) {
+            case 'Customer':
+                return 'Khách hàng';
+            case 'Staff':
+                return 'Nhân viên';
+            case 'Manager':
+                return 'Quản lý';
+            default:
+                return role;
+        }
+    };
+
 
     return (
         <>
             <Header />
             <Tagbar />
             <div className={styles.container}>
-                    <h1>Manage Users</h1> 
+                <h1>Quản lý người dùng</h1>
 
                 {/* Tab Navigation */}
                 <div className={styles.tabContainer}>
@@ -112,13 +131,13 @@ const ManageEmployee = () => {
                         className={activeTab === 'Customers' ? styles.activeTab : ''}
                         onClick={() => setActiveTab('Customers')}
                     >
-                        Customers
+                        Khách hàng
                     </button>
                     <button
                         className={activeTab === 'Staff/Manager' ? styles.activeTab : ''}
                         onClick={() => setActiveTab('Staff/Manager')}
                     >
-                        Staff/Manager
+                        Nhân viên/Quản lý
                     </button>
                 </div>
 
@@ -129,7 +148,7 @@ const ManageEmployee = () => {
                         <div className={styles["search-filter-container2"]}>
                             <div className={styles["search-container2"]}>
                                 <label>
-                                    Search by Name:
+                                    Tìm kiếm theo tên:
                                     <input
                                         type="text"
                                         value={searchTerm}
@@ -147,14 +166,13 @@ const ManageEmployee = () => {
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Username</th>
-                                    <th>Full Name</th>
+                                    <th>Tài khoản</th>
+                                    <th>Tên</th>
                                     <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Role</th>
-                                    <th>Status</th>
-                                    <th>Edit</th>
-                                    <th>Remove</th>
+                                    <th>Số điện thoại</th>
+                                    <th>Vai trò</th>
+                                    <th>Trạng thái</th>
+                                    <th>Xóa</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -166,10 +184,9 @@ const ManageEmployee = () => {
                                             <td>{user.name}</td>
                                             <td>{user.email}</td>
                                             <td>{user.phone}</td>
-                                            <td>{user.role}</td>
-                                            <td>{user.status}</td>
+                                            <td>{translate(user.role)}</td>
                                             <td>
-                                                <button className={styles["btn"]} onClick={() => handleEdit(user.id)}>Edit</button>
+                                                {user.status === true ? <div className={styles["online-icon"]}></div> : <div className={styles["offline-icon"]}></div>}
                                             </td>
                                             <td>
                                                 <button className={styles["btn"]} onClick={() => handleRemove(user.id)}>Remove</button>
@@ -186,9 +203,9 @@ const ManageEmployee = () => {
 
                         {/* Create New Account Form */}
                         <form className={styles["form-create-account"]} onSubmit={handleCreateAccount}>
-                            <h2>Create New Account</h2>
+                            <h2>Tạo tài khoản</h2>
                             <label>
-                                User Name:
+                                Tài khoản:
                                 <input
                                     type="text"
                                     name="userName"
@@ -199,7 +216,7 @@ const ManageEmployee = () => {
                             </label>
                             <br />
                             <label>
-                                Role:
+                                Vai trò:
                                 <select
                                     name="role"
                                     value={newAccount.role}
@@ -211,7 +228,7 @@ const ManageEmployee = () => {
                             </label>
                             <br />
                             <label>
-                                Full Name:
+                                Tên:
                                 <input
                                     type="text"
                                     name="name"
@@ -222,7 +239,7 @@ const ManageEmployee = () => {
                             </label>
                             <br />
                             <label>
-                                Phone:
+                                Số điện thoại:
                                 <input
                                     type="text"
                                     name="phone"
@@ -233,7 +250,7 @@ const ManageEmployee = () => {
                             </label>
                             <br />
                             <label>
-                                Address:
+                                Địa chỉ:
                                 <input
                                     type="text"
                                     name="address"
@@ -253,38 +270,26 @@ const ManageEmployee = () => {
                                 />
                             </label>
                             <br />
-                            <label>
-                                Status:
-                                <select
-                                    name="status"
-                                    value={newAccount.status}
-                                    onChange={(e) =>
-                                        setNewAccount({ ...newAccount, status: e.target.value === 'true' })
-                                    }
-                                >
-                                    <option value="true">Active</option>
-                                    <option value="false">Inactive</option>
-                                </select>
-                            </label>
-                            <br />
-                            <button className={styles["btn-create"]} type="submit">Create Account</button>
+                            <div className={styles["create"]}>
+                                <button className={styles["btn-create"]} type="submit">Tạo</button>
+                            </div>
                         </form>
                     </>
                 )}
 
                 {/* Customers Tab */}
-                {activeTab === 'Customers' && (                    
+                {activeTab === 'Customers' && (
                     <table className={styles.table}>
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Username</th>
-                                <th>Full Name</th>
+                                <th>Tài khoản</th>
+                                <th>Tên</th>
                                 <th>Email</th>
-                                <th>Phone</th>
-                                <th>Role</th>
-                                <th>Status</th>
-                                <th>Remove</th>
+                                <th>Số điện thoại</th>
+                                <th>Vai trò</th>
+                                <th>Trạng thái</th>
+                                <th>Xóa</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -296,10 +301,12 @@ const ManageEmployee = () => {
                                         <td>{user.name}</td>
                                         <td>{user.email}</td>
                                         <td>{user.phone}</td>
-                                        <td>{user.role}</td>
-                                        <td>{user.status}</td>
+                                        <td>{translate(user.role)}</td>
+                                        <td >
+                                            {user.status === true ? <div className={styles["online-icon"]}></div> : <div className={styles["offline-icon"]}></div>}
+                                        </td>
                                         <td>
-                                            <button className={styles["btn"]} onClick={() => handleRemove(user.id)}>Remove</button>
+                                            <button className={styles["btn"]} onClick={() => handleRemove(user.id)}>Xóa</button>
                                         </td>
                                     </tr>
                                 ))

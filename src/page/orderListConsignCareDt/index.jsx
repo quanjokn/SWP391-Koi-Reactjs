@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import api from '../../config/axios';
 import ConsignCareStatus from '../../component/consignCareStatus';
 import Header from '../../component/header';
@@ -7,6 +7,7 @@ import Footer from '../../component/footer';
 import Loading from '../../component/loading';
 import styles from './orderListConsignCareDt.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
+import { UserContext } from '../../service/UserContext';
 
 const OrderDetailConSignCare = () => {
     const [order, setOrder] = useState(null);
@@ -15,6 +16,7 @@ const OrderDetailConSignCare = () => {
     const [containerStyle, setContainerStyle] = useState({});
     const navigate = useNavigate();
     const { orderId } = useParams();
+    const { user } = useContext(UserContext);
 
     useEffect(() => {
         const fetchOrderDetails = async () => {
@@ -53,6 +55,19 @@ const OrderDetailConSignCare = () => {
         return <Loading />;
     }
 
+    const handleCompleteOrder = async () => {
+        const userId = user ? user.id : null;
+        try {
+            const response = await api.post(`/staff/generateOrderId`, {});
+            const type = 'caringOrder';
+            navigate(`/vnpay/onlinePayment/${type}/${userId}/${orderId}/${response.data}/${order.totalPrice}`);
+
+        } catch (error) {
+            console.error('Error updating order status to Completed:', error);
+
+        }
+    };
+
     return (
         <>
             <Header />
@@ -63,6 +78,18 @@ const OrderDetailConSignCare = () => {
                     date={new Date(order.date).toLocaleDateString()}
                     status={order.status || 'N/A'}
                 />
+
+                {(order.status === 'Responded') && (
+                    <div className={`${styles.ten}`} >
+                        <button
+                            className={order.status === 'Done' ? styles.buttonDisabled : `btn btn-success ${styles.submitButton}`}
+                            onClick={order.status !== 'Done' ? handleCompleteOrder : undefined}
+                            disabled={order.status === 'Done'}
+                        >
+                            Thanh toán
+                        </button>
+                    </div>
+                )}
 
                 {/* Bảng thông tin khách hàng */}
                 <div className="order-summary">
@@ -116,6 +143,7 @@ const OrderDetailConSignCare = () => {
                     <table className="table-custom">
                         <thead>
                             <tr>
+                                <th className={styles.textLeft}>Hình ảnh</th>
                                 <th className={styles.textLeft}>Tên cá</th>
                                 <th className={styles.textLeft}>Giới tính</th>
                                 <th className={styles.textRight}>Tuổi</th>
@@ -127,6 +155,13 @@ const OrderDetailConSignCare = () => {
                         <tbody>
                             {(order2?.caredKois || []).map((koi) => (
                                 <tr key={koi.id}>
+                                    <td className={styles.textLeft}>
+                                        {<img
+                                            src={koi.photo}
+                                            alt={koi.name || 'Hình ảnh'}
+                                            style={{ maxWidth: '150px', maxHeight: '150px', objectFit: 'cover' }}
+                                        />}
+                                    </td>
                                     <td className={styles.textLeft}>{koi.name || 'N/A'}</td>
                                     <td className={styles.textLeft}>{koi.sex || 'N/A'}</td>
                                     <td className={styles.textRight}>{koi.age || 'N/A'}</td>
@@ -135,27 +170,6 @@ const OrderDetailConSignCare = () => {
                                     <td className={styles.textLeft}>{koi.ration || 'N/A'}</td>
                                 </tr>
                             ))}
-                        </tbody>
-                    </table>
-                </div>
-
-                {/* Thông tin nhân viên phụ trách */}
-                <h3 className="mt-4">Thông tin nhân viên phụ trách</h3>
-                <div className="staff-info">
-                    <table className="table-custom">
-                        <thead>
-                            <tr>
-                                <th className={styles.textLeft}>Tên nhân viên</th>
-                                <th className={styles.textLeft}>Số điện thoại</th>
-                                <th className={styles.textLeft}>Email</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td className={styles.textLeft}>{order.staff?.name || 'N/A'}</td>
-                                <td className={styles.textLeft}>{order.staff?.phone || 'N/A'}</td>
-                                <td className={styles.textLeft}>{order.staff?.email || 'N/A'}</td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
