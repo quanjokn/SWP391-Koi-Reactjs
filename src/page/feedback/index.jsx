@@ -48,7 +48,7 @@ const FeedbackPage = () => {
         })
             .then((response) => {
                 alert("Cảm ơn bạn đã đánh giá!");
-                navigate(`/order-history`); // Redirect to order history after feedback
+                navigate(`/order-history`, { replace: true }); // Redirect to order history after feedback
             })
             .catch((error) => {
                 console.error("Error submitting feedback:", error);
@@ -73,7 +73,7 @@ const FeedbackPage = () => {
                         />
                         <p className={styles["product-name"]}>{product.name}</p>
                     </div>
-                )}  
+                )}
                 <div className={styles["feedback-form-group"]}>
                     <label className={styles["feedback-label"]}>Đánh giá của bạn</label>
                     <textarea
