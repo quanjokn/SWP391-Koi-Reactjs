@@ -241,7 +241,7 @@ const ManageConsignCareDetail = () => {
                             onClick={status !== 'Done' ? handleCompleteOrder : undefined}
                             disabled={status === 'Done'}
                         >
-                            Completed
+                            Hoàn thành
                         </button>
                     </div>
                 )}

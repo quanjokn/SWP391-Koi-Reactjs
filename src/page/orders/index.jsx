@@ -40,26 +40,32 @@ const Orders = () => {
                 alert("Bạn cần đăng nhập trước khi đặt hàng.");
                 return navigate(`/login`);
             }
-
-            if (paymentMethod == "VNPAY") {
-                const type = 'order';
-                const orderId = '0';
-                return navigate(`/vnpay/onlinePayment/${type}/${userId}/${orderId}/${generateId}/${cart.totalPrice}`);
-            } else {
-                // Gửi yêu cầu POST đến API để đặt hàng
-                api.post(`/order/placeOrder`, {
-                    userId: userId,
-                    paymentMethod: paymentMethod,
-                })
-                    .then((response) => {
-                        alert("Đặt hàng thành công!");;
-                        return navigate("/thank-you");
+            if (user.address != "") {
+                if (paymentMethod == "VNPAY") {
+                    const type = 'order';
+                    const orderId = '0';
+                    return navigate(`/vnpay/onlinePayment/${type}/${userId}/${orderId}/${generateId}/${cart.totalPrice}`);
+                } else {
+                    // Gửi yêu cầu POST đến API để đặt hàng
+                    api.post(`/order/placeOrder`, {
+                        userId: userId,
+                        paymentMethod: paymentMethod,
                     })
-                    .catch((error) => {
-                        console.error("Error placing order:", error);
-                        alert("Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại.");
-                    });
+                        .then((response) => {
+                            alert("Đặt hàng thành công!");;
+                            return navigate("/thank-you");
+                        })
+                        .catch((error) => {
+                            console.error("Error placing order:", error);
+                            alert("Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại.");
+                        });
+                }
+            } else {
+                navigate('/tai-khoan');
+                alert("Vui lòng thêm địa chỉ !");
             }
+
+
         } else {
             alert("Giỏ hàng của bạn trống.");
         }
