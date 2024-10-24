@@ -34,8 +34,8 @@ const ProductList = () => {
     useEffect(() => {
         api.get('/fish/fishes-list')
             .then((response) => {
-                setProducts(response.data);
-                setFilteredProducts(response.data);
+                setProducts(response.data.fishDetailDTOList);
+                setFilteredProducts(response.data.fishDetailDTOList);
             })
             .catch((error) => {
                 console.error("Error fetching products:", error);
@@ -192,8 +192,8 @@ const ProductList = () => {
             <div className={styles['product-list']}>
 
                 <div className={styles['products-container']}>
-                    {filteredProducts.fishDetailDTOList.length > 0 ? (
-                        filteredProducts.fishDetailDTOList.map((product) => (
+                    {filteredProducts.length > 0 ? (
+                        filteredProducts.map((product) => (
                             <div key={product.id} className={styles['product-item']}>
                                 <img src={product.photo.replace(/\\/g, "/")} alt={product.name} onClick={() => handleNavigateToDetail(product.id)} />
                                 <h3 onClick={() => handleNavigateToDetail(product.id)}>{product.name}</h3>
