@@ -303,6 +303,14 @@ function App() {
       )
     },
     {
+      path: '/quan-li-san-pham',
+      element: (
+        <PrivateRoute requiredRole="Manager">
+          <ManageProduct/>
+        </PrivateRoute>
+      )
+    },
+    {
       path: '/oauth/callback',
       element: <OAuthCallback />,
     },

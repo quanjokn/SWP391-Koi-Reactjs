@@ -16,7 +16,10 @@ export const CartProvider = ({ children }) => {
                     setCart(response.data);
                 })
                 .catch(error => {
-                    console.error("Error fetching cart:", error);
+                    if (error.response && error.response.status === 400) {
+                    } else {
+                        console.error("Error fetching cart:", error.message);
+                    }
                 });
         }
     }, [userId]);
