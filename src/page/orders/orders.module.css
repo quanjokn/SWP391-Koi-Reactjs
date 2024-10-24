@@ -9,9 +9,11 @@
     font-size: 2rem;
     margin-bottom: 20px;
 }
-.orders{
+
+.orders {
     margin: 50px;
 }
+
 .product-image {
     width: 100px;
     height: 100%;
@@ -31,23 +33,29 @@
     padding: 20px;
     background-color: aliceblue;
 }
-.order-total h3{
+
+.order-total h3 {
     color: rgb(83, 202, 83);
 }
 
-.payment-section{
+.order-total button {
+    background-color: #008000;
+    color: white;
+    border-radius: 5px;
+}
+
+.payment-section {
     margin: 80px auto;
     border: black solid 1px;
     padding: 20px;
     border-radius: 8px;
 }
 
-.order-summary{
+.order-summary {
     margin: 30px auto;
 }
 
-.info-pay{
+.info-pay {
     display: flex;
-    
-}
 
+}

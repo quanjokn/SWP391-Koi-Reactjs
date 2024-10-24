@@ -229,12 +229,13 @@ const ProductList = () => {
                     <div className={styles['compare-box-body']}>
                         {compareList.map((product) => (
                             <div key={product.id} className={`${styles.producToCompare}`}>
+                                 <img src={product.photo.replace(/\\/g, "/")} alt={product.name} />
                                 <p>{product.name}</p>
                                 <button onClick={() => handleRemoveCompare(product.id)}>Xóa</button>
                             </div>
                         ))}
                         {compareList.length === 2 && (
-                            <button onClick={navigateToComparePage}>
+                            <button  onClick={navigateToComparePage}>
                                 So sánh
                             </button>
                         )}
