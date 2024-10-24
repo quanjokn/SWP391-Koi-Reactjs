@@ -45,6 +45,7 @@ const ManageProduct = () => {
 
     const [isFormVisible, setIsFormVisible] = useState(false);
 
+
     const [editFishId, setEditFishId] = useState(null);
     const [quantity, setQuantity] = useState('');  // To store the new quantity
 
@@ -68,7 +69,6 @@ const ManageProduct = () => {
             });
         }
     };
-
 
     const handleAddFish = async (e) => {
         e.preventDefault();
@@ -95,6 +95,7 @@ const ManageProduct = () => {
             alert('Failed to add fish.');
         }
     };
+
 
     const handleEditClick = (fish) => {
         setEditFishId(fish.id);
@@ -125,7 +126,6 @@ const ManageProduct = () => {
             console.error("Error:", error);
         }
     };
-
     const handleDelete = async (fishId) => {
         if (window.confirm('Are you sure you want to delete this fish?')) {
             try {
@@ -447,6 +447,7 @@ const ManageProduct = () => {
                                         <img src={fish.photo} alt={fish.name} />
                                         {fish.name}
                                     </td>
+
                                     <td>{fish.price.toLocaleString('vi-VN')}</td>
                                     <td>
                                         {editFishId === fish.id ? (
@@ -502,7 +503,6 @@ const ManageProduct = () => {
                                 <th>Ngày bắt đầu chăm sóc</th>
                                 <th>Ngày kết thúc chăm sóc</th>
                                 <th>Khách hàng</th>
-
                             </tr>
                         </thead>
                         <tbody>
@@ -516,7 +516,6 @@ const ManageProduct = () => {
                                     <td>{fish.caringOrder.startDate}</td>
                                     <td>{fish.caringOrder.endDate}</td>
                                     <td>{fish.caringOrder.customer.name}</td>
-
                                 </tr>
                             ))}
                         </tbody>

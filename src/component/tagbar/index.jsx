@@ -56,6 +56,7 @@ const Tagbar = () => {
                                 <li><Link to="/manage-blog">Tạo tin tức</Link></li>
                                 <li><Link to="/process-order">Đang xử lý</Link></li>
                                 <li><Link to="/history">Lịch sử</Link></li>
+                                <li><Link to="/manage-feedback">Rating&Feedback</Link></li>
                             </ul>
                         </nav>
                     </div>
