@@ -45,30 +45,18 @@ const ManageProduct = () => {
 
     const [isFormVisible, setIsFormVisible] = useState(false);
 
-    // const handleChange = (e) => {
-    //     const { name, value } = e.target;
+    const [editFishId, setEditFishId] = useState(null);
+    const [quantity, setQuantity] = useState('');  // To store the new quantity
 
-    //     if (name === 'species') {
-    //         setFormData({
-    //             ...formData,
-    //             [name]: value.split(','), // Chuyển chuỗi thành mảng
-    //         });
-    //     } else {
-    //         setFormData({
-    //             ...formData,
-    //             [name]: value,
-    //         });
-    //     }
-    // };
     const handleChange = (e) => {
         const { name, type, value, options } = e.target;
-    
+
         if (type === 'select-multiple') {
             // Lấy các giá trị đã chọn trong select-multiple
             const selectedValues = Array.from(options)
                 .filter(option => option.selected)
                 .map(option => option.value);
-    
+
             setFormData({
                 ...formData,
                 [name]: selectedValues, // Lưu mảng các giá trị đã chọn
@@ -80,7 +68,7 @@ const ManageProduct = () => {
             });
         }
     };
-    
+
 
     const handleAddFish = async (e) => {
         e.preventDefault();
@@ -105,6 +93,36 @@ const ManageProduct = () => {
             console.error('Error adding fish:', error);
             console.log(error.response?.data);
             alert('Failed to add fish.');
+        }
+    };
+
+    const handleEditClick = (fish) => {
+        setEditFishId(fish.id);
+        setQuantity(fish.quantity);  // Set the initial quantity for editing
+    };
+
+    const handleSaveClick = async (fishId) => {
+        const updatedFish = {
+            ...currentKoi.find(fish => fish.id === fishId),
+            quantity: quantity  // Update the quantity with the new value
+        };
+
+        try {
+            const response = await api.post(`/productList/updateFish/${fishId}`, {                
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedFish),
+            });
+            if (response.ok) {
+                // Update the koi state with the new quantity
+                setKoi(prevKoi => prevKoi.map(fish => fish.id === fishId ? { ...fish, quantity: quantity } : fish));
+                setEditFishId(null);  // Exit edit mode
+            } else {
+                console.error("Failed to update fish");
+            }
+        } catch (error) {
+            console.error("Error:", error);
         }
     };
 
@@ -221,7 +239,7 @@ const ManageProduct = () => {
                                 name="quantity"
                                 value={formData.quantity}
                                 onChange={handleChange}
-                                min="0" 
+                                min="0"
                                 required
                             />
                         </div>
@@ -288,7 +306,7 @@ const ManageProduct = () => {
                                 name="price"
                                 value={formData.price}
                                 onChange={handleChange}
-                                min="0" 
+                                min="0"
                                 required
                             />
                         </div>
@@ -416,7 +434,9 @@ const ManageProduct = () => {
                                 <th>Id</th>
                                 <th>Tên</th>
                                 <th>Giá</th>
-                                <th>Thao tác</th>
+                                <th>Số lượng</th>
+                                <th>Cập nhật</th>
+                                <th>Xóa</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -427,10 +447,27 @@ const ManageProduct = () => {
                                         <img src={fish.photo} alt={fish.name} />
                                         {fish.name}
                                     </td>
-                                    <td>{fish.price}</td>
+                                    <td>{fish.price.toLocaleString('vi-VN')}</td>
                                     <td>
-                                        <button onClick={() => {/* Handle Edit */ }}>Edit</button>
-                                        <button onClick={handleDelete}>Delete</button>
+                                        {editFishId === fish.id ? (
+                                            <input
+                                                type="number"
+                                                value={quantity}
+                                                onChange={(e) => setQuantity(e.target.value)}
+                                            />
+                                        ) : (
+                                            fish.quantity
+                                        )}
+                                    </td>
+                                    <td>
+                                        {editFishId === fish.id ? (
+                                            <button className={styles.button} onClick={() => handleSaveClick(fish.id)}>Lưu</button>
+                                        ) : (
+                                            <button className={styles.button} onClick={() => handleEditClick(fish)}>Sửa</button>
+                                        )}
+                                    </td>
+                                    <td>
+                                        <button className={styles.button} onClick={() => handleDelete(fish.id)}>Xóa</button>
                                     </td>
                                 </tr>
                             ))}
@@ -462,7 +499,9 @@ const ManageProduct = () => {
                             <tr>
                                 <th>Id</th>
                                 <th>Tên</th>
-                                <th>Giá</th>
+                                <th>Ngày bắt đầu chăm sóc</th>
+                                <th>Ngày kết thúc chăm sóc</th>
+                                <th>Khách hàng</th>
 
                             </tr>
                         </thead>
@@ -474,7 +513,9 @@ const ManageProduct = () => {
                                         <img src={fish.photo} alt={fish.name} />
                                         {fish.name}
                                     </td>
-                                    <td>{fish.price}</td>
+                                    <td>{fish.caringOrder.startDate}</td>
+                                    <td>{fish.caringOrder.endDate}</td>
+                                    <td>{fish.caringOrder.customer.name}</td>
 
                                 </tr>
                             ))}
@@ -486,8 +527,8 @@ const ManageProduct = () => {
                     <nav>
                         <ul className="pagination">
                             {pageNumbersCaredKoi.map(number => (
-                                <li key={number} className={`page-item ${number === currentPageKoi ? 'active' : ''}`}>
-                                    <button onClick={() => paginate('koi', number)} className="page-link">
+                                <li key={number} className={`page-item ${number === currentPageCaredKoi ? 'active' : ''}`}>
+                                    <button onClick={() => paginate('caredKoi', number)} className="page-link">
                                         {number}
                                     </button>
                                 </li>
@@ -505,8 +546,8 @@ const ManageProduct = () => {
                             <tr>
                                 <th>Id</th>
                                 <th>Tên</th>
-                                <th>Giá</th>
-
+                                <th>Giá kí gửi bán</th>
+                                <th>Hoa hồng</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -517,7 +558,8 @@ const ManageProduct = () => {
                                         <img src={fish.photo} alt={fish.name} />
                                         {fish.name}
                                     </td>
-                                    <td>{fish.price}</td>
+                                    <td>{fish.price.toLocaleString('vi-VN')}</td>
+                                    <td>{fish.consignOrder.commission.toLocaleString('vi-VN')}</td>
 
                                 </tr>
                             ))}
@@ -529,8 +571,8 @@ const ManageProduct = () => {
                     <nav>
                         <ul className="pagination">
                             {pageNumbersConsignedKoi.map(number => (
-                                <li key={number} className={`page-item ${number === currentPageKoi ? 'active' : ''}`}>
-                                    <button onClick={() => paginate('koi', number)} className="page-link">
+                                <li key={number} className={`page-item ${number === currentPageConsignedKoi ? 'active' : ''}`}>
+                                    <button onClick={() => paginate('consignedKoi', number)} className="page-link">
                                         {number}
                                     </button>
                                 </li>
