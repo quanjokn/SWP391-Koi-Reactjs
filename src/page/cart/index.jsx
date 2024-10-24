@@ -106,6 +106,7 @@ const Cart = () => {
                                                 type="number"
                                                 value={item.quantity}
                                                 onChange={(e) => handleQuantityChange(item.fishId, e.target.value)}
+                                                min="1"
                                             />
                                         </td>
                                         <td>{(item.unitPrice * item.quantity).toLocaleString()} VND</td>

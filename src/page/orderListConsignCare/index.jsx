@@ -88,6 +88,8 @@ const OrderListConsignCare = () => {
                 return { text: 'Đang xác nhận' };
             case 'Responded':
                 return { text: 'Đã phản hồi' };
+            case 'Paid':
+                return { text: 'Đã thanh toán' };
             case 'Done':
                 return { text: 'Đã hoàn thành', className: styles.done };
             case 'Rejected':
