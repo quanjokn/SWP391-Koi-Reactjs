@@ -39,6 +39,7 @@ const ProfilePage = () => {
                 address: user.address || '',
                 email: user.email || '',
                 role: user.role || '', // Giá trị mặc định là ''
+                point: user.point || '0'
             });
         }
     }, [user]); // Chạy lại khi giá trị user thay đổi
@@ -70,7 +71,11 @@ const ProfilePage = () => {
         }
     };
 
-    const translateRole = (role) => {
+    const translateRole = (role, point) => {
+        if (role === 'Customer' && point >= 200) {
+            return 'Khách Hàng thân thiết';
+        }
+
         switch (role) {
             case 'Customer':
                 return 'Khách Hàng';
@@ -110,13 +115,26 @@ const ProfilePage = () => {
                                     />
                                 </div>
 
+                                {userProfile.role === 'Customer' && (
+                                    <div className="col-md-12">
+                                        <label className={styles.labels}>Tích điểm</label>
+                                        <input
+                                            type="text"
+                                            className={`form-control ${styles.inputField}`}
+                                            name="point"
+                                            value={userProfile.point}
+                                            readOnly
+                                        />
+                                    </div>
+                                )}
+
                                 <div className="col-md-12">
                                     <label className={styles.labels}>Vai trò</label>
                                     <input
                                         type="text"
                                         className={`form-control ${styles.inputField}`}
                                         name="role"
-                                        value={translateRole(userProfile.role)}
+                                        value={translateRole(userProfile.role, userProfile.point)}
                                         readOnly
                                     />
                                 </div>
