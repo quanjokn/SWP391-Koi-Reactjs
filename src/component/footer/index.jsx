@@ -18,7 +18,7 @@ const Footer = () => {
             <div className={`container col-md-8 ${styles.redBg}`}>
                 <div className="row">
                     <div className="col-md-4">
-                        <h5>Koi farm Shop</h5>
+                        <h5>Koi Farm Shop</h5>
                         <ul className="list-unstyled">
                             <li><a href="/gioi-thieu" className={styles.textWhite}>Về chúng tôi</a></li>
                             <li><a href="/fish/fishes-list" className={styles.textWhite}>Danh sách mặt hàng</a></li>

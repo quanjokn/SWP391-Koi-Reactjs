@@ -74,12 +74,12 @@ const ManageConsignSellDetail = () => {
         console.log('Approve Request:', approveReq);
         try {
             await api.post(`/consignManagement/approval/${staffId}`, approveReq);
-            alert('Đơn hàng đã được chấp nhận thành công!');
+            alert('Đơn hàng đã được phản hồi thành công!');
             setIsOrderProcessed(true);
             fetchOrderDetail();
         } catch (error) {
             console.error('Error accepting order:', error);
-            alert('Đã xảy ra lỗi khi chấp nhận đơn hàng.');
+            alert('Đã xảy ra lỗi khi phản hồi !');
         }
     };
 
