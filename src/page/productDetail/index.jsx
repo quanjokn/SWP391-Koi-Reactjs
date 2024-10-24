@@ -13,6 +13,8 @@ import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import api from "../../config/axios";
 import { useNavigate } from 'react-router-dom';
+import { CartContext } from "../../service/CartContext";
+
 
 const ProductDetail = () => {
     const { productId } = useParams(); // Lấy productId từ URL
@@ -23,6 +25,7 @@ const ProductDetail = () => {
     const { user } = useContext(UserContext);
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     const navigate = useNavigate();
+    const { fetchCart } = useContext(CartContext);
 
     useEffect(() => {
         // Fetch product details từ API dựa vào productId
@@ -64,6 +67,8 @@ const ProductDetail = () => {
                 setTimeout(() => {
                     setShowMessage(false);
                 }, 3000);
+                // Cập nhật giỏ hàng
+                fetchCart(); // Gọi lại để cập nhật giỏ hàng
             })
             .catch((error) => {
                 console.error("Error adding product to cart!", error);
@@ -93,7 +98,7 @@ const ProductDetail = () => {
             <Tagbar />
             <Masthead title="Chi tiết sản phẩm" />
             {/* Product Section */}
-            
+
             <main className={styles["product-section"]}>
                 <h1 className={styles["title"]}>{product.name}</h1>
                 <p className={styles["breadcrumb"]}>Trang chủ &gt; Danh sách sản phẩm &gt; {product.name}</p>
@@ -111,7 +116,7 @@ const ProductDetail = () => {
                                         spaceBetween={10}
                                         navigation={true}
                                         // thumbs={{ swiper: thumbsSwiper }}
-                                        thumbs={{swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null}}
+                                        thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
                                         modules={[Navigation, Thumbs]}
                                         className={styles['gallery-top']}
                                     >
@@ -129,7 +134,7 @@ const ProductDetail = () => {
                                         {product.video && (
                                             <SwiperSlide>
                                                 <div className={styles["video-container"]}>
-                                                    
+
                                                     <iframe
                                                         width="600"
                                                         height="400"
@@ -178,7 +183,7 @@ const ProductDetail = () => {
                         </div>
 
                         <div className={styles["product-info "]} class="col-md-7">
-                            <p className={styles['price']}>Giá bán: {product.price} VND</p>
+                            <p className={styles['price']}>Giá bán: {product.price.toLocaleString('vi-VN')} VND</p>
                             {product.discount > 0 && (
                                 <p>Giá khuyến mãi: {promotionPrice.toFixed(2)} VND</p>
                             )}
@@ -200,7 +205,7 @@ const ProductDetail = () => {
                         </div>
                     </div>
                     <div class="col-md-3">
-                        
+
                     </div>
                 </div>
 
@@ -217,7 +222,7 @@ const ProductDetail = () => {
                                     {Array.from({ length: 5 }, (_, i) => (
                                         <span key={i} className={i < feedback.rating ? styles['star-filled'] : styles['star-empty']}>★</span>
                                     ))}
-                                </div>                    
+                                </div>
                                 <p>{feedback.feedback}</p>
                                 <small> {new Date(feedback.date).toLocaleString()}</small>
                             </div>

@@ -46,6 +46,7 @@ const WeeklySalesPieChart = () => {
                 // Trích xuất label và data từ productSales
                 const sortedProductSales = Object.entries(productSales)
                     .sort(([, a], [, b]) => b - a) // Sắp xếp giảm dần theo số lượng
+                    .slice(0, 4) // Lấy tối đa 4 sản phẩm hàng đầu
                     .map(([name, quantity]) => ({ name, quantity })); // Chuyển đổi về dạng đối tượng
 
                 // Xử lý dữ liệu cho biểu đồ
@@ -103,7 +104,7 @@ const WeeklySalesPieChart = () => {
 
     return (
         <div>
-            <h4>Biểu đồ thể hiện tất cả sản phẩm của tháng</h4>
+            <h4>Biểu đồ thể hiện sản phẩm trong tháng</h4>
             <Pie data={pieData} options={options} />
         </div>
     );

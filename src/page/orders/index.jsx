@@ -17,16 +17,17 @@ const Orders = () => {
     const cart = location.state?.cart;
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
+    console.log(cart)
 
     const handlePaymentChange = (event) => {
         setPaymentMethod(event.target.value);
     };
 
-    const handleVnpayClick = async () =>{
-        try{
-            const response = await api.post(`/staff/generateOrderId`,{});
+    const handleVnpayClick = async () => {
+        try {
+            const response = await api.post(`/staff/generateOrderId`, {});
             setGenerateId(response.data);
-        }catch (error) {
+        } catch (error) {
             alert("Có lỗi xảy ra khi lấy đường dẫn thanh toán. Vui lòng thử lại.");
             return null; // Trả về null nếu có lỗi
         }
@@ -34,30 +35,30 @@ const Orders = () => {
 
     const handlePlaceOrder = () => {
         if (cart && cart.cartItems.length > 0) {
-            const userId = user ? user.id : null;           
+            const userId = user ? user.id : null;
             if (!userId) {
                 alert("Bạn cần đăng nhập trước khi đặt hàng.");
                 return navigate(`/login`);
             }
 
-            if(paymentMethod == "VNPAY"){
+            if (paymentMethod == "VNPAY") {
                 const type = 'order';
                 const orderId = '0';
                 return navigate(`/vnpay/onlinePayment/${type}/${userId}/${orderId}/${generateId}/${cart.totalPrice}`);
-            }else{
+            } else {
                 // Gửi yêu cầu POST đến API để đặt hàng
                 api.post(`/order/placeOrder`, {
                     userId: userId,
                     paymentMethod: paymentMethod,
                 })
-                .then((response) => {
-                    alert("Đặt hàng thành công!");;
-                    return navigate("/thank-you");
-                })
-                .catch((error) => {
-                    console.error("Error placing order:", error);
-                    alert("Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại.");
-                });
+                    .then((response) => {
+                        alert("Đặt hàng thành công!");;
+                        return navigate("/thank-you");
+                    })
+                    .catch((error) => {
+                        console.error("Error placing order:", error);
+                        alert("Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại.");
+                    });
             }
         } else {
             alert("Giỏ hàng của bạn trống.");
@@ -102,40 +103,59 @@ const Orders = () => {
                                     ))}
                                 </tbody>
                             </table>
-                            <div className={styles["payment-section"]}>
-                                <h3>Chọn phương thức thanh toán</h3>
-                                <div>
-                                    <label>
-                                        <input
-                                            type="radio"
-                                            value="COD"
-                                            checked={paymentMethod === "COD"}
-                                            onChange={handlePaymentChange}
-                                        />
-                                        Thanh toán khi nhận hàng
-                                    </label>
-                                    <br />
-                                    <label onClick={handleVnpayClick}>
-                                        <input
-                                            type="radio"
-                                            value="VNPAY"
-                                            checked={paymentMethod === "VNPAY"}
-                                            onChange={handlePaymentChange}
-                                        />
-                                        Chuyển khoản
-                                    </label>
-                                </div>
-                                <hr />
-                                <div className={styles["order-total"]}>
-                                    <h3>Tổng thanh toán: {cart.totalPrice.toLocaleString()} VND</h3>
-                                    <button onClick={handlePlaceOrder}>Đặt hàng</button>
-                                </div>
 
-                            </div>
                         </>
                     ) : (
                         <p>Không tìm thấy đơn hàng nào.</p>
                     )}
+
+                    <div className={styles["info-pay"]}>
+                        <div className={styles["payment-section"]}>
+                            {user ? (
+                                <>
+                                    <strong>Thông tin khách hàng</strong>
+                                    <p className={styles.textLeft}>Tên: {user.name}</p>
+                                    <p className={styles.textLeft}>Số điện thoại: {user.phone}</p>
+                                    <p className={styles.textLeft}>Địa chỉ: {user.address}</p>
+
+                                </>
+                            ) : (
+                                <p>Không tìm thấy đơn hàng nào.</p>
+                            )}
+                        </div>
+
+                        <div className={styles["payment-section"]}>
+                            <h3>Chọn phương thức thanh toán</h3>
+                            <div>
+                                <label>
+                                    <input
+                                        type="radio"
+                                        value="COD"
+                                        checked={paymentMethod === "COD"}
+                                        onChange={handlePaymentChange}
+                                    />
+                                    Thanh toán khi nhận hàng
+                                </label>
+                                <br />
+                                <label onClick={handleVnpayClick}>
+                                    <input
+                                        type="radio"
+                                        value="VNPAY"
+                                        checked={paymentMethod === "VNPAY"}
+                                        onChange={handlePaymentChange}
+                                    />
+                                    Chuyển khoản
+                                </label>
+                            </div>
+                            <hr />
+                            <div className={styles["order-total"]}>
+                                <h3>Tổng thanh toán: {cart.totalPrice.toLocaleString()} VND</h3>
+                                <button onClick={handlePlaceOrder}>Đặt hàng</button>
+                            </div>
+
+                        </div>
+                    </div>
+
                 </div>
 
             </div>

@@ -77,6 +77,13 @@
   border-bottom: 2px solid red;
 }
 
+.customCartIcon {
+  font-size: 1.5rem;
+  justify-content: center;
+  padding-right: 5px;
+  color: white;
+}
+
 .header_cart {
   width: 150px;
   text-align: end;
@@ -84,9 +91,14 @@
   cursor: pointer;
 }
 
-.customCartIcon {
-  font-size: 1.5rem;
-  justify-content: center;
-  padding-right: 5px;
-  color: white;
+.header_cart span {
+  position: absolute;
+  top: -10px; /* Đặt giá trị top phù hợp để căn chỉnh số */
+  right: -15px; /* Đặt giá trị right phù hợp để căn chỉnh số */
+  background-color: red; /* Đặt màu nền cho số */
+  color: white; /* Màu chữ của số */
+  border-radius: 50%; /* Tạo hình tròn cho số */
+  padding: 2px 6px; /* Điều chỉnh khoảng cách bên trong để số hiển thị rõ ràng */
+  font-size: 12px; /* Kích thước chữ của số */
+  font-weight: bold;
 }

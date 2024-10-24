@@ -1,17 +1,18 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styles from './tagbar.module.css';
 import { useNavigate, Link } from 'react-router-dom';
-import { UserContext } from '../../service/UserContext'; // Import UserContext
+import { UserContext } from '../../service/UserContext';
+import { CartContext } from '../../service/CartContext';
 
 const Tagbar = () => {
     const navigate = useNavigate();
     const { user } = useContext(UserContext);
-
+    const { cart } = useContext(CartContext);
     const handleGoToCart = () => {
         navigate('/cart');
     };
 
-
+    const totalQuantity = cart ? cart.cartItems.reduce((total, item) => total + item.quantity, 0) : 0;
 
     return (
         <>
@@ -39,6 +40,7 @@ const Tagbar = () => {
                         {/* Cart layout */}
                         <div onClick={handleGoToCart} className={styles.header_cart}>
                             <i className={`fas fa-shopping-cart ${styles.customCartIcon}`}></i>
+                            <span>{totalQuantity}</span>
                         </div>
                     </>
                 )}
@@ -54,6 +56,7 @@ const Tagbar = () => {
                                 <li><Link to="/manage-blog">Tạo tin tức</Link></li>
                                 <li><Link to="/process-order">Đang xử lý</Link></li>
                                 <li><Link to="/history">Lịch sử</Link></li>
+                                <li><Link to="/manage-feedback">Rating&Feedback</Link></li>
                             </ul>
                         </nav>
                     </div>
@@ -67,7 +70,7 @@ const Tagbar = () => {
                                 <li><Link to="/dashboard">Dashboard</Link></li>
                                 <li><Link to="/nhan-vien">Users</Link></li>
                                 <li><Link to="/">Khuyến mãi</Link></li>
-                                <li><Link to="/">Kho</Link></li>                                
+                                <li><Link to="/quan-li-san-pham">Kho</Link></li>                                
                             </ul>
                         </nav>
                     </div>

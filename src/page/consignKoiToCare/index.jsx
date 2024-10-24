@@ -168,8 +168,8 @@ const ConsignedKoiToCare = () => {
                         </div>
                     )}
 
-                    {fishForm.map((fishData, index) => (
-                        <form onSubmit={handleSubmit} className={styles['fish-form']}>
+                    <form onSubmit={handleSubmit} className={styles['fish-form']}>
+                        {fishForm.map((fishData, index) => (
                             <div key={index}>
                                 <div className={styles['head-form']}>
                                     <span className={styles['title']}>Thông tin cá {index + 1}</span>
@@ -183,14 +183,14 @@ const ConsignedKoiToCare = () => {
                                         </button>
                                     )}
                                 </div>
-
                                 <div className="row mb-3">
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
+                                        <label>Tên cá:</label>
                                         <input
                                             type="text"
                                             className="form-control"
                                             name="name"
-                                            placeholder="Tên cá"
+
                                             value={fishData.name}
                                             onChange={(e) => handleInputChange(index, e)}
                                             required
@@ -198,23 +198,30 @@ const ConsignedKoiToCare = () => {
                                     </div>
 
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
-                                        <input
-                                            type="text"
-                                            className="form-control"
+                                        <label>Giới tính:</label>
+                                        <select
                                             name="sex"
-                                            placeholder="Giới tính"
                                             value={fishData.sex}
+                                            className="form-control"
                                             onChange={(e) => handleInputChange(index, e)}
                                             required
-                                        />
+                                        >
+                                            <option value="" disabled>
+                                                Chọn giới tính
+                                            </option>
+                                            <option value="Koi Đực">Đực</option>
+                                            <option value="Koi Cái">Cái</option>
+
+                                        </select>
                                     </div>
 
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
+                                        <label>Tuổi cá:</label>
                                         <input
                                             type="number"
                                             className="form-control"
                                             name="age"
-                                            placeholder="Tuổi cá"
+
                                             value={fishData.age}
                                             onChange={(e) => handleInputChange(index, e)}
                                             required
@@ -222,11 +229,12 @@ const ConsignedKoiToCare = () => {
                                     </div>
 
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
+                                        <label>Kích thước:</label>
                                         <input
                                             type="text"
                                             className="form-control"
                                             name="size"
-                                            placeholder="Size"
+                                            placeholder="(cm)"
                                             value={fishData.size}
                                             onChange={(e) => handleInputChange(index, e)}
                                             required
@@ -235,10 +243,11 @@ const ConsignedKoiToCare = () => {
 
                                     <div className="row mb-3">
                                         <div className="col-12">
+                                            <label > Chế độ ăn: </label>
                                             <textarea
                                                 className="form-control"
                                                 name="ration"
-                                                placeholder="Chế độ ăn của cá"
+
                                                 value={fishData.ration}
                                                 onChange={(e) => handleInputChange(index, e)}
                                                 required
@@ -248,45 +257,49 @@ const ConsignedKoiToCare = () => {
                                     </div>
 
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
+                                        <label>Tình trạng sức khoẻ:</label>
                                         <input
                                             type="text"
                                             className="form-control"
                                             name="healthStatus"
-                                            placeholder="Tình trạng sức khoẻ"
+
                                             value={fishData.healthStatus}
                                             onChange={(e) => handleInputChange(index, e)}
                                             required
                                         />
                                     </div>
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
+                                        <label>Hình ảnh cá:</label>
                                         <input
                                             type="file"
                                             className="form-control"
                                             name="photo"
-                                            placeholder="URL ảnh cá"
+
                                             onChange={(e) => handleFileChange(index, e)}
                                             required
                                         />
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                    ))}
+                        ))}
 
-                    <div>
-                        <button type="button" className={`btn btn-success ${styles.submitButton}`} onClick={handleAddNewForm}>
-                            <i className="fa-solid fa-plus"></i> Thêm cá để kí gửi
-                        </button>
-                    </div>
-
-                    <div className="row">
-                        <div className="col-12 d-flex justify-content-center">
-                            <button onClick={handleSubmit} type="submit" className={`btn btn-success ${styles.submitButton}`}>
-                                Gửi
+                        {/* button */}
+                        <div>
+                            <button type="button" className={`btn btn-success ${styles.submitButton}`} onClick={handleAddNewForm}>
+                                <i className="fa-solid fa-plus"></i> Thêm cá để kí gửi
                             </button>
                         </div>
-                    </div>
 
+                        <div className="row">
+                            <div className="col-12 d-flex justify-content-center">
+                                <button type="submit" className={`btn btn-success ${styles.submitButton}`}>
+                                    Gửi
+                                </button>
+                            </div>
+                        </div>
+
+
+                    </form>
                 </div>
 
             </div>

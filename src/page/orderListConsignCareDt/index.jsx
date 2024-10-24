@@ -54,17 +54,17 @@ const OrderDetailConSignCare = () => {
     if (isLoading) {
         return <Loading />;
     }
-    
+
     const handleCompleteOrder = async () => {
         const userId = user ? user.id : null;
         try {
             const response = await api.post(`/staff/generateOrderId`, {});
             const type = 'caringOrder';
             navigate(`/vnpay/onlinePayment/${type}/${userId}/${orderId}/${response.data}/${order.totalPrice}`);
-            
+
         } catch (error) {
             console.error('Error updating order status to Completed:', error);
-            
+
         }
     };
 
@@ -80,7 +80,7 @@ const OrderDetailConSignCare = () => {
                 />
 
                 {(order.status === 'Responded') && (
-                    <div className = {`${styles.ten}`} >                        
+                    <div className={`${styles.ten}`} >
                         <button
                             className={order.status === 'Done' ? styles.buttonDisabled : `btn btn-success ${styles.submitButton}`}
                             onClick={order.status !== 'Done' ? handleCompleteOrder : undefined}
@@ -143,6 +143,7 @@ const OrderDetailConSignCare = () => {
                     <table className="table-custom">
                         <thead>
                             <tr>
+                                <th className={styles.textLeft}>Hình ảnh</th>
                                 <th className={styles.textLeft}>Tên cá</th>
                                 <th className={styles.textLeft}>Giới tính</th>
                                 <th className={styles.textRight}>Tuổi</th>
@@ -154,6 +155,13 @@ const OrderDetailConSignCare = () => {
                         <tbody>
                             {(order2?.caredKois || []).map((koi) => (
                                 <tr key={koi.id}>
+                                    <td className={styles.textLeft}>
+                                        {<img
+                                            src={koi.photo}
+                                            alt={koi.name || 'Hình ảnh'}
+                                            style={{ maxWidth: '150px', maxHeight: '150px', objectFit: 'cover' }}
+                                        />}
+                                    </td>
                                     <td className={styles.textLeft}>{koi.name || 'N/A'}</td>
                                     <td className={styles.textLeft}>{koi.sex || 'N/A'}</td>
                                     <td className={styles.textRight}>{koi.age || 'N/A'}</td>
@@ -164,7 +172,7 @@ const OrderDetailConSignCare = () => {
                             ))}
                         </tbody>
                     </table>
-                </div>                
+                </div>
             </div>
             <Footer />
         </>

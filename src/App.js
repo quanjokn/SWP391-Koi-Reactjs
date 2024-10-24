@@ -44,6 +44,9 @@ import BlogManager from './page/manageBlog';
 import Review from './page/review';
 import History from './page/history';
 import CreateVNPay from './page/vnpay';
+import ManageProduct from './page/manageProduct';
+import ManageFeedback from './page/manageFeedback';
+
 
 function App() {
   const router = createBrowserRouter([
@@ -97,7 +100,7 @@ function App() {
     },
     {
       path: 'cart',
-      element: <Cart /> 
+      element: <Cart />
     },
     {
       path: 'doi-mat-khau',
@@ -120,7 +123,7 @@ function App() {
       element: <ConsignOrders />
     },
     {
-      path: 'orders' ,
+      path: 'orders',
       element: (
         <ProtectedRoute>
           <Orders />
@@ -129,7 +132,7 @@ function App() {
     },
     {
       path: 'compare',
-      element: <ComparePage /> 
+      element: <ComparePage />
     },
     {
       path: 'order-list',
@@ -172,7 +175,7 @@ function App() {
       )
     },
     {
-      path: 'order-consign-care/:orderId' ,
+      path: 'order-consign-care/:orderId',
       element: (
         <ProtectedRoute>
           <OrderDetailConSignCare />
@@ -287,20 +290,36 @@ function App() {
       path: '/nhan-vien',
       element: (
         <PrivateRoute requiredRole="Manager">
-          <ManageEmployee/>
+          <ManageEmployee />
+        </PrivateRoute>
+      )
+    },
+    {
+      path: '/quan-li-san-pham',
+      element: (
+        <PrivateRoute requiredRole="Manager">
+          <ManageProduct />
         </PrivateRoute>
       )
     },
     {
       path: '/oauth/callback',
-      element: <OAuthCallback />, 
+      element: <OAuthCallback />,
     },
     {
       path: '/vnpay/onlinePayment/:type/:userId/:orderId/:vnpayCode/:money',
-      element:(
+      element: (
         <ProtectedRoute>
           <CreateVNPay />
         </ProtectedRoute>
+      )
+    },
+    {
+      path: '/manage-feedback',
+      element:(
+        <PrivateRoute requiredRole="Staff">
+          <ManageFeedback />
+        </PrivateRoute>
       )
     },
   ]);
