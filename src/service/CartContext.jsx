@@ -28,6 +28,10 @@ export const CartProvider = ({ children }) => {
         setCart(newCart);
     };
 
+    const resetCart = () => {
+        setCart({ cartItems: [], totalPrice: 0 });
+    };
+
     // Thêm phương thức để cập nhật giỏ hàng
     const fetchCart = () => {
         if (userId) {
@@ -42,7 +46,7 @@ export const CartProvider = ({ children }) => {
     };
 
     return (
-        <CartContext.Provider value={{ cart, setCart: updateCart, fetchCart }}>
+        <CartContext.Provider value={{ cart, setCart: updateCart, fetchCart, resetCart }}>
             {children}
         </CartContext.Provider>
     );

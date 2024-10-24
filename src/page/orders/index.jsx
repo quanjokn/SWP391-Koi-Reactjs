@@ -8,6 +8,7 @@ import Masthead from "../../component/masthead";
 import styles from "./orders.module.css"; // CSS Module
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../service/UserContext";
+import { CartContext } from "../../service/CartContext";
 
 const Orders = () => {
 
@@ -17,6 +18,7 @@ const Orders = () => {
     const cart = location.state?.cart;
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
+    const { resetCart } = useContext(CartContext);
     console.log(cart)
 
     const handlePaymentChange = (event) => {
@@ -53,6 +55,7 @@ const Orders = () => {
                     })
                         .then((response) => {
                             alert("Đặt hàng thành công!");;
+                            resetCart();
                             return navigate("/thank-you");
                         })
                         .catch((error) => {
