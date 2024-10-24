@@ -10,12 +10,10 @@ import api from '../../config/axios';
 const Home = () => {
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
-    const [startIndex, setStartIndex] = useState(0);
-    const [fade, setFade] = useState(false);
 
     useEffect(() => {
         // Fetch products from API
-        api.get("/fish/fishes-list")
+        api.get("/fish/top4Fish")
             .then(response => {
                 setProducts(response.data);  // Assuming the API response contains the product list
             })
@@ -42,22 +40,6 @@ const Home = () => {
             }
         };
     }, []);
-
-    const nextProduct = () => {
-        setFade(true);
-        setTimeout(() => {
-            setStartIndex((prevIndex) => (prevIndex + 1) % (products.length - 3)); // Chỉ số tối đa cho startIndex
-            setFade(false);
-        }, 500); // Thời gian trễ tương ứng với thời gian animation
-    };
-
-    const prevProduct = () => {
-        setFade(true);
-        setTimeout(() => {
-            setStartIndex((prevIndex) => (prevIndex - 1 + (products.length - 3)) % (products.length - 3));
-            setFade(false);
-        }, 500); // Thời gian trễ tương ứng với thời gian animation
-    };
 
 
     return (
@@ -136,22 +118,21 @@ const Home = () => {
             </div>
 
             <div className='align-items-center'>
-                <h2>Top 5 dòng cá bán chạy</h2>
+                <h2>Top 4 cá bán chạy</h2>
             </div>
             <div className={styles.productList}>
-                <button onClick={prevProduct} className={styles.navButton}>←</button>
-                <div className={`${styles.productGroup} ${fade ? styles.fadeOut : styles.fadeIn}`}>
-                    {products.slice(startIndex, startIndex + 4).map((product) => (
-                        <div key={product.id} className={styles.productCard}>
-                            <img src={product.photo.replace(/\\/g, "/")} alt={product.name} />
-                            <h3>{product.name}</h3>
-                            <p>{product.price} đồng</p>
+                <div className={`${styles.productGroup}`}>
+                    {products.map((product) => (
+                        <div key={product.fishDetailDTO.id} className={styles.productCard}>
+                            <img src={product.fishDetailDTO.photo.replace(/\\/g, "/")} alt={product.fishDetailDTO.name} />
+                            <h3>{product.fishDetailDTO.name}</h3>
+                            <p>{product.fishDetailDTO.price.toLocaleString('vi-VN')} VND</p>
                             <div className={styles.descriptionBox}>
-                                <p>{product.description}</p>
+                                <p>{product.fishDetailDTO.description}</p>
                             </div>
-                            <button onClick={() => navigate(`/fish-detail/${product.id}`)}>Chi tiết</button>
+                            <button onClick={() => navigate(`/fish-detail/${product.fishDetailDTO.id}`)}>Chi tiết</button>
                             <div className={styles.ratingRow}>
-                                <span>{product.rating ? product.rating.toFixed(1) : 'Chưa có đánh giá'}</span>
+                                <span>{product.fishDetailDTO.rating ? product.fishDetailDTO.rating.toFixed(1) : 'Chưa có đánh giá'}</span>
                                 <svg
                                     width="45"
                                     height="45"
@@ -165,7 +146,6 @@ const Home = () => {
                         </div>
                     ))}
                 </div>
-                <button onClick={nextProduct} className={styles.navButton}>→</button>
             </div>
             <Footer />
         </div>
