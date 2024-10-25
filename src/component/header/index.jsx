@@ -11,6 +11,7 @@ const Header = () => {
     const handleUserClick = () => {
         if (user) {
             navigate('/tai-khoan');
+            window.location.reload();
         } else {
             navigate('/login');
         }
