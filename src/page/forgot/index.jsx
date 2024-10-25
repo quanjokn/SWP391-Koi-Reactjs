@@ -37,12 +37,16 @@ const ForgotPassword = () => {
     const handleEmailSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await api.post('/email/forgotPassword', {
+            const response1 = await api.post('/email/checkUsernameAndEmail', {
                 userName,
                 email,
             });
             setErrorMessage("");
             setStep(2);
+            const response2 = await api.post('/email/forgotPassword', {
+                userName,
+                email,
+            });
         } catch (error) {
             setErrorMessage("Tài khoản hoặc email không tồn tại");
         }
@@ -129,7 +133,7 @@ const ForgotPassword = () => {
                     <div className={styles.inputBox}>
                         <input
                             type="text"
-                            placeholder="Nhập tên đăng nhập của bạn"
+                            placeholder="Tên đăng nhập"
                             value={userName}
                             onChange={(e) => setUsername(e.target.value)}
                             required
@@ -138,7 +142,7 @@ const ForgotPassword = () => {
                     <div className={styles.inputBox}>
                         <input
                             type="email"
-                            placeholder="Nhập email của bạn"
+                            placeholder="Email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required

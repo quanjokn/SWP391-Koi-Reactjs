@@ -73,7 +73,7 @@ const ProfilePage = () => {
 
     const translateRole = (role, point) => {
         if (role === 'Customer' && point >= 200) {
-            return 'Khách Hàng thân thiết';
+            return 'Khách hàng thân thiết';
         }
 
         switch (role) {
@@ -100,7 +100,13 @@ const ProfilePage = () => {
                         <div className="p-3 py-5">
                             <div className="d-flex justify-content-between align-items-center mb-3">
                                 <h4 className="text-right">Profile Settings</h4>
+                                {userProfile.role === 'Customer' && (
+                                    <div className={`${styles.pointsBadge} ms-3`}>
+                                        Điểm tích lũy: {userProfile.point}
+                                    </div>
+                                )}
                             </div>
+
 
                             <div className="row mt-3">
                                 <div className="col-md-12">
@@ -114,19 +120,6 @@ const ProfilePage = () => {
                                         readOnly={!isEditing}
                                     />
                                 </div>
-
-                                {userProfile.role === 'Customer' && (
-                                    <div className="col-md-12">
-                                        <label className={styles.labels}>Tích điểm</label>
-                                        <input
-                                            type="text"
-                                            className={`form-control ${styles.inputField}`}
-                                            name="point"
-                                            value={userProfile.point}
-                                            readOnly
-                                        />
-                                    </div>
-                                )}
 
                                 <div className="col-md-12">
                                     <label className={styles.labels}>Vai trò</label>
