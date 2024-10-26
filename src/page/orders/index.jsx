@@ -43,11 +43,11 @@ const Orders = () => {
                 return navigate(`/login`);
             }
             if (user.address != null) {
-                if (user.address != ""){
+                if (user.address != "") {
                     if (paymentMethod == "VNPAY") {
                         const type = 'order';
                         const orderId = '0';
-                        return navigate(`/vnpay/onlinePayment/${type}/${userId}/${orderId}/${generateId}/${cart.totalPrice}`);
+                        return navigate(`/vnpay/onlinePayment/${type}/${userId}/${orderId}/${generateId}/${user.point >= 200 ? (cart.totalPrice * 0.9).toFixed(0) : cart.totalPrice}`);
                     } else {
                         // Gửi yêu cầu POST đến API để đặt hàng
                         api.post(`/order/placeOrder`, {
@@ -63,8 +63,8 @@ const Orders = () => {
                                 console.error("Error placing order:", error);
                                 alert("Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại.");
                             });
-                    } 
-                }else {
+                    }
+                } else {
                     navigate('/tai-khoan');
                     alert("Vui lòng thêm địa chỉ !");
                 }
@@ -165,7 +165,13 @@ const Orders = () => {
                             </div>
                             <hr />
                             <div className={styles["order-total"]}>
-                                <h3>Tổng thanh toán: {cart.totalPrice.toLocaleString()} VND</h3>
+                                <h3>
+                                    Tổng thanh toán:{" "}
+                                    {user.point >= 200
+                                        ? (cart.totalPrice * 0.9).toLocaleString('vi-VN')
+                                        : cart.totalPrice.toLocaleString('vi-VN')
+                                    } VND
+                                </h3>
                                 <button onClick={handlePlaceOrder}>Đặt hàng</button>
                             </div>
 
