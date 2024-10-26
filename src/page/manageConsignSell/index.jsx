@@ -38,6 +38,7 @@ const ManageConsignSell = () => {
             api.post(`/consignManagement/receive/${orderId}/${staffId}`);
             // gọi lại fetchOrders để lấy lại danh sách đơn hàng mới
             fetchOrders();
+            window.location.reload();
         } catch (error) {
             console.error('Error receiving order:', error);
         };

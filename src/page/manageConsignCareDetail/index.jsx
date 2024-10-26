@@ -19,6 +19,13 @@ const ManageConsignCareDetail = () => {
     const [tempReason, setTempReason] = useState('');
     const [isOrderProcessed, setIsOrderProcessed] = useState(false);
     const [decision, setDecision] = useState({});
+    const [showUpdateForm, setShowUpdateForm] = useState(false); // State để hiển thị form
+    const [updateData, setUpdateData] = useState({
+        date: new Date().toLocaleDateString(),
+        photo: '',
+        comment: ''
+    }); // State cho dữ liệu form
+    const [updateHistory, setUpdateHistory] = useState([]);
 
     useEffect(() => {
         const tokenExpiryTime = localStorage.getItem('tokenExpiryTime');
@@ -56,6 +63,7 @@ const ManageConsignCareDetail = () => {
             return;
         } else {
             fetchOrderDetail();
+            fetchUpdateHistory();
         }
     }, [user, orderId, navigate]);
 
@@ -127,6 +135,41 @@ const ManageConsignCareDetail = () => {
         }
     };
 
+    // cập nhật trạng thái
+    const handleUpdateButtonClick = () => {
+        setShowUpdateForm((prevState) => !prevState); // Hiển thị form khi nhấn nút
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setUpdateData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
+    const handleUpdateSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await api.post(`/caringManagement/updateStatus`, updateData); // Giả sử endpoint này nhận thông tin cập nhật
+            alert('Đã cập nhật thành công!');
+            setShowUpdateForm(false); // Ẩn form sau khi cập nhật
+            fetchOrderDetail(); // Cập nhật lại chi tiết đơn hàng
+        } catch (error) {
+            console.error('Error updating fish status:', error);
+            alert('Đã xảy ra lỗi khi cập nhật.');
+        }
+    };
+
+    const fetchUpdateHistory = async () => {
+        try {
+            const response = await api.get(`/caringManagement/updateHistory/${orderId}`);
+            setUpdateHistory(response.data.history); // Giả sử API trả về mảng lịch sử
+        } catch (error) {
+            console.error('Error fetching update history:', error);
+        }
+    };
+
     return (
         <>
             <Header />
@@ -173,7 +216,7 @@ const ManageConsignCareDetail = () => {
                                                         alt={koi.name || 'Hình ảnh sản phẩm'}
                                                         style={{ maxWidth: '150px', maxHeight: '150px', objectFit: 'cover' }}
                                                     />}
-                                                    </td>
+                                                </td>
                                                 <td className={styles.textLeft}>{koi.name}</td>
                                                 <td className={styles.textLeft}>{koi.sex}</td>
                                                 <td className={styles.textLeft}>{translateStatus(koi.status)}</td>
@@ -254,6 +297,91 @@ const ManageConsignCareDetail = () => {
                     />
                 )}
             </div>
+
+            {(status === 'Paid') && (
+                <div className={styles.container}>
+
+                    {/* Nút mở form cập nhật */}
+                    <button onClick={handleUpdateButtonClick} className={styles.updateButton}>
+                        {showUpdateForm ? "Đóng form" : "Cập nhật tình trạng cá"}
+                    </button>
+
+                    {/* Form cập nhật tình trạng cá */}
+                    {showUpdateForm && (
+                        <div className={styles.updateFormContainer}>
+                            <h2>Cập nhật tình trạng cá</h2>
+                            <form onSubmit={handleUpdateSubmit} className={styles.updateForm}>
+                                <label>
+                                    Ngày cập nhật:
+                                    <input
+                                        type="text"
+                                        name="date"
+                                        value={updateData.date}
+                                        onChange={handleInputChange}
+                                        readOnly
+                                    />
+                                </label>
+                                <label>
+                                    Hình ảnh cá:
+                                    <input
+                                        type="file"
+                                        name="photo"
+                                        value={updateData.photo}
+                                        onChange={handleInputChange}
+                                        required
+                                    />
+                                </label>
+                                <label>
+                                    Lời nhận xét:
+                                    <textarea
+                                        name="comment"
+                                        value={updateData.comment}
+                                        onChange={handleInputChange}
+                                        required
+                                    />
+                                </label>
+                                <button type="submit" className={styles.updateButton}>
+                                    Cập nhật
+                                </button>
+                            </form>
+
+                            {/* Bảng lịch sử cập nhật */}
+                            {updateHistory.length > 0 && (
+                                <div className={styles.updateHistoryContainer}>
+                                    <h2>Lịch sử cập nhật</h2>
+                                    <table className={styles.historyTable}>
+                                        <thead>
+                                            <tr>
+                                                <th>Ngày cập nhật</th>
+                                                <th>ID cá</th>
+                                                <th>Hình ảnh</th>
+                                                <th>Lời nhận xét</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {updateHistory.map((update, index) => (
+                                                <tr key={index}>
+                                                    <td>{update.date}</td>
+                                                    <td>{update.koiId}</td>
+                                                    <td>
+                                                        <img
+                                                            src={update.photo}
+                                                            alt="Hình ảnh cập nhật"
+                                                            style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+                                                        />
+                                                    </td>
+                                                    <td>{update.comment}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
+            )}
+
             <Footer />
         </>
     );

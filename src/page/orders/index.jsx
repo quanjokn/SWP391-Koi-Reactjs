@@ -68,6 +68,8 @@ const Orders = () => {
                     navigate('/tai-khoan');
                     alert("Vui lòng thêm địa chỉ !");
                 }
+                }
+                
             } else {
                 navigate('/tai-khoan');
                 alert("Vui lòng thêm địa chỉ !");
