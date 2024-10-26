@@ -67,15 +67,8 @@ const Orders = () => {
                 } else {
                     navigate('/tai-khoan');
                     alert("Vui lòng thêm địa chỉ !");
-                }
-                }
-                
-            } else {
-                navigate('/tai-khoan');
-                alert("Vui lòng thêm địa chỉ !");
-            }
-
-
+                    }
+                }     
         } else {
             alert("Giỏ hàng của bạn trống.");
         }
