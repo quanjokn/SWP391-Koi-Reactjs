@@ -38,21 +38,21 @@ const ManageFeedback = () => {
         fetchFeedback();
     }, [user]);
 
-    const handleAccept = (fishId, orderId) => {
+    const handleAccept = async (fishId, orderId) => {
         try {
             const approval = '1';
-            api.post(`/ratingFeedbackController/approval/${orderId}/${fishId}/${approval}`, []);
-            fetchFeedback();
+            await api.post(`/ratingFeedbackController/approval/${orderId}/${fishId}/${approval}`, []);
+            await fetchFeedback(); // Chờ cập nhật danh sách mới
         } catch (error) {
             alert('Lỗi khi duyệt phản hồi này!');
         }
     };
-
-    const handleReject = (fishId, orderId) => {
+    
+    const handleReject = async (fishId, orderId) => {
         try {
             const approval = '0';
-            api.post(`/ratingFeedbackController/approval/${orderId}/${fishId}/${approval}`, []);
-            fetchFeedback();
+            await api.post(`/ratingFeedbackController/approval/${orderId}/${fishId}/${approval}`, []);
+            await fetchFeedback(); // Chờ cập nhật danh sách mới
         } catch (error) {
             alert('Lỗi khi duyệt phản hồi này!');
         }

@@ -42,7 +42,7 @@ const Orders = () => {
                 alert("Bạn cần đăng nhập trước khi đặt hàng.");
                 return navigate(`/login`);
             }
-            if (user.address != "") {
+            if (user.address != null) {
                 if (paymentMethod == "VNPAY") {
                     const type = 'order';
                     const orderId = '0';

@@ -206,6 +206,23 @@ const ManageProduct = () => {
         return <Loading />;
     }
 
+    const translateStatus = (status) => {
+        switch (status) {
+            case 'Pending_confirmation':
+                return { text: 'Đợi xác nhận' };
+            case 'Accepted_Selling':
+                return { text: 'Đang bán' };
+            case 'Accepted_caring':
+                return { text: 'Đang chăm sóc' };
+            case 'Completed':
+                return { text: 'Đã hoàn thành' };
+            case 'Rejected':
+                return { text: 'Đã bị từ chối' };
+            default:
+                return { text: status };
+        }
+    };
+
     return (
         <>
             <Header />
@@ -239,7 +256,7 @@ const ManageProduct = () => {
                                 name="quantity"
                                 value={formData.quantity}
                                 onChange={handleChange}
-                                min="0"
+                                min="1"
                                 required
                             />
                         </div>
@@ -306,7 +323,7 @@ const ManageProduct = () => {
                                 name="price"
                                 value={formData.price}
                                 onChange={handleChange}
-                                min="0"
+                                min="1"
                                 required
                             />
                         </div>
@@ -503,6 +520,7 @@ const ManageProduct = () => {
                                 <th>Ngày bắt đầu chăm sóc</th>
                                 <th>Ngày kết thúc chăm sóc</th>
                                 <th>Khách hàng</th>
+                                <th>Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -516,6 +534,7 @@ const ManageProduct = () => {
                                     <td>{fish.caringOrder.startDate}</td>
                                     <td>{fish.caringOrder.endDate}</td>
                                     <td>{fish.caringOrder.customer.name}</td>
+                                    <td>{translateStatus(fish.caringOrder.status).text}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -547,6 +566,7 @@ const ManageProduct = () => {
                                 <th>Tên</th>
                                 <th>Giá kí gửi bán</th>
                                 <th>Hoa hồng</th>
+                                <th>Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -559,7 +579,7 @@ const ManageProduct = () => {
                                     </td>
                                     <td>{fish.price.toLocaleString('vi-VN')}</td>
                                     <td>{fish.consignOrder.commission.toLocaleString('vi-VN')}</td>
-
+                                    <td>{translateStatus(fish.status).text}</td>
                                 </tr>
                             ))}
                         </tbody>

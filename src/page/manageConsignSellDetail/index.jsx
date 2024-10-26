@@ -61,6 +61,23 @@ const ManageConsignSellDetail = () => {
         });
     }
 
+    const translateStatus = (status) => {
+        switch (status) {
+            case 'Pending_confirmation':
+                return 'Đợi xác nhận';
+            case 'Accepted_Selling':
+                return 'Đang bán';
+            case "Sold":
+                return "Đã bán";
+            case "Paid":
+                return "Đã thanh toán";
+            case "Rejected":
+                return "Đã bị từ chối";
+            default:
+                return status;
+        }
+    };
+
     const handleAcceptOrder = async () => {
         const staffId = user ? user.id : null;
         const approveReq = {
@@ -146,7 +163,7 @@ const ManageConsignSellDetail = () => {
                                         <td className={styles.textLeft}>{product.name}</td>
                                         <td className={styles.textRight}>{product.quantity}</td>
                                         <td className={styles.textRight}>{product.price.toLocaleString('vi-VN')}</td>
-                                        <td>{product.status}</td>
+                                        <td>{translateStatus(product.status)}</td>
                                         {status === 'Receiving' && (
                                             <td className={styles["actionColumn"]}>
                                                 <label>

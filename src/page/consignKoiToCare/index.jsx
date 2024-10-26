@@ -221,7 +221,7 @@ const ConsignedKoiToCare = () => {
                                             type="number"
                                             className="form-control"
                                             name="age"
-
+                                            min="1"
                                             value={fishData.age}
                                             onChange={(e) => handleInputChange(index, e)}
                                             required

@@ -42,6 +42,21 @@ const OrderDetailConSignSell = () => {
         };
     }, []);
 
+    const translateStatus = (status) => {
+        switch (status) {
+            case 'Pending_confirmation':
+                return { text: 'Đợi xác nhận' };
+            case 'Accepted_Selling':
+                return { text: 'Đang bán' };        
+            case 'Done':
+                return { text: 'Đã hoàn thành', className: styles.done };
+            case 'Rejected':
+                return { text: 'Đã bị từ chối', className: styles.rejected };
+            default:
+                return { text: status, className: '' };
+        }
+    };
+
     if (isLoading) {
         return <Loading />;
     }
@@ -115,6 +130,7 @@ const OrderDetailConSignSell = () => {
                                 <th className={styles.textLeft}>Kích cỡ</th>
                                 <th className={styles.textLeft}>Tình trạng sức khỏe</th>
                                 <th className={styles.textLeft}>Chế độ ăn</th>
+                                <th className={styles.textLeft}>Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -140,6 +156,7 @@ const OrderDetailConSignSell = () => {
                                     <td className={styles.textLeft}>{koi.size || 'N/A'}</td>
                                     <td className={styles.textLeft}>{koi.healthStatus || 'N/A'}</td>
                                     <td className={styles.textLeft}>{koi.ration || 'N/A'}</td>
+                                    <td className={styles.textLeft} >{translateStatus(koi.status).text}</td>
                                 </tr>
                             ))}
 

@@ -55,6 +55,22 @@ const OrderDetailConSignCare = () => {
         return <Loading />;
     }
 
+    const translateStatus = (status) => {
+        switch (status) {
+            case 'Pending_confirmation':
+                return { text: 'Đợi xác nhận' };
+            case 'Accepted_caring':
+                return { text: 'Đang chăm sóc' };        
+            case 'Done':
+                return { text: 'Đã hoàn thành', className: styles.done };
+            case 'Rejected':
+                return { text: 'Đã bị từ chối', className: styles.rejected};
+            default:
+                return { text: status, className: '' };
+        }
+    };
+
+
     const handleCompleteOrder = async () => {
         const userId = user ? user.id : null;
         try {
@@ -150,6 +166,7 @@ const OrderDetailConSignCare = () => {
                                 <th className={styles.textLeft}>Kích cỡ</th>
                                 <th className={styles.textLeft}>Tình trạng sức khỏe</th>
                                 <th className={styles.textLeft}>Chế độ ăn</th>
+                                <th className={styles.textLeft}>Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -168,6 +185,7 @@ const OrderDetailConSignCare = () => {
                                     <td className={styles.textLeft}>{koi.size || 'N/A'}</td>
                                     <td className={styles.textLeft}>{koi.healthStatus || 'N/A'}</td>
                                     <td className={styles.textLeft}>{koi.ration || 'N/A'}</td>
+                                    <td className={styles.textLeft}>{translateStatus(koi.status).text || 'N/A'}</td>
                                 </tr>
                             ))}
                         </tbody>

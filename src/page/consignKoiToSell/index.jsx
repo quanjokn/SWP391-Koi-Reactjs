@@ -178,7 +178,7 @@ const ConsignedKoiToSell = () => {
                                             type="number"
                                             className="form-control"
                                             name="age"
-                                            min="0"
+                                            min="1"
                                             value={fishData.age}
                                             onChange={(e) => handleInputChange(index, e)}
                                             required
@@ -193,7 +193,7 @@ const ConsignedKoiToSell = () => {
                                             placeholder="VNĐ"
                                             value={fishData.price}
                                             onChange={(e) => handleInputChange(index, e)}
-                                            min="0"
+                                            min="1"
                                             required
                                         />
                                     </div>
@@ -215,7 +215,7 @@ const ConsignedKoiToSell = () => {
                                             name="quantity"
                                             value={fishData.quantity}
                                             onChange={(e) => handleInputChange(index, e)}
-                                            min="0"
+                                            min="1"
                                             required
                                         />
                                     </div>
