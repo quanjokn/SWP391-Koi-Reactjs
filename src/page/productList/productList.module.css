@@ -263,3 +263,35 @@ footer.footer .footer-links a:hover {
   border-radius: 5px;
 }
 
+.masthead {
+  position: relative;
+  margin-bottom: 3rem;
+  padding-top: calc(8rem + 57px);
+  padding-bottom: 8rem;
+  background: no-repeat center center;
+  background-size: cover;
+  background-attachment: scroll;
+  width: 100%;
+}
+.masthead:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.5;
+  width: 100%;
+}
+
+.masthead {
+  text-align: center;
+}
+
+.masthead .siteHeading h2,
+.masthead .siteHeading .h2 {
+font-size: 3rem;
+color: red;
+font-family: 'Calibri', sans-serif;
+font-weight: bold;
+}

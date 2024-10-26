@@ -84,6 +84,7 @@ const ManageOrderDetail = () => {
                 fetchOrderDetail(); // Lấy lại dữ liệu mới từ API
             }
             alert('Đơn hàng đã được chấp nhận thành công!');
+            window.location.reload();
         } catch (error) {
             console.error('Error accepting order:', error);
             alert('Đã xảy ra lỗi khi chấp nhận đơn hàng.');

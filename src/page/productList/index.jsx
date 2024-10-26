@@ -126,9 +126,24 @@ const ProductList = () => {
         <>
             <Header />
             <Tagbar />
+
             <Masthead title={"Danh mục sản phẩm"} />
             <div className={styles['search-filter-container']}>
                 {/* Search Section */}
+
+            <div className={`${styles.masthead}`} style={{ backgroundImage: "url('/imagines/background/promotion.jpg')" }}>
+                <div className="container position-relative px-4 px-lg-5">
+                    <div className="row gx-4 gx-lg-5 justify-content-center">
+                        <div className="col-md-10 col-lg-8 col-xl-7">
+                            <div className={`${styles.siteHeading}`}>
+                                <h2>Chương trình khuyến mãi cho khách hàng thân thiết giảm 10%</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/* Search Section */}
+
             <div className={styles['search-container']}>
                 <input
                     type="text"
@@ -194,13 +209,13 @@ const ProductList = () => {
                     <div className={styles['compare-box-body']}>
                         {compareList.map((product) => (
                             <div key={product.id} className={`${styles.producToCompare}`}>
-                                 <img src={product.photo.replace(/\\/g, "/")} alt={product.name} />
+                                <img src={product.photo.replace(/\\/g, "/")} alt={product.name} />
                                 <p>{product.name}</p>
                                 <button onClick={() => handleRemoveCompare(product.id)}>Xóa</button>
                             </div>
                         ))}
                         {compareList.length === 2 && (
-                            <button  onClick={navigateToComparePage}>
+                            <button onClick={navigateToComparePage}>
                                 So sánh
                             </button>
                         )}

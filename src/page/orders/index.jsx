@@ -42,27 +42,31 @@ const Orders = () => {
                 alert("Bạn cần đăng nhập trước khi đặt hàng.");
                 return navigate(`/login`);
             }
-            if (user.address !== "") {
-                if(user.address !== null){
+            if (user.address != null) {
+                if (user.address != "") {
                     if (paymentMethod == "VNPAY") {
-                    const type = 'order';
-                    const orderId = '0';
-                    return navigate(`/vnpay/onlinePayment/${type}/${userId}/${orderId}/${generateId}/${cart.totalPrice}`);
-                } else {
-                    // Gửi yêu cầu POST đến API để đặt hàng
-                    api.post(`/order/placeOrder`, {
-                        userId: userId,
-                        paymentMethod: paymentMethod,
-                    })
-                        .then((response) => {
-                            alert("Đặt hàng thành công!");;
-                            resetCart();
-                            return navigate("/thank-you");
+                        const type = 'order';
+                        const orderId = '0';
+                        return navigate(`/vnpay/onlinePayment/${type}/${userId}/${orderId}/${generateId}/${user.point >= 200 ? (cart.totalPrice * 0.9).toFixed(0) : cart.totalPrice}`);
+                    } else {
+                        // Gửi yêu cầu POST đến API để đặt hàng
+                        api.post(`/order/placeOrder`, {
+                            userId: userId,
+                            paymentMethod: paymentMethod,
                         })
-                        .catch((error) => {
-                            console.error("Error placing order:", error);
-                            alert("Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại.");
-                        });
+                            .then((response) => {
+                                alert("Đặt hàng thành công!");;
+                                resetCart();
+                                return navigate("/thank-you");
+                            })
+                            .catch((error) => {
+                                console.error("Error placing order:", error);
+                                alert("Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại.");
+                            });
+                    }
+                } else {
+                    navigate('/tai-khoan');
+                    alert("Vui lòng thêm địa chỉ !");
                 }
                 }
                 
@@ -128,13 +132,15 @@ const Orders = () => {
                                     <strong>Thông tin khách hàng</strong>
                                     <p className={styles.textLeft}>Tên: {user.name}</p>
                                     <p className={styles.textLeft}>Số điện thoại: {user.phone}</p>
-                                    <p className={styles.textLeft}>Địa chỉ: {user.address}</p>
-
+                                    <p className={styles.textLeft}>
+                                        Địa chỉ: {user.address ? user.address : <span className={styles.error}>Bạn cần thêm địa chỉ để hoàn thành đơn hàng</span>}
+                                    </p>
                                 </>
                             ) : (
                                 <p>Không tìm thấy đơn hàng nào.</p>
                             )}
                         </div>
+
 
                         <div className={styles["payment-section"]}>
                             <h3>Chọn phương thức thanh toán</h3>
@@ -161,7 +167,13 @@ const Orders = () => {
                             </div>
                             <hr />
                             <div className={styles["order-total"]}>
-                                <h3>Tổng thanh toán: {cart.totalPrice.toLocaleString()} VND</h3>
+                                <h3>
+                                    Tổng thanh toán:{" "}
+                                    {user.point >= 200
+                                        ? (cart.totalPrice * 0.9).toLocaleString('vi-VN')
+                                        : cart.totalPrice.toLocaleString('vi-VN')
+                                    } VND
+                                </h3>
                                 <button onClick={handlePlaceOrder}>Đặt hàng</button>
                             </div>
 
