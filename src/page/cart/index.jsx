@@ -14,7 +14,6 @@ const Cart = () => {
     const userId = user ? user.id : null;
     const navigate = useNavigate();
     const { fetchCart } = useContext(CartContext);
-
     useEffect(() => {
         api.post(`/cart/${userId}`)
             .then(response => {
@@ -94,32 +93,52 @@ const Cart = () => {
                         </thead>
                         <tbody>
                             {cart && cart.cartItems.length > 0 ? (
-                                cart.cartItems.map(item => (
-                                    <tr key={item.fishId}>
-                                        <td>
-                                            <img src={item.photo} alt={item.fishName} />
-                                            <h3>{item.fishName}</h3>
-                                        </td>
-                                        <td>{item.unitPrice.toLocaleString()} VND</td>
-                                        <td>
-                                            <input
-                                                type="number"
-                                                value={item.quantity}
-                                                onChange={(e) => handleQuantityChange(item.fishId, e.target.value)}
-                                                min="1"
-                                            />
-                                        </td>
-                                        <td>{(item.unitPrice * item.quantity).toLocaleString()} VND</td>
-                                        <td>
-                                            <button
-                                                className={styles["remove-button"]}
-                                                onClick={() => handleRemoveFromCart(item.fishId)}
-                                            >
-                                                Xóa
-                                            </button>
+                                <>
+                                    {cart.cartItems.map(item => (
+                                        <tr key={item.fishId}>
+                                            <td>
+                                                <img src={item.photo} alt={item.fishName} />
+                                                <h3>{item.fishName}</h3>
+                                            </td>
+                                            <td>{item.unitPrice.toLocaleString()} VND</td>
+                                            <td>
+                                                <input
+                                                    type="number"
+                                                    value={item.quantity}
+                                                    onChange={(e) => handleQuantityChange(item.fishId, e.target.value)}
+                                                    min="1"
+                                                />
+                                            </td>
+                                            <td>{(item.unitPrice * item.quantity).toLocaleString()} VND</td>
+                                            <td>
+                                                <button
+                                                    className={styles["remove-button"]}
+                                                    onClick={() => handleRemoveFromCart(item.fishId)}
+                                                >
+                                                    Xóa
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                    {/* Hàng hiển thị tổng giá */}
+                                    <tr>
+                                        <td colSpan="3" className={styles.textLeft}><strong>Giảm giá</strong></td>
+                                        <td colSpan="2" className={styles.textRight}>
+                                            <strong>{user.point >= 200 ? "10%" : "0%"}</strong>
                                         </td>
                                     </tr>
-                                ))
+                                    <tr>
+                                        <td colSpan="3" className={styles.textLeft}><strong>Thành tiền:</strong></td>
+                                        <td colSpan="2" className={styles.textRight}>
+                                            <strong>
+                                                {user.point >= 200
+                                                    ? (cart.cartItems.reduce((total, item) => total + item.unitPrice * item.quantity, 0) * 0.9).toLocaleString('vi-VN')
+                                                    : cart.cartItems.reduce((total, item) => total + item.unitPrice * item.quantity, 0).toLocaleString('vi-VN')
+                                                } VND
+                                            </strong>
+                                        </td>
+                                    </tr>
+                                </>
                             ) : (
                                 <tr>
                                     <td colSpan="5" className={`${styles.textLeft} ${styles.ifEmpty}`}>Giỏ hàng của bạn trống</td>
@@ -132,7 +151,6 @@ const Cart = () => {
 
                 {cart && cart.cartItems.length > 0 && (
                     <div className={styles["cart-total"]}>
-                        <h3>Tổng thanh toán: {cart.totalPrice.toLocaleString()} VND</h3>
                         <button
                             className={styles["place-order-button"]}
                             onClick={handlePlaceOrder}
