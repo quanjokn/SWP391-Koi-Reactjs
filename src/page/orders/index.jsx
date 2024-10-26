@@ -42,8 +42,9 @@ const Orders = () => {
                 alert("Bạn cần đăng nhập trước khi đặt hàng.");
                 return navigate(`/login`);
             }
-            if (user.address != null) {
-                if (paymentMethod == "VNPAY") {
+            if (user.address !== "") {
+                if(user.address !== null){
+                    if (paymentMethod == "VNPAY") {
                     const type = 'order';
                     const orderId = '0';
                     return navigate(`/vnpay/onlinePayment/${type}/${userId}/${orderId}/${generateId}/${cart.totalPrice}`);
@@ -63,6 +64,8 @@ const Orders = () => {
                             alert("Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại.");
                         });
                 }
+                }
+                
             } else {
                 navigate('/tai-khoan');
                 alert("Vui lòng thêm địa chỉ !");
