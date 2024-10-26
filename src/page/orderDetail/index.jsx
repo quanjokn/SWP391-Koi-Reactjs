@@ -94,7 +94,7 @@ const OrderDetail = () => {
                                 <th className={styles.textLeft}>Tên cá</th>
                                 <th className={`${styles.textRight} ${styles.quantityColumn}`}>Số lượng</th>
                                 <th className={styles.textRight}>Giá tiền VND</th>
-                                <th></th>
+                                <th className={styles.textCenter}>Nhận xét</th>
                             </tr>
                         </thead>
                         <tbody>
