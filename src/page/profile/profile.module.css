@@ -54,3 +54,14 @@
     flex-grow: 1; /* Make the right side take the rest of the available space */
 }
 
+.pointsBadge {
+  background-color: #ffda79; /* Light yellow color for visibility */
+  color: #470101; /* Dark red text to match theme */
+  padding: 5px 15px;
+  font-weight: bold;
+  border-radius: 20px;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Adds slight shadow for depth */
+}

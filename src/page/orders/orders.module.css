@@ -45,10 +45,23 @@
 }
 
 .payment-section {
+    width: 500px; /* Set fixed width to 500px */
+    max-width: 500px; /* Maintain the max width */
     margin: 80px auto;
     border: black solid 1px;
     padding: 20px;
     border-radius: 8px;
+    background-color: #f9f9f9; /* Light background for better visibility */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.textLeft {
+    margin: 5px 0; /* Add some spacing between lines */
+}
+
+.error {
+    color: red; /* Set text color to red for error messages */
+    font-weight: bold; /* Make the error message bold */
 }
 
 .order-summary {
