@@ -52,6 +52,7 @@ const ManageConsignCareDetail = () => {
             if (response.data) {
                 // Cập nhật order với thông tin nhận được từ API
                 setOrder(response.data); // Cập nhật với đối tượng order
+                console.log(response.data)
                 setStatus(response.data.caringOrder.status); // Cập nhật trạng thái
             } else {
                 throw new Error('No order data found');
@@ -255,8 +256,10 @@ const ManageConsignCareDetail = () => {
                         </table>
                         <ConsignCareStatus
                             orderId={orderId}
-                            date={new Date(order.date).toLocaleDateString()}
+                            startDate={new Date(order.caringOrder.startDate).toLocaleDateString()}
+                            endDate={new Date(order.caringOrder.endDate).toLocaleDateString()}
                             status={status}
+                            price={order.caringOrder.totalPrice}
                         />
                     </>
                 ) : (

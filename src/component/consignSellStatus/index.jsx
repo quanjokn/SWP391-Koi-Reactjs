@@ -10,7 +10,7 @@ import {
 } from "mdb-react-ui-kit";
 import "./consignSellStatus.css";
 
-export default function ConsignSellStatus({ orderId, Date, status }) {
+export default function ConsignSellStatus({ orderId, date, status, price }) {
     // Nhận thêm status từ API
     useEffect(() => {
         const colElement = document.querySelector(".col-12");
@@ -87,6 +87,9 @@ export default function ConsignSellStatus({ orderId, Date, status }) {
                                                 </span>
                                             </MDBTypography>
                                         </div>
+                                        <div className="text-end justify-content-between align-items-center mb-0">
+                                            Ngày kí gửi: <span>{date}</span>
+                                        </div>    
                                     </div>
                                     <ul
                                         id="progressbar-sell"
@@ -146,7 +149,21 @@ export default function ConsignSellStatus({ orderId, Date, status }) {
                                             </p>
                                         </div>
                                     </div>
-
+                                    <div>
+                                        <div>
+                                            <br />
+                                            <br />
+                                            <MDBTypography tag="h5" className="mb-0">
+                                                <div className={`textCenter`}>
+                                                    ĐỊNH GIÁ:{" "}
+                                                    <span className="text-primary font-weight-bold">
+                                                        {price.toLocaleString('vi-VN')}
+                                                    </span>
+                                                    {" "}VND
+                                                </div>
+                                            </MDBTypography>
+                                        </div>
+                                    </div>
                                 </MDBCardBody>
                             </MDBCard>
                         </MDBCol>

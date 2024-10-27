@@ -10,7 +10,7 @@ import {
 } from "mdb-react-ui-kit";
 import "./consignCareStatus.css";
 
-export default function ConsignCareStatus({ orderId, startDate, endDate, status }) {
+export default function ConsignCareStatus({ orderId, startDate, endDate, status, price }) {
     // Nhận thêm status từ API
     useEffect(() => {
         const colElement = document.querySelector(".col-12");
@@ -88,6 +88,9 @@ export default function ConsignCareStatus({ orderId, startDate, endDate, status 
                                                 </span>
                                             </MDBTypography>
                                         </div>
+                                        <div className="text-end justify-content-between align-items-center mb-0">
+                                            Thời gian chăm sóc: <span>{startDate}-{endDate}</span>
+                                        </div>
                                     </div>
                                     <ul
                                         id="progressbar-care"
@@ -137,6 +140,21 @@ export default function ConsignCareStatus({ orderId, startDate, endDate, status 
                                         <div className="d-flex flex-column align-items-center">
                                             <MDBIcon fas icon="circle-check" size="3x" />
                                             <p className={`fw-bold text-center mb-0 ${getTextColorClass(5)}`}>Đã Hoàn Thành</p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <br />
+                                            <br />
+                                            <MDBTypography tag="h5" className="mb-0">
+                                                <div className={`textCenter`}>
+                                                    TỔNG TIỀN:{" "}
+                                                    <span className="text-primary font-weight-bold">
+                                                        {price.toLocaleString('vi-VN')}
+                                                    </span>
+                                                    {" "}VND
+                                                </div>
+                                            </MDBTypography>
                                         </div>
                                     </div>
                                 </MDBCardBody>

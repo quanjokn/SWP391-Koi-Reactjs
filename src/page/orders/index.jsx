@@ -37,38 +37,39 @@ const Orders = () => {
 
     const handlePlaceOrder = () => {
         if (cart && cart.cartItems.length > 0) {
+            console.log("Cart exists and has items");
             const userId = user ? user.id : null;
             if (!userId) {
                 alert("Bạn cần đăng nhập trước khi đặt hàng.");
                 return navigate(`/login`);
             }
-            if (user.address != null) {
-                if (user.address != "") {
-                    if (paymentMethod == "VNPAY") {
-                        const type = 'order';
-                        const orderId = '0';
-                        return navigate(`/vnpay/onlinePayment/${type}/${userId}/${orderId}/${generateId}/${user.point >= 200 ? (cart.totalPrice * 0.9).toFixed(0) : cart.totalPrice}`);
-                    } else {
-                        // Gửi yêu cầu POST đến API để đặt hàng
-                        api.post(`/order/placeOrder`, {
-                            userId: userId,
-                            paymentMethod: paymentMethod,
-                        })
-                            .then((response) => {
-                                alert("Đặt hàng thành công!");;
-                                resetCart();
-                                return navigate("/thank-you");
-                            })
-                            .catch((error) => {
-                                console.error("Error placing order:", error);
-                                alert("Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại.");
-                            });
-                    }
+            if (user.address != null && user.address !== "") {
+                console.log("User address exists");
+                if (paymentMethod === "VNPAY") {
+                    const type = 'order';
+                    const orderId = '0';
+                    console.log("Navigating to VNPAY payment page");
+                    return navigate(`/vnpay/onlinePayment/${type}/${userId}/${orderId}/${generateId}/${user.point >= 200 ? (cart.totalPrice * 0.9).toFixed(0) : cart.totalPrice}`);
                 } else {
-                    navigate('/tai-khoan');
-                    alert("Vui lòng thêm địa chỉ !");
-                    }
-                }     
+                    console.log("Placing COD order");
+                    api.post(`/order/placeOrder`, {
+                        userId: userId,
+                        paymentMethod: paymentMethod,
+                    })
+                        .then((response) => {
+                            alert("Đặt hàng thành công!");
+                            resetCart();
+                            return navigate("/thank-you");
+                        })
+                        .catch((error) => {
+                            console.error("Error placing order:", error);
+                            alert("Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại.");
+                        });
+                }
+            } else {
+                alert("Vui lòng thêm địa chỉ !");
+                return navigate('/tai-khoan');
+            }
         } else {
             alert("Giỏ hàng của bạn trống.");
         }

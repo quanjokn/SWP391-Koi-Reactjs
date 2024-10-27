@@ -7,6 +7,7 @@ import Tagbar from '../../component/tagbar';
 import Footer from '../../component/footer';
 import Loading from '../../component/loading';
 import { useNavigate, useParams } from 'react-router-dom';
+import { color } from 'chart.js/helpers';
 
 const OrderDetail = () => {
     const [order, setOrder] = useState({});
@@ -60,6 +61,11 @@ const OrderDetail = () => {
             <Tagbar />
             <div className="container mt-5" style={containerStyle}>
                 <OrderStatus orderId={order.orderId} date={order.date} status={order.status} />
+                {order.status === 'Rejected' && (
+                    <h3 className={styles.textCenter}>
+                        <span>Lý do từ chối:</span> {order.note}
+                    </h3>
+                )}
 
                 <h3 className={styles.orderDetailH3}>Hóa đơn</h3>
                 <div className="order-summary">
@@ -94,7 +100,9 @@ const OrderDetail = () => {
                                 <th className={styles.textLeft}>Tên cá</th>
                                 <th className={`${styles.textRight} ${styles.quantityColumn}`}>Số lượng</th>
                                 <th className={styles.textRight}>Giá tiền VND</th>
-                                <th className={styles.textCenter}>Nhận xét</th>
+                                {order.status === 'Completed' && (
+                                    <th className={styles.textCenter}>Nhận xét</th>
+                                )}
                             </tr>
                         </thead>
                         <tbody>
@@ -111,16 +119,26 @@ const OrderDetail = () => {
                                     <td className={`${styles.textRight} ${styles.quantityColumn}`}>{item.quantity || 0}</td>
                                     <td className={styles.textRight}>{item.unitPrice ? item.unitPrice.toLocaleString('vi-VN') : 0}</td>
                                     {/* Nút đánh giá cho từng con cá */}
-                                    <td className={styles.textCenter}>
-                                        {order.status === 'Completed' && !item.evaluationStatus && (
+                                    {order.status === 'Completed' && !item.evaluationStatus && (
+                                        <td className={styles.textCenter}>
+
                                             <button
                                                 className="btn btn-primary"
                                                 onClick={() => navigate(`/review/${orderId}/${item.fishId}`)}
                                             >
                                                 Nhận xét
                                             </button>
-                                        )}
-                                    </td>
+
+                                        </td>
+                                    )}
+                                    {order.status === 'Completed' && item.evaluationStatus && (
+                                        <td className={styles.textCenter}>
+                                            <button className="btn btn-primary">
+                                                Đã nhận xét
+                                            </button>
+
+                                        </td>
+                                    )}
                                 </tr>
                             ))}
                         </tbody>
