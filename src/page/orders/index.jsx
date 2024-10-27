@@ -79,6 +79,7 @@ const Orders = () => {
                         api.post(`/order/placeOrder`, {
                             userId: userId,
                             paymentMethod: paymentMethod,
+
                         })
                             .then((response) => {
                                 alert("Đặt hàng thành công!");

@@ -5,6 +5,7 @@ import Header from '../../component/header';
 import Tagbar from '../../component/tagbar';
 import Footer from '../../component/footer';
 import api from '../../config/axios';
+import * as XLSX from 'xlsx';
 import './dashboard.css';
 
 const Dashboard = () => {
@@ -40,6 +41,30 @@ const Dashboard = () => {
         fetchWeeklyData();
     }, []);
 
+    // Hàm xuất dữ liệu ra file Excel
+    const exportToExcel = () => {
+        const now = new Date();
+        const formattedDate = now.toLocaleDateString('vi-VN');
+        const formattedTime = now.toLocaleTimeString('vi-VN');
+
+        const data = [
+            {
+                'Ngày': formattedDate,
+                'Thời gian': formattedTime,
+                'Doanh thu tuần này': weeklyData.revenue,
+                'Doanh số tuần này': weeklyData.sales
+            },
+        ];
+
+        const worksheet = XLSX.utils.json_to_sheet(data);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Weekly Data');
+
+        // Đặt tên file bao gồm ngày và giờ để dễ quản lý
+        const fileName = `Dashboard_Weekly_Data_${formattedDate.replace(/\//g, '-')}_${formattedTime.replace(/:/g, '-')}.xlsx`;
+        XLSX.writeFile(workbook, fileName);
+    };
+
     return (
         <>
             <Header />
@@ -62,6 +87,11 @@ const Dashboard = () => {
                             <p>{weeklyData.sales} đơn hàng</p>
                         </div>
                     </div>
+                </div>
+
+                {/* Nút xuất file Excel */}
+                <div className="text-center mt-4">
+                    <button onClick={exportToExcel} className="btn btn-success">Xuất Excel</button>
                 </div>
 
                 {/* Biểu đồ doanh thu và bán hàng */}
