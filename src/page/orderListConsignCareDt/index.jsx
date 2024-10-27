@@ -19,6 +19,15 @@ const OrderDetailConSignCare = () => {
     const { user } = useContext(UserContext);
     const [updateHistory, setUpdateHistory] = useState([]);
 
+    const fetchUpdateHistory = async (caredKoiId) => {
+        try {
+            const response = await api.get(`/caringManagement/getAllHealthUpdation/${caredKoiId}`);
+            setUpdateHistory(response.data); // Giả sử API trả về mảng lịch sử
+        } catch (error) {
+            console.error('Error fetching update history:', error);
+        }
+    };
+
     useEffect(() => {
         const fetchOrderDetails = async () => {
             try {
@@ -89,14 +98,6 @@ const OrderDetailConSignCare = () => {
         }
     };
 
-    const fetchUpdateHistory = async (caredKoiId) => {
-        try {
-            const response = await api.get(`/caringManagement/getAllHealthUpdation/${caredKoiId}`);
-            setUpdateHistory(response.data); // Giả sử API trả về mảng lịch sử
-        } catch (error) {
-            console.error('Error fetching update history:', error);
-        }
-    };
 
     return (
         <>
