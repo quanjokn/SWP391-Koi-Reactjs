@@ -57,7 +57,6 @@ const Orders = () => {
                         paymentMethod: paymentMethod,
                     })
                         .then((response) => {
-                            alert("Đặt hàng thành công!");
                             resetCart();
                             return navigate("/thank-you");
                         })

@@ -22,7 +22,6 @@ const WeeklySalesPieChart = () => {
                 });
 
                 const salesData = response.data; // Dữ liệu trả về từ API
-                console.log('Dữ liệu trả về:', salesData); // Kiểm tra dữ liệu
 
                 // Kiểm tra cấu trúc dữ liệu
                 if (!Array.isArray(salesData) || salesData.length === 0) {
