@@ -70,7 +70,6 @@ const Orders = () => {
                 alert("Vui lòng thêm địa chỉ !");
                 return navigate('/tai-khoan');
             }
->>>>>>> Stashed changes
         } else {
             alert("Giỏ hàng của bạn trống.");
         }
