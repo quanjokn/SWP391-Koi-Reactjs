@@ -200,8 +200,9 @@ const ManageConsignSellDetail = () => {
                         </table>
                         <ConsignSellStatus
                             orderId={orderId}
-                            date={new Date(order.date).toLocaleDateString()}
+                            date={new Date(order.request.date).toLocaleDateString()}
                             status={status}
+                            price={order.request.totalPrice.toLocaleString('vi-VN')}
                         />
                     </>
                 ) : (
