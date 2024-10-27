@@ -128,9 +128,6 @@ const ProductList = () => {
             <Tagbar />
 
             <Masthead title={"Danh mục sản phẩm"} />
-            <div className={styles['search-filter-container']}>
-                {/* Search Section */}
-
             <div className={`${styles.masthead}`} style={{ backgroundImage: "url('/imagines/background/promotion.jpg')" }}>
                 <div className="container position-relative px-4 px-lg-5">
                     <div className="row gx-4 gx-lg-5 justify-content-center">
@@ -142,8 +139,9 @@ const ProductList = () => {
                     </div>
                 </div>
             </div>
-            {/* Search Section */}
 
+            <div className={styles['search-filter-container']}>
+            {/* Search Section */}
             <div className={styles['search-container']}>
                 <input
                     type="text"

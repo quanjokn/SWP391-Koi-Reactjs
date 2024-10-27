@@ -192,7 +192,7 @@ footer.footer .footer-links a:hover {
 }
 
 .search-button {
-  background-color: #007bff;
+  background-color: #ff0202ad;/* #007bff */
   border: none;
   padding: 10px;
   border-radius: 0 5px 5px 0;
