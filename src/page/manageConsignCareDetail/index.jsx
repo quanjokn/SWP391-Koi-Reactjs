@@ -19,6 +19,18 @@ const ManageConsignCareDetail = () => {
     const [tempReason, setTempReason] = useState('');
     const [isOrderProcessed, setIsOrderProcessed] = useState(false);
     const [decision, setDecision] = useState({});
+    const [showUpdateForm, setShowUpdateForm] = useState(false); // State để hiển thị form
+    const formatDate = (date) => {
+        const d = new Date(date);
+        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    };
+    const [updateData, setUpdateData] = useState({
+        caredKoiID: '',
+        date: formatDate(new Date()),
+        photo: '',
+        evaluation: ''
+    }); // State cho dữ liệu form
+    const [updateHistory, setUpdateHistory] = useState([]);
 
     useEffect(() => {
         const tokenExpiryTime = localStorage.getItem('tokenExpiryTime');
@@ -40,6 +52,7 @@ const ManageConsignCareDetail = () => {
             if (response.data) {
                 // Cập nhật order với thông tin nhận được từ API
                 setOrder(response.data); // Cập nhật với đối tượng order
+                console.log(response.data)
                 setStatus(response.data.caringOrder.status); // Cập nhật trạng thái
             } else {
                 throw new Error('No order data found');
@@ -56,6 +69,7 @@ const ManageConsignCareDetail = () => {
             return;
         } else {
             fetchOrderDetail();
+            fetchUpdateHistory();
         }
     }, [user, orderId, navigate]);
 
@@ -95,10 +109,6 @@ const ManageConsignCareDetail = () => {
             decision,
             note: ""
         };
-        console.log('Staff ID:', staffId);
-        console.log('Order ID:', orderId);
-        console.log('Decision:', decision);
-        console.log('Approve Request:', approveReq);
         try {
 
             await api.post(`/caringManagement/approval`, approveReq, {
@@ -124,6 +134,43 @@ const ManageConsignCareDetail = () => {
         } catch (error) {
             console.error('Error updating order status to Completed:', error);
             alert('Đã xảy ra lỗi khi cập nhật trạng thái đơn hàng.');
+        }
+    };
+
+    // cập nhật trạng thái
+    const handleUpdateButtonClick = () => {
+        setShowUpdateForm((prevState) => !prevState); // Hiển thị form khi nhấn nút
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value, files } = e.target;
+        setUpdateData((prevData) => ({
+            ...prevData,
+            [name]: name === "photo" ? files[0]?.name : (name === "caredKoiID" ? Number(value) : value), // Lưu tên file nếu là photo
+        }));
+    };
+
+    const handleUpdateSubmit = async (e) => {
+        e.preventDefault();
+        console.log(updateData);
+        try {
+            await api.post(`/caringManagement/updateHealthStatus`, updateData); // Giả sử endpoint này nhận thông tin cập nhật
+            alert('Đã cập nhật thành công!');
+            setShowUpdateForm(false); // Ẩn form sau khi cập nhật
+            fetchOrderDetail(); // Cập nhật lại chi tiết đơn hàng
+            fetchUpdateHistory();
+        } catch (error) {
+            console.error('Error updating fish status:', error);
+            alert('Đã xảy ra lỗi khi cập nhật.');
+        }
+    };
+
+    const fetchUpdateHistory = async () => {
+        try {
+            const response = await api.get(`/caringManagement/getAllHealthUpdation/${updateData.caredKoiID}`);
+            setUpdateHistory(response.data); // Giả sử API trả về mảng lịch sử
+        } catch (error) {
+            console.error('Error fetching update history:', error);
         }
     };
 
@@ -173,7 +220,7 @@ const ManageConsignCareDetail = () => {
                                                         alt={koi.name || 'Hình ảnh sản phẩm'}
                                                         style={{ maxWidth: '150px', maxHeight: '150px', objectFit: 'cover' }}
                                                     />}
-                                                    </td>
+                                                </td>
                                                 <td className={styles.textLeft}>{koi.name}</td>
                                                 <td className={styles.textLeft}>{koi.sex}</td>
                                                 <td className={styles.textLeft}>{translateStatus(koi.status)}</td>
@@ -209,8 +256,10 @@ const ManageConsignCareDetail = () => {
                         </table>
                         <ConsignCareStatus
                             orderId={orderId}
-                            date={new Date(order.date).toLocaleDateString()}
+                            startDate={new Date(order.caringOrder.startDate).toLocaleDateString()}
+                            endDate={new Date(order.caringOrder.endDate).toLocaleDateString()}
                             status={status}
+                            price={order.caringOrder.totalPrice}
                         />
                     </>
                 ) : (
@@ -254,6 +303,106 @@ const ManageConsignCareDetail = () => {
                     />
                 )}
             </div>
+
+            {(status === 'Paid') && (
+                <div className={styles.container}>
+
+                    {/* Nút mở form cập nhật */}
+                    <button onClick={handleUpdateButtonClick} className={styles.updateButton}>
+                        {showUpdateForm ? "Đóng form" : "Cập nhật tình trạng cá"}
+                    </button>
+
+                    {/* Form cập nhật tình trạng cá */}
+                    {showUpdateForm && (
+                        <div className={styles.updateFormContainer}>
+                            <h2>Cập nhật tình trạng cá</h2>
+                            <form onSubmit={handleUpdateSubmit} className={styles.updateForm}>
+                                <label >
+                                    Cá:
+                                    <select
+                                        name="caredKoiID"
+                                        value={updateData.caredKoiID}
+                                        onChange={handleInputChange}
+                                        required
+                                    >
+                                        <option value="" disabled></option>
+                                        {order.caredKois.map((koi) => (
+                                            <option key={koi.id} value={koi.id}>
+                                                {koi.name}
+                                            </option>
+                                        ))}
+
+                                    </select>
+                                </label>
+                                <label>
+                                    Ngày cập nhật:
+                                    <input
+                                        type="text"
+                                        name="date"
+                                        value={updateData.date}
+                                        onChange={handleInputChange}
+                                        readOnly
+                                    />
+                                </label>
+                                <label>
+                                    Hình ảnh cá:
+                                    <input
+                                        type="file"
+                                        name="photo"
+                                        onChange={handleInputChange}
+                                        required
+                                    />
+                                </label>
+                                <label>
+                                    Tình trạng:
+                                    <textarea
+                                        name="evaluation"
+                                        value={updateData.evaluation}
+                                        onChange={handleInputChange}
+                                        required
+                                    />
+                                </label>
+                                <button type="submit" className={styles.updateButton}>
+                                    Cập nhật
+                                </button>
+                            </form>
+                        </div>
+                    )}
+
+                    {/* Bảng lịch sử cập nhật */}
+                    {updateHistory.length > 0 && (
+                        <div className={styles.updateHistoryContainer}>
+                            <h2>Lịch sử cập nhật</h2>
+                            <table className={styles.historyTable}>
+                                <thead>
+                                    <tr>
+                                        <th>Ngày cập nhật</th>
+                                        <th>Tên cá</th>
+                                        <th>Hình ảnh cập nhật</th>
+                                        <th>Tình trạng</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {updateHistory.map((update, index) => (
+                                        <tr key={index}>
+                                            <td>{update.date}</td>
+                                            <td>{update.caredKoi.name}</td>
+                                            <td>
+                                                <img
+                                                    src={update.photo}
+                                                    alt="Hình ảnh cập nhật"
+                                                    style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+                                                />
+                                            </td>
+                                            <td>{update.evaluation}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                </div>
+            )}
             <Footer />
         </>
     );

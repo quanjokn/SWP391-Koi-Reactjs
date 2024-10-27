@@ -123,3 +123,7 @@
 .text-muted {
     color: #6c757d; /* Màu nhạt cho trạng thái chưa đạt */
 }
+
+.textCenter {
+    text-align: center;
+}

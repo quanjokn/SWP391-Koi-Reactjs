@@ -205,7 +205,7 @@ const ProductDetail = () => {
                             <div className={styles["action-buttons"]}>
                                 <button className={styles["add-to-cart"]}
                                     onClick={() => handleAddToCart(product)}><i class="fa-solid fa-cart-shopping"></i></button>
-                                <button className={styles["buy-now"]}>Đặt hàng</button>
+                                
                             </div>
                         </div>
                     </div>

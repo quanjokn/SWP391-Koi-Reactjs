@@ -85,16 +85,6 @@ td.actionColumn span {
     text-align: center;
 }
 
-.buttonShipping {
-    background-color: #2196F3; /* Màu xanh lá cho nút Shipping */
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-left: 10px;
-    width: 15%;
-}
 
 .buttonCompleted {
     background-color: #4CAF50; /* Màu xanh dương cho nút Completed */
@@ -124,4 +114,71 @@ td.actionColumn span {
 
 .textRight {
     text-align: right;
+}
+/* update form */
+updateFormContainer {
+    background-color: #f9f9f9; /* Màu nền nhẹ nhàng */
+    border: 1px solid #ccc; /* Viền nhẹ */
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 400px; /* Chiều rộng cố định */
+    margin: 20px auto; /* Căn giữa form */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+}
+
+.updateForm h2 {
+    text-align: center;
+    color: #333;
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
+
+.updateForm label {
+    display: block;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.updateForm input[type="text"],
+.updateForm textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1em;
+    color: #333;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+}
+
+.updateForm input[type="text"]:focus,
+.updateForm textarea:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.updateForm textarea {
+    height: 80px;
+    resize: none;
+}
+.updateFormContainer {
+    margin-top: 20px;
+}
+.updateButton {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.updateButton:hover {
+    background-color: #0056b3;
 }
