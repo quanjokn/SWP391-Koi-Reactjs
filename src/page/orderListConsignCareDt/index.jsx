@@ -17,6 +17,7 @@ const OrderDetailConSignCare = () => {
     const navigate = useNavigate();
     const { orderId } = useParams();
     const { user } = useContext(UserContext);
+    const [updateHistory, setUpdateHistory] = useState([]);
 
     useEffect(() => {
         const fetchOrderDetails = async () => {
@@ -26,6 +27,10 @@ const OrderDetailConSignCare = () => {
                 const caredOrder = response.data;
                 if (caredOrder) {
                     setOrder2(caredOrder);
+                    if (caredOrder.caredKois.length > 0) {
+                        // Gọi hàm fetchUpdateHistory với ID con cá đầu tiên
+                        fetchUpdateHistory(caredOrder.caredKois[0].id);
+                    }
                 }
                 if (caringOrder) {
                     setOrder(caringOrder);
@@ -37,7 +42,6 @@ const OrderDetailConSignCare = () => {
                 setIsLoading(false);
             }
         };
-
         fetchOrderDetails();
     }, [orderId, navigate]);
 
@@ -81,6 +85,15 @@ const OrderDetailConSignCare = () => {
         } catch (error) {
             console.error('Error updating order status to Completed:', error);
 
+        }
+    };
+
+    const fetchUpdateHistory = async (caredKoiId) => {
+        try {
+            const response = await api.get(`/caringManagement/getAllHealthUpdation/${caredKoiId}`);
+            setUpdateHistory(response.data); // Giả sử API trả về mảng lịch sử
+        } catch (error) {
+            console.error('Error fetching update history:', error);
         }
     };
 
@@ -192,32 +205,38 @@ const OrderDetailConSignCare = () => {
                     </table>
                 </div>
 
-                {/* Tình trạng sức khỏe */}
-                <h3 className="mt-4">Tình trạng sức khỏe</h3>
-                <div className="order-items">
-                    <table className="table-custom">
-                        <thead>
-                            <tr>
-                                <th className={styles.textLeft}>Hình ảnh</th>
-                                <th className={styles.textLeft}>Tình trạng sức khỏe</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {(order2?.caredKois || []).map((koi) => (
-                                <tr key={koi.id}>
-                                    <td className={styles.textLeft}>
-                                        {<img
-                                            src={koi.photo}
-                                            alt={koi.name || 'Hình ảnh'}
-                                            style={{ maxWidth: '150px', maxHeight: '150px', objectFit: 'cover' }}
-                                        />}
-                                    </td>       
-                                    <td className={styles.textLeft}>{koi.healthStatus || 'N/A'}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                {/* Tình trạng sức khỏe */} 
+                {updateHistory.length > 0 && (
+                        <div className={styles.updateHistoryContainer}>
+                            <h2>Lịch sử cập nhật</h2>
+                            <table className={styles.historyTable}>
+                                <thead>
+                                    <tr>
+                                        <th>Ngày cập nhật</th>
+                                        <th>Tên cá</th>
+                                        <th>Hình ảnh cập nhật</th>
+                                        <th>Tình trạng</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {updateHistory.map((update, index) => (
+                                        <tr key={index}>
+                                            <td>{update.date}</td>
+                                            <td>{update.caredKoi.name}</td>
+                                            <td>
+                                                <img
+                                                    src={update.photo}
+                                                    alt="Hình ảnh cập nhật"
+                                                    style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+                                                />
+                                            </td>
+                                            <td>{update.evaluation}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
             </div>
             <Footer />
         </>
