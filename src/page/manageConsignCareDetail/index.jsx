@@ -63,13 +63,22 @@ const ManageConsignCareDetail = () => {
         }
     };
 
+    const fetchUpdateHistory = async () => {      
+        try {
+            const response = await api.get(`/caringManagement/getAllHealthUpdation/${updateData.caredKoiID}`);
+            setUpdateHistory(response.data); // Giả sử API trả về mảng lịch sử
+        } catch (error) {
+            console.error('Error fetching update history:', error);
+        }
+    };
+
     useEffect(() => {
         if ((!user || user.role !== 'Staff')) {
             navigate('/error');
             return;
         } else {
             fetchOrderDetail();
-            fetchUpdateHistory();
+            fetchUpdateHistory(); 
         }
     }, [user, orderId, navigate]);
 
@@ -165,14 +174,6 @@ const ManageConsignCareDetail = () => {
         }
     };
 
-    const fetchUpdateHistory = async () => {
-        try {
-            const response = await api.get(`/caringManagement/getAllHealthUpdation/${updateData.caredKoiID}`);
-            setUpdateHistory(response.data); // Giả sử API trả về mảng lịch sử
-        } catch (error) {
-            console.error('Error fetching update history:', error);
-        }
-    };
 
     return (
         <>

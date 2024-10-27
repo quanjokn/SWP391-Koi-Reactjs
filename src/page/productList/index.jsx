@@ -177,7 +177,7 @@ const ProductList = () => {
                                 <h3 onClick={() => handleNavigateToDetail(product.id)}>{product.name}</h3>
                                 <p>Giới tính: {product.sex}</p>
                                 <p>Kích thước: {product.size}</p>
-                                <p>Giá: {product.price} VND</p>
+                                <p>Giá: {product.price.toLocaleString('vi-VN')} VND</p>
 
                                 <div className={styles['button-group']}>
                                     <button className={styles['compare-button']} onClick={() => handleAddToCompare(product)}>
