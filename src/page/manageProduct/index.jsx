@@ -19,10 +19,13 @@ const ManageProduct = () => {
     const [currentPageCaredKoi, setCurrentPageCaredKoi] = useState(1);
     const [currentPageConsignedKoi, setCurrentPageConsignedKoi] = useState(1);
     const [fishPerPage] = useState(5);
+    const [editFishId, setEditFishId] = useState('');
+    const [quantity, setQuantity] = useState('');  // To store the new quantity
+    const [category, setCategory] = useState('');
     const [formData, setFormData] = useState({
-        fishID: 25,
+        fishID: '',
         name: '',
-        quantity: 0,
+        quantity: '',
         description: '',
         sex: '',
         age: '',
@@ -44,10 +47,6 @@ const ManageProduct = () => {
     });
 
     const [isFormVisible, setIsFormVisible] = useState(false);
-
-
-    const [editFishId, setEditFishId] = useState(null);
-    const [quantity, setQuantity] = useState('');  // To store the new quantity
 
     const handleChange = (e) => {
         const { name, type, value, options } = e.target;
@@ -87,41 +86,38 @@ const ManageProduct = () => {
             await api.post('/productList/addFish', adjustedFormData, {
                 headers: { 'Content-Type': 'application/json' },
             });
-            alert('Fish added successfully!');
+            alert('Thêm cá thành công!');
             setIsFormVisible(false); // Hide the form after submission
         } catch (error) {
             console.error('Error adding fish:', error);
             console.log(error.response?.data);
-            alert('Failed to add fish.');
+            alert('Thêm cá thất bại.');
         }
     };
 
 
     const handleEditClick = (fish) => {
         setEditFishId(fish.id);
+        setCategory(fish.category);
         setQuantity(fish.quantity);  // Set the initial quantity for editing
     };
 
     const handleSaveClick = async (fishId) => {
         const updatedFish = {
-            ...currentKoi.find(fish => fish.id === fishId),
-            quantity: quantity  // Update the quantity with the new value
+            fishID: fishId,
+            category: category,
+            quantity: Number(quantity)  // Update the quantity with the new value
         };
-
+        console.log(updatedFish);
         try {
-            const response = await api.post(`/productList/updateFish/${fishId}`, {                
+            const response = await api.post(`/productList/updateFish/${fishId}`, updatedFish, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(updatedFish),
-            });
-            if (response.ok) {
-                // Update the koi state with the new quantity
-                setKoi(prevKoi => prevKoi.map(fish => fish.id === fishId ? { ...fish, quantity: quantity } : fish));
-                setEditFishId(null);  // Exit edit mode
-            } else {
-                console.error("Failed to update fish");
-            }
+            });   
+            // Update the koi state with the new quantity
+            setKoi(prevKoi => prevKoi.map(fish => fish.id === fishId ? { ...fish, quantity: quantity } : fish));
+            setEditFishId('');  // Exit edit mode
         } catch (error) {
             console.error("Error:", error);
         }
@@ -218,6 +214,10 @@ const ManageProduct = () => {
                 return { text: 'Đã hoàn thành' };
             case 'Rejected':
                 return { text: 'Đã bị từ chối' };
+            case 'Paid':
+                return { text: 'Đã thanh toán' };
+            case 'Receiving':
+                return { text: 'Đang tiếp nhận' };
             default:
                 return { text: status };
         }
