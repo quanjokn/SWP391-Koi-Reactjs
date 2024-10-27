@@ -164,8 +164,8 @@ const OrderDetailConSignCare = () => {
                                 <th className={styles.textLeft}>Giới tính</th>
                                 <th className={styles.textRight}>Tuổi</th>
                                 <th className={styles.textLeft}>Kích cỡ</th>
-                                <th className={styles.textLeft}>Tình trạng sức khỏe</th>
-                                <th className={styles.textLeft}>Chế độ ăn</th>
+                                {/* <th className={styles.textLeft}>Tình trạng sức khỏe</th>
+                                <th className={styles.textLeft}>Chế độ ăn</th> */}
                                 <th className={styles.textLeft}>Trạng thái</th>
                             </tr>
                         </thead>
@@ -183,9 +183,36 @@ const OrderDetailConSignCare = () => {
                                     <td className={styles.textLeft}>{koi.sex || 'N/A'}</td>
                                     <td className={styles.textRight}>{koi.age || 'N/A'}</td>
                                     <td className={styles.textLeft}>{koi.size || 'N/A'}</td>
-                                    <td className={styles.textLeft}>{koi.healthStatus || 'N/A'}</td>
-                                    <td className={styles.textLeft}>{koi.ration || 'N/A'}</td>
+                                    {/* <td className={styles.textLeft}>{koi.healthStatus || 'N/A'}</td>
+                                    <td className={styles.textLeft}>{koi.ration || 'N/A'}</td> */}
                                     <td className={styles.textLeft}>{translateStatus(koi.status).text || 'N/A'}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+
+                {/* Tình trạng sức khỏe */}
+                <h3 className="mt-4">Tình trạng sức khỏe</h3>
+                <div className="order-items">
+                    <table className="table-custom">
+                        <thead>
+                            <tr>
+                                <th className={styles.textLeft}>Hình ảnh</th>
+                                <th className={styles.textLeft}>Tình trạng sức khỏe</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {(order2?.caredKois || []).map((koi) => (
+                                <tr key={koi.id}>
+                                    <td className={styles.textLeft}>
+                                        {<img
+                                            src={koi.photo}
+                                            alt={koi.name || 'Hình ảnh'}
+                                            style={{ maxWidth: '150px', maxHeight: '150px', objectFit: 'cover' }}
+                                        />}
+                                    </td>       
+                                    <td className={styles.textLeft}>{koi.healthStatus || 'N/A'}</td>
                                 </tr>
                             ))}
                         </tbody>

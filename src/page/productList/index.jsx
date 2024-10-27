@@ -15,11 +15,7 @@ import { CartContext } from "../../service/CartContext";
 const ProductList = () => {
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
-    const [selectedFilters, setSelectedFilters] = useState({
-        import: false,
-        vietnamese: false,
-        f1: false
-    });
+    const [selectedFilter, setSelectedFilter] = useState("");
 
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
@@ -71,27 +67,20 @@ const ProductList = () => {
         }
     };
     const handleFilterChange = (event) => {
-        const { name, checked } = event.target;
-        setSelectedFilters((prevFilters) => ({
-            ...prevFilters,
-            [name]: checked
-        }));
+        setSelectedFilter(event.target.value);
     };
 
-    const applyFilters = () => {
+    useEffect(() => {
         let filtered = products;
-
-        if (selectedFilters.import) {
-            filtered = filtered.filter((product) => product.origin === "Thuần chủng nhập khẩu");
-        }
-        if (selectedFilters.vietnamese) {
-            filtered = filtered.filter((product) => product.origin === "Thuần chủng Việt");
-        }
-        if (selectedFilters.f1) {
-            filtered = filtered.filter((product) => product.origin === "Lai F1");
+        if (selectedFilter === "import") {
+            filtered = products.filter(product => product.origin === "Thuần chủng nhập khẩu");
+        } else if (selectedFilter === "vietnamese") {
+            filtered = products.filter(product => product.origin === "Thuần chủng Việt");
+        } else if (selectedFilter === "f1") {
+            filtered = products.filter(product => product.origin === "Lai F1");
         }
         setFilteredProducts(filtered);
-    };
+    }, [selectedFilter, products]);
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
@@ -137,7 +126,21 @@ const ProductList = () => {
         <>
             <Header />
             <Tagbar />
+
             <Masthead title={"Danh mục sản phẩm"} />
+            <div className={`${styles.masthead}`} style={{ backgroundImage: "url('/imagines/background/promotion.jpg')" }}>
+                <div className="container position-relative px-4 px-lg-5">
+                    <div className="row gx-4 gx-lg-5 justify-content-center">
+                        <div className="col-md-10 col-lg-8 col-xl-7">
+                            <div className={`${styles.siteHeading}`}>
+                                <h2>Chương trình khuyến mãi cho khách hàng thân thiết giảm 10%</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className={styles['search-filter-container']}>
             {/* Search Section */}
             <div className={styles['search-container']}>
                 <input
@@ -151,42 +154,18 @@ const ProductList = () => {
                     <FontAwesomeIcon icon={faSearch} />  {/* Nút search icon */}
                 </button>
             </div>
-
-
-            {/* Filter Section */}
+            {/* Bộ lọc */}
             <div className={styles['filter-container']}>
                 <h4>Bộ lọc:</h4>
-                <label>
-                    <input
-                        type="checkbox"
-                        name="import"
-                        checked={selectedFilters.import}
-                        onChange={handleFilterChange}
-                    />
-                    Thuần chủng nhập khẩu
-                </label>
-                <label>
-                    <input
-                        type="checkbox"
-                        name="vietnamese"
-                        checked={selectedFilters.vietnamese}
-                        onChange={handleFilterChange}
-                    />
-                    Thuần Việt
-                </label>
-                <label>
-                    <input
-                        type="checkbox"
-                        name="f1"
-                        checked={selectedFilters.f1}
-                        onChange={handleFilterChange}
-                    />
-                    F1
-                </label>
-                <button className={styles['apply-filter-button']} onClick={applyFilters}>
-                    Áp dụng
-                </button>
+                <select value={selectedFilter} onChange={handleFilterChange}>
+                    <option value="">Tất cả sản phẩm</option>
+                    <option value="import">Thuần chủng nhập khẩu</option>
+                    <option value="vietnamese">Thuần Việt</option>
+                    <option value="f1">Lai F1</option>
+                </select>
             </div>
+            </div>
+            
 
 
             <div className={styles['product-list']}>
@@ -228,13 +207,13 @@ const ProductList = () => {
                     <div className={styles['compare-box-body']}>
                         {compareList.map((product) => (
                             <div key={product.id} className={`${styles.producToCompare}`}>
-                                 <img src={product.photo.replace(/\\/g, "/")} alt={product.name} />
+                                <img src={product.photo.replace(/\\/g, "/")} alt={product.name} />
                                 <p>{product.name}</p>
                                 <button onClick={() => handleRemoveCompare(product.id)}>Xóa</button>
                             </div>
                         ))}
                         {compareList.length === 2 && (
-                            <button  onClick={navigateToComparePage}>
+                            <button onClick={navigateToComparePage}>
                                 So sánh
                             </button>
                         )}

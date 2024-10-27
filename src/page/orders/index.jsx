@@ -161,7 +161,13 @@ const Orders = () => {
                             </div>
                             <hr />
                             <div className={styles["order-total"]}>
-                                <h3>Tổng thanh toán: {cart.totalPrice.toLocaleString()} VND</h3>
+                                <h3>
+                                    Tổng thanh toán:{" "}
+                                    {user.point >= 200
+                                        ? (cart.totalPrice * 0.9).toLocaleString('vi-VN')
+                                        : cart.totalPrice.toLocaleString('vi-VN')
+                                    } VND
+                                </h3>
                                 <button onClick={handlePlaceOrder}>Đặt hàng</button>
                             </div>
 

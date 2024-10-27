@@ -141,67 +141,69 @@ footer.footer .footer-links a:hover {
   transition: opacity 0.5s ease-in-out;
 }
 
-/* Filter container styling */
+.search-filter-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0 200px;
+}
+
+/* Bộ lọc */
 .filter-container {
-background-color: #d4d4d4;
-padding: 20px;
-border-radius: 10px;
-width: 50%;
-max-width: 600px;
-max-height: 300px;
-margin: 0 auto;
+  margin-left: 20px;
 }
 
 .filter-container h4 {
-font-size: 18px;
-margin-bottom: 10px;
+  display: inline-block;
+  margin-right: 10px;
+  font-size: 16px;
+  color: #333;
 }
 
-.filter-container label {
-display: block;
-margin-bottom: 10px;
-font-size: 14px;
-color: #333;
+/* Dropdown (ô lọc) */
+.filter-container select {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: border-color 0.3s;
 }
 
-.apply-filter-button {
-background-color: #4CAF50;
-color: white;
-padding: 10px 15px;
-border: none;
-border-radius: 5px;
-cursor: pointer;
-font-size: 14px;
-margin-top: 10px;
+.filter-container select:hover,
+.filter-container select:focus {
+  border-color: #007bff;
+  outline: none;
 }
-
-.apply-filter-button:hover {
-background-color: #45a049;
-}
+/* Thanh tìm kiếm */
 .search-container {
+  flex: 1;
   display: flex;
   align-items: center;
-  position: relative;
-  width: 80%; /* Có thể điều chỉnh kích thước */
-  margin: 50px auto ;
 }
 
 .search-bar {
   width: 100%;
   padding: 10px;
-  border-radius: 5px;
+  font-size: 16px;
   border: 1px solid #ccc;
-  padding-right: 40px; /* Để có đủ chỗ cho icon */
+  border-radius: 5px 0 0 5px;
 }
 
 .search-button {
-  position: absolute;
-  right: 10px;
-  background: none;
+  background-color: #ff0202ad;/* #007bff */
   border: none;
+  padding: 10px;
+  border-radius: 0 5px 5px 0;
   cursor: pointer;
-  color: #333;
-  font-size: 18px;
+  color: #fff;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.search-button:hover {
+  background-color: #0056b3;
 }
 
 .compare-box {
@@ -261,3 +263,35 @@ background-color: #45a049;
   border-radius: 5px;
 }
 
+.masthead {
+  position: relative;
+  margin-bottom: 3rem;
+  padding-top: calc(8rem + 57px);
+  padding-bottom: 8rem;
+  background: no-repeat center center;
+  background-size: cover;
+  background-attachment: scroll;
+  width: 100%;
+}
+.masthead:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.5;
+  width: 100%;
+}
+
+.masthead {
+  text-align: center;
+}
+
+.masthead .siteHeading h2,
+.masthead .siteHeading .h2 {
+font-size: 3rem;
+color: red;
+font-family: 'Calibri', sans-serif;
+font-weight: bold;
+}

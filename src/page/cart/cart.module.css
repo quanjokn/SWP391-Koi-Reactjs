@@ -24,8 +24,9 @@ img{
   padding: 20px 0;
   margin: 30px 100px;
 }
-.cart-total h3{
+.cart-container strong{
   color: rgb(83, 202, 83);
+  font-size: 20px;
 }
 
 .place-order-button{
