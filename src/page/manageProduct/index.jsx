@@ -218,6 +218,8 @@ const ManageProduct = () => {
                 return { text: 'Đã thanh toán' };
             case 'Receiving':
                 return { text: 'Đang tiếp nhận' };
+            case 'Done':
+                return { text: 'Đã hoàn thành' };
             default:
                 return { text: status };
         }
@@ -441,7 +443,7 @@ const ManageProduct = () => {
                 )}
 
                 {/* Koi Table */}
-                <h2>Koi List</h2>
+                <h2>Danh sách cá Koi của cửa hàng </h2>
                 {koi.length === 0 ? (
                     <div className={styles.noDataMessage}>No Koi available.</div>
                 ) : (
@@ -508,7 +510,7 @@ const ManageProduct = () => {
                 )}
 
                 {/* CareKois Table */}
-                <h2>CareKois List</h2>
+                <h2>Danh sách cá Koi được ký gửi chăm sóc</h2>
                 {caredKoi.length === 0 ? (
                     <div className={styles.noDataMessage}>No Koi available.</div>
                 ) : (
@@ -555,7 +557,7 @@ const ManageProduct = () => {
                     </nav>
                 )}
                 {/* ConsignKois Table */}
-                <h2>ConsignKois List</h2>
+                <h2>Danh sách cá Koi được ký gửi bán</h2>
                 {consignedKoi.length === 0 ? (
                     <div className={styles.noDataMessage}>No Koi available.</div>
                 ) : (
