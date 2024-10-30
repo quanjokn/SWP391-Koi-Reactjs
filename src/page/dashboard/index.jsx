@@ -21,14 +21,10 @@ const Dashboard = () => {
                     month: selectedMonth
                 });
 
-                // Tính toán tổng doanh thu và doanh số cho tháng
-                const totalRevenue = response.data.reduce((acc, item) => {
-                    // Nếu tuần là 5, tính nó như tuần 4
-                    const week = item.weekofMonth === 5 ? 4 : item.weekofMonth;
-                    return acc + item.totalRevenue;
-                }, 0);
+                // tổng doanh thu và doanh số cho tháng
+                const totalRevenue = response.data.allRevenueOfMonth;
 
-                const totalSales = response.data.reduce((acc, item) => {
+                const totalSales = response.data.ordersRevenueList.reduce((acc, item) => {
                     return acc + item.totalOrders;
                 }, 0);
 
