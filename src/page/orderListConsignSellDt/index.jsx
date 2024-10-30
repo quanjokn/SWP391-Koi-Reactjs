@@ -48,7 +48,9 @@ const OrderDetailConSignSell = () => {
             case 'Pending_confirmation':
                 return { text: 'Đợi xác nhận' };
             case 'Accepted_Selling':
-                return { text: 'Đang bán' };        
+                return { text: 'Đang bán' };
+            case "Sold":
+                return "Đã bán";
             case 'Done':
                 return { text: 'Đã hoàn thành', className: styles.done };
             case 'Rejected':
