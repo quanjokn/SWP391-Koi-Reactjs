@@ -20,55 +20,51 @@ const OrderDetailConSignCare = () => {
     const [updateHistory, setUpdateHistory] = useState([]);
 
     const fetchUpdateHistory = async (koiId) => {
-
         try {
             const response = await api.get(`/caringManagement/getAllHealthUpdation/${koiId}`);
-            setUpdateHistory(prevHistory => [
-                ...prevHistory,
-                ...response.data.map(entry => ({ ...entry, caredKoiID: koiId }))
-            ]); // Giả sử API trả về mảng lịch sử
+            setUpdateHistory(prevHistory => {
+            // Filter out entries that already exist in the history
+            const newEntries = response.data
+                .map(entry => ({ ...entry, caredKoiID: koiId }))
+                .filter(newEntry => !prevHistory.some(existingEntry => existingEntry.id === newEntry.id));
+            
+            return [...prevHistory, ...newEntries];
+        });
+            console.log(updateHistory)
         } catch (error) {
             console.error('Error fetching update history:', error);
         }
     };
 
-    useEffect(() => {
-        const fetchOrderDetails = async () => {
-            try {
-                const response = await api.post(`/caringOrder/detail/${orderId}`);
-                const caringOrder = response.data.caringOrder;
-                const caredOrder = response.data;
-                if (caredOrder) {
-                    setOrder2(caredOrder);
-                    if (caredOrder.caredKois.length > 0) {
-                        caredOrder.caredKois.forEach((koi) => {
-                            fetchUpdateHistory(koi.id); // Gọi hàm fetchUpdateHistory với mỗi caredKoi ID
-                        });
-                    }
+    const fetchOrderDetails = async () => {
+        try {
+            const response = await api.post(`/caringOrder/detail/${orderId}`);
+            const caringOrder = response.data.caringOrder;
+            const caredOrder = response.data;
+            if (caredOrder) {
+                setOrder2(caredOrder);
+                setUpdateHistory([]); // Clear previous history to avoid duplicates
+                if (caredOrder.caredKois.length > 0) {
+                    caredOrder.caredKois.forEach((koi) => {
+                        fetchUpdateHistory(koi.id); // Fetch history for each caredKoi ID
+                    });
                 }
-                if (caringOrder) {
-                    console.log(caringOrder);
-                    setOrder(caringOrder);
-                }
-            } catch (error) {
-                console.error('Error fetching order details:', error);
-                navigate('/error');
-            } finally {
-                setIsLoading(false);
             }
-        };
-        fetchOrderDetails();   
-    }, [orderId, navigate]);
-
+            if (caringOrder) {
+                console.log(caringOrder);
+                setOrder(caringOrder);
+            }
+        } catch (error) {
+            console.error('Error fetching order details:', error);
+            navigate('/error');
+        } finally {
+            setIsLoading(false);
+        }
+    };
     useEffect(() => {
-        setContainerStyle({
-            marginBottom: '48px',
-        });
-
-        return () => {
-            setContainerStyle({});
-        };
-    }, []);
+        fetchOrderDetails();
+        // fetchUpdateHistory();   
+    }, [orderId, navigate]);
 
     if (isLoading) {
         return <Loading />;
@@ -190,7 +186,7 @@ const OrderDetailConSignCare = () => {
                                             <img
                                                 src={update.photo}
                                                 alt="Hình ảnh cập nhật"
-                                                style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+                                                style={{ maxWidth: '150px', maxHeight: '150px', objectFit: 'cover' }}
                                             />
                                         </td>
                                         <td>{update.evaluation}</td>

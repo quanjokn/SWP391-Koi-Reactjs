@@ -8,10 +8,12 @@ import { UserContext } from '../../service/UserContext';
 import styles from './manageConsignSellDetail.module.css';
 import ReasonModal from '../../component/reasonNote';
 import ConsignSellStatus from '../../component/consignSellStatus';
+import Loading from '../../component/loading';
 
 const ManageConsignSellDetail = () => {
     const { orderId } = useParams();
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
     const { user } = useContext(UserContext);
     const [order, setOrder] = useState(null);
     const [status, setStatus] = useState('');
@@ -90,18 +92,31 @@ const ManageConsignSellDetail = () => {
         console.log('Decision:', decision);
         console.log('Approve Request:', approveReq);
         try {
+            setIsLoading(true);
             await api.post(`/consignManagement/approval/${staffId}`, approveReq);
+            setIsLoading(false);
             alert('Đơn hàng đã được phản hồi thành công!');
             setIsOrderProcessed(true);
             fetchOrderDetail();
         } catch (error) {
             console.error('Error accepting order:', error);
             alert('Đã xảy ra lỗi khi phản hồi !');
-        }
+            setIsLoading(false);
+        } 
     };
 
-
     const handleCompleteOrder = async () => {
+        const staffId = user ? user.id : null;
+        try {
+            await api.post(`/consignManagement/done/${staffId}/${orderId}`);
+            fetchOrderDetail();
+        } catch (error) {
+            console.error('Error accepting order:', error);
+            alert('Đã xảy ra lỗi khi hoành thành !');
+        }
+    }
+
+    const handlePayment = async () => {
         const staffId = user ? user.id : null;
         console.log('Staff ID:', staffId);
         console.log('Order ID:', orderId);
@@ -114,6 +129,10 @@ const ManageConsignSellDetail = () => {
             return null; // Trả về null nếu có lỗi
         }
     };
+
+    if (isLoading) {
+        return <Loading />;
+    }
 
     return (
         <>
@@ -239,7 +258,7 @@ const ManageConsignSellDetail = () => {
                         <h2>Cập nhật trạng thái</h2>
                         <button
                             className={styles.buttonCompleted}
-                            onClick={handleCompleteOrder}
+                            onClick={handlePayment}
                         >
                             Thanh toán
                         </button>

@@ -8,10 +8,12 @@ import { UserContext } from '../../service/UserContext';
 import styles from './manageConsignCareDetail.module.css';
 import ConsignCareStatus from '../../component/consignCareStatus';
 import ReasonModal from '../../component/reasonNote';
+import Loading from '../../component/loading';
 
 const ManageConsignCareDetail = () => {
     const { orderId } = useParams();
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
     const { user, setUser } = useContext(UserContext);
     const [order, setOrder] = useState(null);
     const [status, setStatus] = useState('');
@@ -119,18 +121,20 @@ const ManageConsignCareDetail = () => {
             note: ""
         };
         try {
-
+            setIsLoading(true);
             await api.post(`/caringManagement/approval`, approveReq, {
                 headers: {
                     'Content-Type': 'application/json',
                 }
             },);
+            setIsLoading(false);
             alert('Đã phản hồi thành công!');
             setIsOrderProcessed(true);
             fetchOrderDetail();
         } catch (error) {
             console.error('Error accepting order:', error);
             alert('Đã xảy ra lỗi khi phản hồi.');
+            setIsLoading(false);
         }
     };
 
@@ -162,8 +166,10 @@ const ManageConsignCareDetail = () => {
     const handleUpdateSubmit = async (e) => {
         e.preventDefault();
         console.log(updateData);
-        try {
+        try { 
+            setIsLoading(true);
             await api.post(`/caringManagement/updateHealthStatus`, updateData); // Giả sử endpoint này nhận thông tin cập nhật
+            setIsLoading(false);
             alert('Đã cập nhật thành công!');
             setShowUpdateForm(false); // Ẩn form sau khi cập nhật
             fetchOrderDetail(); // Cập nhật lại chi tiết đơn hàng
@@ -171,9 +177,13 @@ const ManageConsignCareDetail = () => {
         } catch (error) {
             console.error('Error updating fish status:', error);
             alert('Đã xảy ra lỗi khi cập nhật.');
-        }
+            setIsLoading(false);
+        } 
     };
 
+    if(isLoading){
+        return <Loading/>
+    }
 
     return (
         <>
@@ -392,7 +402,7 @@ const ManageConsignCareDetail = () => {
                                                 <img
                                                     src={update.photo}
                                                     alt="Hình ảnh cập nhật"
-                                                    style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+                                                    style={{ maxWidth: '150px', maxHeight: '150px', objectFit: 'cover' }}
                                                 />
                                             </td>
                                             <td>{update.evaluation}</td>
