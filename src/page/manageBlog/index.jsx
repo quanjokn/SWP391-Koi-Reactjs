@@ -57,6 +57,7 @@ function BlogManager() {
     const id = user.id;
     const [currentPage, setCurrentPage] = useState(1);
     const blogsPerPage = 5;
+    const [searchDate, setSearchDate] = useState('');
 
     // Lấy ngày hiện tại dưới dạng chuỗi 'YYYY-MM-DD'
     const getCurrentDate = () => {
@@ -168,13 +169,17 @@ function BlogManager() {
     // Tính toán các blog cần hiển thị dựa trên trang hiện tại
     const indexOfLastBlog = currentPage * blogsPerPage;
     const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
-    const currentBlogs = blogs.slice(indexOfFirstBlog, indexOfLastBlog);
-
-    // Tính tổng số trang
-    const totalPages = Math.ceil(blogs.length / blogsPerPage);
 
     // Hàm phân trang
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    // Hàm lọc blog theo ngày
+    const filteredBlogs = searchDate
+        ? blogs.filter(blog => blog.date === searchDate)
+        : blogs;
+
+    console.log('Search Date:', searchDate);
+    console.log('Blog Dates:', blogs.map(blog => blog.date));
 
     return (
         <>
@@ -183,11 +188,26 @@ function BlogManager() {
             <div className="container">
                 <h2>Quản lý tin tức</h2>
 
+                {/* Input tìm kiếm theo ngày */}
+                <div className="form-group">
+                    <label htmlFor="search-date">Tìm kiếm theo ngày:</label>
+                    <input
+                        type="date"
+                        id="search-date"
+                        value={searchDate}
+                        onChange={(e) => {
+                            setSearchDate(e.target.value);
+                            setCurrentPage(1); // Reset về trang 1 khi thay đổi ngày
+                        }}
+                    />
+                </div>
+
                 {/* Pagination */}
-                {blogs.length > 0 && (
+                {/* Pagination */}
+                {filteredBlogs.length > 0 && (
                     <nav>
                         <ul className="pagination justify-content-center">
-                            {[...Array(totalPages).keys()].map(number => (
+                            {[...Array(Math.ceil(filteredBlogs.length / blogsPerPage)).keys()].map(number => (
                                 <li
                                     key={number + 1}
                                     className={`page-item ${number + 1 === currentPage ? 'active' : ''}`}
@@ -206,20 +226,20 @@ function BlogManager() {
 
                 {/* Blog List */}
                 <div className="blog-list">
-                    {currentBlogs.length > 0 ? (
-                        currentBlogs.map((blog) => (
+                    {filteredBlogs.length > 0 ? (
+                        filteredBlogs.slice(indexOfFirstBlog, indexOfLastBlog).map((blog) => (
                             <div key={blog.id} className="blog-item">
                                 <h3>{blog.title}</h3>
                                 <p>{blog.content}</p>
                                 <p><strong>Ngày đăng:</strong> {blog.date}</p>
                                 <div className="button-group">
-                                    <button className="btn btn-secondary" onClick={() => handleEdit(blog.id)}>Edit</button>
-                                    <button className="btn btn-danger" onClick={() => handleDelete(blog.id)}>Delete</button>
+                                    <button className="btn btn-secondary" onClick={() => handleEdit(blog.id)}>Chỉnh sửa</button>
+                                    <button className="btn btn-danger" onClick={() => handleDelete(blog.id)}>Xoá</button>
                                 </div>
                             </div>
                         ))
                     ) : (
-                        <p>No blogs available</p>
+                        <p>Không tìm thấy bài viết nào cho ngày {searchDate}.</p>
                     )}
                 </div>
 

@@ -1,27 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
-import api from '../../config/axios'; // Đảm bảo rằng bạn có axios đã được cấu hình
+import api from '../../config/axios';
 
-// Đăng ký các thành phần cần thiết của Chart.js
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-const OrderRevenueChart = () => {
+const OrderRevenueChart = ({ month }) => { // Nhận props month từ Dashboard
     const [chartData, setChartData] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await api.post('/dashBoard/orderAndRevenue', {
-                    year: new Date().getFullYear(), // Lấy năm hiện tại
-                    month: new Date().getMonth() + 1 // Lấy tháng hiện tại (tháng 0-11)
+                    year: new Date().getFullYear(),
+                    month: month
                 });
-                // Kiểm tra nếu không có dữ liệu cho tháng hiện tại
+
                 if (response.data.length === 0) {
-                    // Nếu không có dữ liệu, có thể thêm dữ liệu mặc định hoặc thông báo
                     const weeks = ['Tuần 1', 'Tuần 2', 'Tuần 3', 'Tuần 4'];
-                    const orders = [0, 0, 0, 0]; // Giả sử không có đơn hàng nào
-                    const revenue = [0, 0, 0, 0]; // Giả sử không có doanh thu
+                    const orders = [0, 0, 0, 0];
+                    const revenue = [0, 0, 0, 0];
 
                     setChartData({
                         labels: weeks,
@@ -43,8 +41,9 @@ const OrderRevenueChart = () => {
                         ],
                     });
                 } else {
-                    // Dữ liệu hợp lệ, xử lý dữ liệu như trước
-                    const weeks = response.data.map(item => `Tuần ${item.weekofMonth}`);
+                    const weeks = response.data.map(item =>
+                        item.weekofMonth === 5 ? 'Tuần 4' : `Tuần ${item.weekofMonth}`
+                    );
                     const orders = response.data.map(item => item.totalOrders);
                     const revenue = response.data.map(item => item.totalRevenue);
 
@@ -74,7 +73,7 @@ const OrderRevenueChart = () => {
         };
 
         fetchData();
-    }, []);
+    }, [month]); // Thêm month vào dependency để biểu đồ cập nhật khi tháng thay đổi
 
     if (!chartData) {
         return <p>Loading chart...</p>;
@@ -89,7 +88,7 @@ const OrderRevenueChart = () => {
                     responsive: true,
                     plugins: {
                         legend: { position: 'top' },
-                        title: { display: true, text: 'Đơn hàng and lợi nhuận theo tuần' },
+                        title: { display: true, text: 'Đơn hàng và lợi nhuận theo tuần' },
                     },
                     scales: {
                         y: {
@@ -97,7 +96,6 @@ const OrderRevenueChart = () => {
                             position: 'left',
                             title: { display: true, text: 'Số lượng đơn hàng' },
                             ticks: {
-                                // Chỉ hiển thị số nguyên
                                 callback: function (value) {
                                     return Number.isInteger(value) ? value : '';
                                 },

@@ -17,6 +17,7 @@ const ManageOrderDetail = () => {
     const [order, setOrder] = useState(null);
     const [status, setStatus] = useState('');
     const [isLoading, setIsLoading] = useState(true);
+    const [isUpdating, setIsUpdating] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [tempReason, setTempReason] = useState('');
     const [isOrderProcessed, setIsOrderProcessed] = useState(false);
@@ -63,6 +64,7 @@ const ManageOrderDetail = () => {
             return;
         }
 
+        setIsUpdating(true); // Bắt đầu loading
         try {
             await api.post(`/staff/updateStatus`, { orderId, status: 'Rejected', note: reason });
             alert('Đơn hàng đã bị từ chối');
@@ -73,10 +75,13 @@ const ManageOrderDetail = () => {
         } catch (error) {
             console.error('Error preparing order:', error);
             alert('Đã xảy ra lỗi');
+        } finally {
+            setIsUpdating(false); // Kết thúc loading
         }
     };
 
     const handleAcceptOrder = async () => {
+        setIsUpdating(true); // Bắt đầu loading
         try {
             const response = await api.post(`/staff/updateStatus`, { orderId, status: 'Preparing' });
             if (response.status === 200) {
@@ -88,10 +93,13 @@ const ManageOrderDetail = () => {
         } catch (error) {
             console.error('Error accepting order:', error);
             alert('Đã xảy ra lỗi khi chấp nhận đơn hàng.');
+        } finally {
+            setIsUpdating(false); // Kết thúc loading
         }
     };
 
     const handleShippingOrder = async () => {
+        setIsUpdating(true); // Bắt đầu loading
         try {
             await api.post(`/staff/updateStatus`, { orderId, status: 'Shipping' });
             alert('Đơn hàng đang được giao!');
@@ -99,10 +107,13 @@ const ManageOrderDetail = () => {
         } catch (error) {
             console.error('Error updating order status to Shipping:', error);
             alert('Đã xảy ra lỗi khi cập nhật trạng thái đơn hàng.');
+        } finally {
+            setIsUpdating(false); // Kết thúc loading
         }
     };
 
     const handleCompleteOrder = async () => {
+        setIsUpdating(true); // Bắt đầu loading
         try {
             await api.post(`/staff/updateStatus`, { orderId, status: 'Completed' });
             alert('Đơn hàng đã hoàn thành!');
@@ -110,10 +121,16 @@ const ManageOrderDetail = () => {
         } catch (error) {
             console.error('Error updating order status to Completed:', error);
             alert('Đã xảy ra lỗi khi cập nhật trạng thái đơn hàng.');
+        } finally {
+            setIsUpdating(false); // Kết thúc loading
         }
     };
 
     if (isLoading) {
+        return <Loading />;
+    }
+
+    if (isUpdating) {
         return <Loading />;
     }
 
