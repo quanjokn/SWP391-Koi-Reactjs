@@ -188,17 +188,17 @@ function BlogManager() {
             <div className="container">
                 <h2>Quản lý tin tức</h2>
 
-                {/* Input tìm kiếm theo ngày */}
-                <div className="form-group">
-                    <label htmlFor="search-date">Tìm kiếm theo ngày:</label>
+                <div className="order-search-container">
                     <input
                         type="date"
                         id="search-date"
                         value={searchDate}
                         onChange={(e) => {
-                            setSearchDate(e.target.value);
-                            setCurrentPage(1); // Reset về trang 1 khi thay đổi ngày
+                            setSearchDate(e.target.value)
+                            setCurrentPage(1);
                         }}
+                        className="form-control me-2 search-input"
+                        placeholder="Tìm kiếm theo ngày"
                     />
                 </div>
 

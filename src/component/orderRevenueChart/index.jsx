@@ -16,7 +16,7 @@ const OrderRevenueChart = ({ month }) => { // Nhận props month từ Dashboard
                     month: month
                 });
 
-                if (response.data.length === 0) {
+                if (response.data.ordersRevenueList.length === 0) {
                     const weeks = ['Tuần 1', 'Tuần 2', 'Tuần 3', 'Tuần 4'];
                     const orders = [0, 0, 0, 0];
                     const revenue = [0, 0, 0, 0];
@@ -41,11 +41,11 @@ const OrderRevenueChart = ({ month }) => { // Nhận props month từ Dashboard
                         ],
                     });
                 } else {
-                    const weeks = response.data.map(item =>
+                    const weeks = response.data.ordersRevenueList.map(item =>
                         item.weekofMonth === 5 ? 'Tuần 4' : `Tuần ${item.weekofMonth}`
                     );
-                    const orders = response.data.map(item => item.totalOrders);
-                    const revenue = response.data.map(item => item.totalRevenue);
+                    const orders = response.data.ordersRevenueList.map(item => item.totalOrders);
+                    const revenue = response.data.ordersRevenueList.map(item => item.totalRevenueOfWeek);
 
                     setChartData({
                         labels: weeks,
