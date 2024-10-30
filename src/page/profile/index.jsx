@@ -176,14 +176,14 @@ const ProfilePage = () => {
                                             className="btn btn-secondary me-2"
                                             onClick={() => setIsEditing(false)}
                                         >
-                                            Cancel
+                                            Huỷ
                                         </button>
                                         <button
                                             className="btn btn-primary"
                                             type="button"
                                             onClick={handleSaveClick}
                                         >
-                                            Save Profile
+                                            Lưu
                                         </button>
                                     </>
                                 ) : (
@@ -191,7 +191,7 @@ const ProfilePage = () => {
                                         className="btn btn-secondary"
                                         onClick={() => setIsEditing(true)}
                                     >
-                                        Edit
+                                        Chỉnh sửa
                                     </button>
                                 )}
                             </div>

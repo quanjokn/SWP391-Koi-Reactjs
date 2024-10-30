@@ -5,17 +5,20 @@ import api from '../../config/axios'; // Đảm bảo rằng bạn đã cấu h�
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const WeeklySalesPieChart = () => {
+const MonthlySalesPieChart = ({ month }) => { // Đổi tên thành MonthlySalesPieChart
     const [pieData, setPieData] = useState(null);
     const [loading, setLoading] = useState(true); // Thêm trạng thái loading
+    const [noData, setNoData] = useState(false); // Trạng thái không có dữ liệu
 
     useEffect(() => {
         const fetchPieData = async () => {
+            setLoading(true); // Đặt loading thành true khi bắt đầu tải dữ liệu
+            setNoData(false); // Đặt lại trạng thái không có dữ liệu
+
             try {
                 const year = new Date().getFullYear(); // Lấy năm hiện tại
-                const month = new Date().getMonth() + 1; // Lấy tháng hiện tại (tháng 0-11)
 
-                // Gửi yêu cầu đến API để lấy dữ liệu doanh số
+                // Gửi yêu cầu đến API để lấy dữ liệu doanh số theo tháng
                 const response = await api.post('/dashBoard/productAndQuantiy', {
                     year,
                     month,
@@ -25,7 +28,8 @@ const WeeklySalesPieChart = () => {
 
                 // Kiểm tra cấu trúc dữ liệu
                 if (!Array.isArray(salesData) || salesData.length === 0) {
-                    throw new Error('Không có dữ liệu để hiển thị');
+                    setNoData(true); // Đặt trạng thái không có dữ liệu
+                    return; // Dừng xử lý nếu không có dữ liệu
                 }
 
                 const productSales = {};
@@ -64,21 +68,21 @@ const WeeklySalesPieChart = () => {
                     ],
                 });
             } catch (error) {
-                console.error('Error fetching weekly sales data:', error);
-                alert(error.message); // Hiển thị thông báo lỗi cho người dùng
+                console.error('Error fetching monthly sales data:', error);
+                alert('Đã xảy ra lỗi khi tải dữ liệu.'); // Hiển thị thông báo lỗi cho người dùng
             } finally {
                 setLoading(false); // Đặt loading thành false sau khi hoàn thành
             }
         };
 
         fetchPieData();
-    }, []);
+    }, [month]); // Thêm month vào dependency array để refetch dữ liệu khi month thay đổi
 
     if (loading) {
         return <p>Đang tải biểu đồ...</p>; // Hiển thị thông báo đang tải
     }
 
-    if (!pieData) {
+    if (noData) {
         return <p>Không có dữ liệu để hiển thị.</p>; // Thông báo khi không có dữ liệu
     }
 
@@ -94,7 +98,7 @@ const WeeklySalesPieChart = () => {
                     label: (context) => {
                         const label = context.label || '';
                         const percentage = percentages[context.dataIndex] || '';
-                        return `${label}: ${percentage}`;
+                        return `${label}: ${percentage}`; // Hiển thị phần trăm
                     },
                 },
             },
@@ -103,10 +107,10 @@ const WeeklySalesPieChart = () => {
 
     return (
         <div>
-            <h4>Biểu đồ thể hiện sản phẩm trong tháng</h4>
+            <h4>Biểu đồ thể hiện sản phẩm trong tháng {month}</h4>
             <Pie data={pieData} options={options} />
         </div>
     );
 };
 
-export default WeeklySalesPieChart;
+export default MonthlySalesPieChart; // Xuất ra để sử dụng

@@ -197,6 +197,9 @@ const Orders = () => {
                             <hr />
                             <div className={styles["order-total"]}>
                                 <h3>
+                                    {user.point >= 200 ? "Giảm giá: 10%" : ""}
+                                </h3>
+                                <h3>
                                     Tổng thanh toán:{" "}
                                     {user.point >= 200
                                         ? (cart.totalPrice * 0.9).toLocaleString('vi-VN')

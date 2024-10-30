@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './ForgotForm.module.css';
 import { useNavigate } from 'react-router-dom';
+import Loading from "../../component/loading/index";
 import api from '../../config/axios';
 
 const ForgotPassword = () => {
@@ -30,12 +31,14 @@ const ForgotPassword = () => {
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const [isButtonDisabled, setIsButtonDisabled] = useState(false); // Trạng thái của nút "Gửi lại OTP"
-    const [timer, setTimer] = useState(0); // Thời gian chờ đếm ngược
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+    const [timer, setTimer] = useState(0);
+    const [isLoading, setIsLoading] = useState(false); // Thêm state loading
 
     // Gửi yêu cầu OTP sau khi nhập email và username
     const handleEmailSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true); // Bắt đầu loading
         try {
             const response1 = await api.post('/email/checkUsernameAndEmail', {
                 userName,
@@ -49,26 +52,29 @@ const ForgotPassword = () => {
             });
         } catch (error) {
             setErrorMessage("Tài khoản hoặc email không tồn tại");
+        } finally {
+            setIsLoading(false); // Kết thúc loading
         }
     };
 
     // Gửi lại yêu cầu OTP mà không cần nhập lại email và username
     const handleResendOtp = async () => {
+        setIsLoading(true); // Bắt đầu loading
         try {
             const response = await api.post('/email/forgotPassword', {
                 userName,
                 email,
             });
-            setErrorMessage("Mã OTP mới đã được gửi lại!");  // Thông báo thành công
-            setIsButtonDisabled(true); // Vô hiệu hóa nút "Gửi lại OTP"
-            setTimer(30); // Đặt thời gian chờ là 30 giây
+            setErrorMessage("Mã OTP mới đã được gửi lại!");
+            setIsButtonDisabled(true);
+            setTimer(30);
 
             // Đếm ngược thời gian chờ
             const countdown = setInterval(() => {
                 setTimer((prevTimer) => {
                     if (prevTimer <= 1) {
                         clearInterval(countdown);
-                        setIsButtonDisabled(false); // Kích hoạt lại nút sau khi hết 30 giây
+                        setIsButtonDisabled(false);
                         return 0;
                     }
                     return prevTimer - 1;
@@ -76,18 +82,23 @@ const ForgotPassword = () => {
             }, 1000);
         } catch (error) {
             setErrorMessage("Lỗi khi gửi lại mã OTP");
+        } finally {
+            setIsLoading(false); // Kết thúc loading
         }
     };
 
     // Xác nhận OTP
     const handleOtpSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true); // Bắt đầu loading
         try {
             const response = await api.post(`/email/confirmCode/${otp}`);
             setErrorMessage("");
             setStep(3);
         } catch (error) {
             setErrorMessage("Mã OTP không chính xác!");
+        } finally {
+            setIsLoading(false); // Kết thúc loading
         }
     };
 
@@ -99,19 +110,19 @@ const ForgotPassword = () => {
             return;
         }
         if (newPassword !== confirmPassword) {
-            setErrorMessage("Mật khẩu và xác nhận mật khẩu không khớp!"); // Cập nhật thông báo lỗi
+            setErrorMessage("Mật khẩu và xác nhận mật khẩu không khớp!");
             return;
         } else {
             setErrorMessage('');
         }
 
+        setIsLoading(true); // Bắt đầu loading
         try {
-            // Gửi request để reset password với cả 2 trường password và confirmPassword
             const response = await api.post('/email/resetPassword', {
-                userName,        // Gửi userName từ form
-                email,           // Gửi email từ form
-                password: newPassword,       // Mật khẩu mới
-                confirmPassword: newPassword // Xác nhận mật khẩu mới (cần xác nhận 2 lần để khớp)
+                userName,
+                email,
+                password: newPassword,
+                confirmPassword: newPassword
             });
 
             alert('Đổi mật khẩu thành công!');
@@ -119,8 +130,14 @@ const ForgotPassword = () => {
         } catch (error) {
             console.error('Lỗi khi đổi mật khẩu:', error);
             setErrorMessage('Đổi mật khẩu thất bại!');
+        } finally {
+            setIsLoading(false); // Kết thúc loading
         }
     };
+
+    if (isLoading) {
+        return <Loading />
+    }
 
     return (
         <div className={styles.wrapper}>
@@ -156,7 +173,7 @@ const ForgotPassword = () => {
                         >
                             Huỷ
                         </button>
-                        <button type="submit">Gửi yêu cầu</button>
+                        <button type="submit" disabled={isLoading}>Gửi yêu cầu</button> {/* Vô hiệu hóa nút khi đang loading */}
                     </div>
                 </form>
             )}
@@ -177,11 +194,11 @@ const ForgotPassword = () => {
                             type="button"
                             style={{ backgroundColor: 'gray' }}
                             onClick={handleResendOtp}
-                            disabled={isButtonDisabled} // Vô hiệu hóa nút khi đang đếm ngược
+                            disabled={isButtonDisabled} // Vô hiệu hóa nút khi đang đếm ngược hoặc loading
                         >
                             {isButtonDisabled ? `Gửi lại OTP (${timer}s)` : 'Gửi lại OTP'}
                         </button>
-                        <button type="submit">Xác nhận OTP</button>
+                        <button type="submit" disabled={isLoading}>Xác nhận OTP</button> {/* Vô hiệu hóa nút khi đang loading */}
                     </div>
                 </form>
             )}
@@ -193,7 +210,7 @@ const ForgotPassword = () => {
                             type="password"
                             placeholder="Mật khẩu mới"
                             value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)} // Cập nhật newPassword
+                            onChange={(e) => setNewPassword(e.target.value)}
                             required
                         />
                     </div>
@@ -202,12 +219,12 @@ const ForgotPassword = () => {
                             type="password"
                             placeholder="Xác nhận mật khẩu mới"
                             value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)} // Cập nhật confirmPassword
+                            onChange={(e) => setConfirmPassword(e.target.value)}
                             required
                         />
                     </div>
                     <div className={styles.buttonGroup}>
-                        <button type="submit">Đổi mật khẩu</button>
+                        <button type="submit" disabled={isLoading}>Đổi mật khẩu</button> {/* Vô hiệu hóa nút khi đang loading */}
                     </div>
                 </form>
             )}

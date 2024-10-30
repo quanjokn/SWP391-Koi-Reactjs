@@ -9,37 +9,42 @@ import * as XLSX from 'xlsx';
 import './dashboard.css';
 
 const Dashboard = () => {
-    // Khai báo state để lưu trữ dữ liệu từ API
-    const [weeklyData, setWeeklyData] = useState({
-        revenue: 0,
-        sales: 0,
-    });
+    const [monthlyData, setMonthlyData] = useState({ revenue: 0, sales: 0 });
+    const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
 
     // Hàm lấy dữ liệu từ API
     useEffect(() => {
-        const fetchWeeklyData = async () => {
+        const fetchMonthlyData = async () => {
             try {
                 const response = await api.post('/dashBoard/orderAndRevenue', {
-                    year: new Date().getFullYear(), // Lấy năm hiện tại
-                    month: new Date().getMonth() + 1 // Lấy tháng hiện tại
+                    year: new Date().getFullYear(),
+                    month: selectedMonth
                 });
 
-                // Tính tổng revenue và sales
-                const totalRevenue = response.data.reduce((acc, item) => acc + item.totalRevenue, 0);
-                const totalSales = response.data.reduce((acc, item) => acc + item.totalOrders, 0);
+                // Tính toán tổng doanh thu và doanh số cho tháng
+                const totalRevenue = response.data.reduce((acc, item) => {
+                    // Nếu tuần là 5, tính nó như tuần 4
+                    const week = item.weekofMonth === 5 ? 4 : item.weekofMonth;
+                    return acc + item.totalRevenue;
+                }, 0);
 
-                // Cập nhật state với dữ liệu mới
-                setWeeklyData({
-                    revenue: totalRevenue,
-                    sales: totalSales,
-                });
+                const totalSales = response.data.reduce((acc, item) => {
+                    return acc + item.totalOrders;
+                }, 0);
+
+                // Cập nhật dữ liệu hàng tháng
+                setMonthlyData({ revenue: totalRevenue, sales: totalSales });
             } catch (error) {
-                console.error('Error fetching weekly data:', error);
+                console.error('Error fetching monthly data:', error);
             }
         };
 
-        fetchWeeklyData();
-    }, []);
+        fetchMonthlyData();
+    }, [selectedMonth]);
+
+    const handleMonthChange = (event) => {
+        setSelectedMonth(parseInt(event.target.value, 10));
+    };
 
     // Hàm xuất dữ liệu ra file Excel
     const exportToExcel = () => {
@@ -49,19 +54,18 @@ const Dashboard = () => {
 
         const data = [
             {
+                'Tháng': selectedMonth, // Lưu theo tháng
                 'Ngày': formattedDate,
                 'Thời gian': formattedTime,
-                'Doanh thu tuần này': weeklyData.revenue,
-                'Doanh số tuần này': weeklyData.sales
+                'Doanh thu tháng': monthlyData.revenue,
+                'Doanh số tháng': monthlyData.sales
             },
         ];
 
         const worksheet = XLSX.utils.json_to_sheet(data);
         const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, 'Weekly Data');
-
-        // Đặt tên file bao gồm ngày và giờ để dễ quản lý
-        const fileName = `Dashboard_Weekly_Data_${formattedDate.replace(/\//g, '-')}_${formattedTime.replace(/:/g, '-')}.xlsx`;
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Monthly Data'); // Đổi tên sheet
+        const fileName = `Dashboard_Monthly_Data_Thang_${selectedMonth}_${formattedDate.replace(/\//g, '-')}_${formattedTime.replace(/:/g, '-')}.xlsx`;
         XLSX.writeFile(workbook, fileName);
     };
 
@@ -70,41 +74,48 @@ const Dashboard = () => {
             <Header />
             <Tagbar />
             <div className="container mt-4">
-                <h1 className="text-center">Bảng điều khiển doanh nghiệp</h1>
+                <h1 className="text-center">Bảng kinh doanh doanh nghiệp</h1>
 
-                {/* Thẻ hiển thị dữ liệu tuần */}
+                {/* Chọn tháng */}
+                <div className="text-center mt-4">
+                    <label htmlFor="month-select">Chọn tháng: </label>
+                    <select id="month-select" value={selectedMonth} onChange={handleMonthChange}>
+                        {[...Array(12)].map((_, i) => (
+                            <option key={i + 1} value={i + 1}>Tháng {i + 1}</option>
+                        ))}
+                    </select>
+                </div>
+
                 <div className="row mt-5">
                     <div className="col-md-6 mb-6">
                         <div className="info-box p-3">
-                            <h4>Doanh thu tuần này</h4>
-                            <p>{weeklyData.revenue.toLocaleString('vi-VN')} VND</p>
+                            <h4>Doanh thu tháng {selectedMonth}</h4>
+                            <p>{monthlyData.revenue.toLocaleString('vi-VN')} VND</p>
                         </div>
                     </div>
 
                     <div className="col-md-6 mb-6">
                         <div className="info-box p-3">
-                            <h4>Doanh số tuần này</h4>
-                            <p>{weeklyData.sales} đơn hàng</p>
+                            <h4>Doanh số tháng {selectedMonth}</h4> {/* Cập nhật hiển thị */}
+                            <p>{monthlyData.sales} đơn hàng</p>
                         </div>
                     </div>
                 </div>
 
-                {/* Nút xuất file Excel */}
                 <div className="text-center mt-4">
                     <button onClick={exportToExcel} className="btn btn-success">Xuất Excel</button>
                 </div>
 
-                {/* Biểu đồ doanh thu và bán hàng */}
                 <div className="row mt-5">
                     <div className="col-md-8 mb-4">
                         <div className="chart-box p-3">
-                            <OrderRevenueChart />
+                            <OrderRevenueChart month={selectedMonth} />
                         </div>
                     </div>
 
                     <div className="col-md-4 mb-4">
                         <div className="chart-box p-3">
-                            <WeeklySalesPieChart />
+                            <WeeklySalesPieChart month={selectedMonth} />
                         </div>
                     </div>
                 </div>
