@@ -282,7 +282,8 @@ const ConsignedKoiToSell = () => {
                                         />
                                     </div>
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
-                                        <label > Video: </label>                                        <input
+                                        <label > Video: </label>                                        
+                                        <input
                                             type="text"
                                             className="form-control"
                                             name="video"
@@ -405,6 +406,7 @@ const ConsignedKoiToSell = () => {
                 </div>
 
             </div>
+            <br/>
             <Footer />
         </>
     );
