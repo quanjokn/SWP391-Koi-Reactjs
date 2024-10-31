@@ -32,6 +32,7 @@ const ProductDetail = () => {
         api.post(`/fish/fish-detail/${productId}`)
             .then((response) => {
                 setProduct(response.data);
+                console.log(response.data);
             })
             .catch((error) => {
                 console.error("Error fetching product details:", error);
@@ -71,7 +72,8 @@ const ProductDetail = () => {
                 fetchCart(); // Gọi lại để cập nhật giỏ hàng
             })
             .catch((error) => {
-                console.error("Error adding product to cart!", error);
+                console.error("Error adding item to cart!", error);
+                alert("Không thể mua, đây là cá của bạn!");
             });
     };
 
