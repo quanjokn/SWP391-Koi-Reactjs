@@ -22,6 +22,7 @@ const ManageProduct = () => {
     const [editFishId, setEditFishId] = useState('');
     const [quantity, setQuantity] = useState('');  // To store the new quantity
     const [category, setCategory] = useState('');
+    const [price, setPrice] = useState('');
     const [formData, setFormData] = useState({
         fishID: '',
         name: '',
@@ -100,13 +101,15 @@ const ManageProduct = () => {
         setEditFishId(fish.id);
         setCategory(fish.category);
         setQuantity(fish.quantity);  // Set the initial quantity for editing
+        setPrice(fish.price)
     };
 
     const handleSaveClick = async (fishId) => {
         const updatedFish = {
             fishID: fishId,
             category: category,
-            quantity: Number(quantity)  // Update the quantity with the new value
+            quantity: Number(quantity),  // Update the quantity with the new value
+            price: Number(price)
         };
         console.log(updatedFish);
         try {
@@ -116,7 +119,7 @@ const ManageProduct = () => {
                 },
             });   
             // Update the koi state with the new quantity
-            setKoi(prevKoi => prevKoi.map(fish => fish.id === fishId ? { ...fish, quantity: quantity } : fish));
+            setKoi(prevKoi => prevKoi.map(fish => fish.id === fishId ? { ...fish, quantity: quantity, price: price } : fish));
             setEditFishId('');  // Exit edit mode
         } catch (error) {
             console.error("Error:", error);
@@ -467,7 +470,17 @@ const ManageProduct = () => {
                                         {fish.name}
                                     </td>
 
-                                    <td>{fish.price.toLocaleString('vi-VN')}</td>
+                                    <td>
+                                    {editFishId === fish.id ? (
+                                            <input
+                                                type="number"
+                                                value={price}
+                                                onChange={(e) => setPrice(e.target.value)}
+                                            />
+                                        ) : (
+                                            fish.price.toLocaleString('vi-VN')
+                                        )}      
+                                        </td>
                                     <td>
                                         {editFishId === fish.id ? (
                                             <input
