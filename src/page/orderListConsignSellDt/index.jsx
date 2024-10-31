@@ -50,7 +50,7 @@ const OrderDetailConSignSell = () => {
             case 'Accepted_Selling':
                 return { text: 'Đang bán' };
             case "Sold":
-                return "Đã bán";
+                return { text: 'Đã bán' };
             case 'Done':
                 return { text: 'Đã hoàn thành', className: styles.done };
             case 'Rejected':
