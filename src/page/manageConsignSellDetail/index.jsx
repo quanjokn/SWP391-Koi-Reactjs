@@ -82,28 +82,35 @@ const ManageConsignSellDetail = () => {
 
     const handleAcceptOrder = async () => {
         const staffId = user ? user.id : null;
-        const approveReq = {
-            orderID: orderId,
-            decision,
-            note: ""
-        };
-        console.log('Staff ID:', staffId);
-        console.log('Order ID:', orderId);
-        console.log('Decision:', decision);
-        console.log('Approve Request:', approveReq);
-        try {
-            setIsLoading(true);
-            await api.post(`/consignManagement/approval/${staffId}`, approveReq);
-            setIsLoading(false);
-            alert('Đơn hàng đã được phản hồi thành công!');
-            setIsOrderProcessed(true);
+        const hasPendingDecision = order.request.ConsignList.some(koi => decision[koi.fishID] === undefined);
+        if (hasPendingDecision) {
+            alert('Vui lòng chọn chấp nhận hoặc từ chối !');
             fetchOrderDetail();
-        } catch (error) {
-            console.error('Error accepting order:', error);
-            alert('Đã xảy ra lỗi khi phản hồi !');
-            setIsLoading(false);
-        } 
-    };
+        } else {
+            const approveReq = {
+                orderID: orderId,
+                decision,
+                note: ""
+            };
+            console.log('Staff ID:', staffId);
+            console.log('Order ID:', orderId);
+            console.log('Decision:', decision);
+            console.log('Approve Request:', approveReq);
+            try {
+                setIsLoading(true);
+                await api.post(`/consignManagement/approval/${staffId}`, approveReq);
+                setIsLoading(false);
+                alert('Đơn hàng đã được phản hồi thành công!');
+                setIsOrderProcessed(true);
+                fetchOrderDetail();
+            } catch (error) {
+                console.error('Error accepting order:', error);
+                alert('Đã xảy ra lỗi khi phản hồi !');
+                setIsLoading(false);
+            }
+        };
+    }
+
 
     const handleCompleteOrder = async () => {
         const staffId = user ? user.id : null;
