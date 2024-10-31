@@ -289,6 +289,7 @@ const ConsignedKoiToSell = () => {
                                             name="video"
                                             placeholder="Nhập đường link URL"
                                             onChange={(e) => handleInputChange(index, e)}
+                                            required
                                         />
                                     </div>
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
