@@ -127,7 +127,6 @@ const ProductList = () => {
             <Header />
             <Tagbar />
 
-            <Masthead title={"Danh mục sản phẩm"} />
             <div className={`${styles.masthead}`} style={{ backgroundImage: "url('/imagines/background/promotion.jpg')" }}>
                 <div className="container position-relative px-4 px-lg-5">
                     <div className="row gx-4 gx-lg-5 justify-content-center">
@@ -177,7 +176,7 @@ const ProductList = () => {
                                 <h3 onClick={() => handleNavigateToDetail(product.id)}>{product.name}</h3>
                                 <p>Giới tính: {product.sex}</p>
                                 <p>Kích thước: {product.size}</p>
-                                <p>Giá: {product.price} VND</p>
+                                <p>Giá: {product.price.toLocaleString('vi-VN')} VND</p>
 
                                 <div className={styles['button-group']}>
                                     <button className={styles['compare-button']} onClick={() => handleAddToCompare(product)}>

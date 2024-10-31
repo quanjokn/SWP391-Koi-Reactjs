@@ -19,51 +19,52 @@ const OrderDetailConSignCare = () => {
     const { user } = useContext(UserContext);
     const [updateHistory, setUpdateHistory] = useState([]);
 
-    const fetchUpdateHistory = async (caredKoiId) => {
+    const fetchUpdateHistory = async (koiId) => {
         try {
-            const response = await api.get(`/caringManagement/getAllHealthUpdation/${caredKoiId}`);
-            setUpdateHistory(response.data); // Giả sử API trả về mảng lịch sử
+            const response = await api.get(`/caringManagement/getAllHealthUpdation/${koiId}`);
+            setUpdateHistory(prevHistory => {
+            // Filter out entries that already exist in the history
+            const newEntries = response.data
+                .map(entry => ({ ...entry, caredKoiID: koiId }))
+                .filter(newEntry => !prevHistory.some(existingEntry => existingEntry.id === newEntry.id));
+            
+            return [...prevHistory, ...newEntries];
+        });
+            console.log(updateHistory)
         } catch (error) {
             console.error('Error fetching update history:', error);
         }
     };
 
-    useEffect(() => {
-        const fetchOrderDetails = async () => {
-            try {
-                const response = await api.post(`/caringOrder/detail/${orderId}`);
-                const caringOrder = response.data.caringOrder;
-                const caredOrder = response.data;
-                if (caredOrder) {
-                    setOrder2(caredOrder);
-                    if (caredOrder.caredKois.length > 0) {
-                        // Gọi hàm fetchUpdateHistory với ID con cá đầu tiên
-                        fetchUpdateHistory(caredOrder.caredKois[0].id);
-                    }
+    const fetchOrderDetails = async () => {
+        try {
+            const response = await api.post(`/caringOrder/detail/${orderId}`);
+            const caringOrder = response.data.caringOrder;
+            const caredOrder = response.data;
+            if (caredOrder) {
+                setOrder2(caredOrder);
+                setUpdateHistory([]); // Clear previous history to avoid duplicates
+                if (caredOrder.caredKois.length > 0) {
+                    caredOrder.caredKois.forEach((koi) => {
+                        fetchUpdateHistory(koi.id); // Fetch history for each caredKoi ID
+                    });
                 }
-                if (caringOrder) {
-                    console.log(caringOrder);
-                    setOrder(caringOrder);
-                }
-            } catch (error) {
-                console.error('Error fetching order details:', error);
-                navigate('/error');
-            } finally {
-                setIsLoading(false);
             }
-        };
-        fetchOrderDetails();
-    }, [orderId, navigate]);
-
+            if (caringOrder) {
+                console.log(caringOrder);
+                setOrder(caringOrder);
+            }
+        } catch (error) {
+            console.error('Error fetching order details:', error);
+            navigate('/error');
+        } finally {
+            setIsLoading(false);
+        }
+    };
     useEffect(() => {
-        setContainerStyle({
-            marginBottom: '48px',
-        });
-
-        return () => {
-            setContainerStyle({});
-        };
-    }, []);
+        fetchOrderDetails();
+        // fetchUpdateHistory();   
+    }, [orderId, navigate]);
 
     if (isLoading) {
         return <Loading />;
@@ -74,11 +75,11 @@ const OrderDetailConSignCare = () => {
             case 'Pending_confirmation':
                 return { text: 'Đợi xác nhận' };
             case 'Accepted_caring':
-                return { text: 'Đang chăm sóc' };        
+                return { text: 'Đang chăm sóc' };
             case 'Done':
                 return { text: 'Đã hoàn thành', className: styles.done };
             case 'Rejected':
-                return { text: 'Đã bị từ chối', className: styles.rejected};
+                return { text: 'Đã bị từ chối', className: styles.rejected };
             default:
                 return { text: status, className: '' };
         }
@@ -163,38 +164,38 @@ const OrderDetailConSignCare = () => {
                     </table>
                 </div>
 
-                {/* Tình trạng sức khỏe */} 
+                {/* Tình trạng sức khỏe */}
                 {updateHistory.length > 0 && (
-                        <div className={styles.updateHistoryContainer}>
-                            <h2>Lịch sử cập nhật</h2>
-                            <table className={styles.historyTable}>
-                                <thead>
-                                    <tr>
-                                        <th>Ngày cập nhật</th>
-                                        <th>Tên cá</th>
-                                        <th>Hình ảnh cập nhật</th>
-                                        <th>Tình trạng</th>
+                    <div className={styles.updateHistoryContainer}>
+                        <h2>Lịch sử cập nhật</h2>
+                        <table className={styles.historyTable}>
+                            <thead>
+                                <tr>
+                                    <th>Ngày cập nhật</th>
+                                    <th>Tên cá</th>
+                                    <th>Hình ảnh cập nhật</th>
+                                    <th>Tình trạng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {updateHistory.map((update, index) => (
+                                    <tr key={index}>
+                                        <td>{update.date}</td>
+                                        <td>{update.caredKoi.name}</td>
+                                        <td>
+                                            <img
+                                                src={update.photo}
+                                                alt="Hình ảnh cập nhật"
+                                                style={{ maxWidth: '150px', maxHeight: '150px', objectFit: 'cover' }}
+                                            />
+                                        </td>
+                                        <td>{update.evaluation}</td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    {updateHistory.map((update, index) => (
-                                        <tr key={index}>
-                                            <td>{update.date}</td>
-                                            <td>{update.caredKoi.name}</td>
-                                            <td>
-                                                <img
-                                                    src={update.photo}
-                                                    alt="Hình ảnh cập nhật"
-                                                    style={{ width: '100px', height: '100px', objectFit: 'cover' }}
-                                                />
-                                            </td>
-                                            <td>{update.evaluation}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    )}
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
             </div>
             <Footer />
         </>

@@ -72,3 +72,9 @@
     display: flex;
 
 }
+.quantity-warning {
+    color: #ff4d4f; /* Màu đỏ cảnh báo */
+    font-size: 0.9em; /* Kích thước chữ nhỏ hơn */
+    font-weight: bold; /* Đậm để nổi bật */
+    margin-top: 5px; /* Khoảng cách trên dưới */
+}

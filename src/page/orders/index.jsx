@@ -12,7 +12,7 @@ import { CartContext } from "../../service/CartContext";
 import Loading from "../../component/loading";
 
 const Orders = () => {
-
+    const [isLoading, setIsLoading] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState("COD"); // Mặc định là thanh toán khi nhận hàng
     const location = useLocation();
     const [generateId, setGenerateId] = useState('');
@@ -20,7 +20,7 @@ const Orders = () => {
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
     const { resetCart } = useContext(CartContext);
-    const [isLoading, setIsLoading] = useState(false);
+    const [availableQuantities, setAvailableQuantities] = useState({});
     console.log(cart)
 
     const handlePaymentChange = (event) => {
@@ -37,40 +37,66 @@ const Orders = () => {
         }
     }
 
-    const handlePlaceOrder = () => {
+    const handlePlaceOrder = async () => {
         if (cart && cart.cartItems.length > 0) {
             const userId = user ? user.id : null;
+
             if (!userId) {
                 alert("Bạn cần đăng nhập trước khi đặt hàng.");
                 return navigate(`/login`);
             }
-            if (user.address != null && user.address !== "") {
-                if (paymentMethod === "VNPAY") {
-                    const type = 'order';
-                    const orderId = '0';
-                    return navigate(`/vnpay/onlinePayment/${type}/${userId}/${orderId}/${generateId}/${user.point >= 200 ? (cart.totalPrice * 0.9).toFixed(0) : cart.totalPrice}`);
-                } else {
-                    // Bắt đầu loading
-                    setIsLoading(true);
-                    api.post(`/order/placeOrder`, {
-                        userId: userId,
-                        paymentMethod: paymentMethod,
-                    })
-                        .then((response) => {
-                            resetCart();
-                            // Kết thúc loading
-                            setIsLoading(false);
-                            return navigate("/thank-you");
+            if ((user.address != null && user.address !== "") && (user.phone != null && user.phone !== "")) {
+                console.log("User address exists");
+
+                try {
+                    // Kiểm tra số lượng của từng sản phẩm trong giỏ
+                    const newAvailableQuantities = {};
+                    const isQuantityAvailable = await Promise.all(
+                        cart.cartItems.map(async (item) => {
+                            const response = await api.post(`/fish/fish-detail/${item.fishId}`);
+                            const availableQuantity = response.data.quantity;
+                            newAvailableQuantities[item.fishId] = availableQuantity;
+                            return item.quantity <= availableQuantity;
                         })
-                        .catch((error) => {
-                            console.error("Error placing order:", error);
-                            alert("Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại.");
-                            // Kết thúc loading
-                            setIsLoading(false);
-                        });
+                    );
+                    setAvailableQuantities(newAvailableQuantities);
+                    // Nếu có sản phẩm nào vượt quá số lượng sẵn có
+                    if (isQuantityAvailable.includes(false)) {
+                        alert("Số lượng cá trong giỏ vượt quá số lượng có sẵn.");
+                        return;
+                    }
+
+                    if (paymentMethod === "VNPAY") {
+                        const type = 'order';
+                        const orderId = '0';
+                        console.log("Navigating to VNPAY payment page");
+                        return navigate(`/vnpay/onlinePayment/${type}/${userId}/${orderId}/${generateId}/${user.point >= 200 ? (cart.totalPrice * 0.9).toFixed(0) : cart.totalPrice}`);
+                    } else {
+                        setIsLoading(true);
+                        console.log("Placing COD order");
+                        api.post(`/order/placeOrder`, {
+                            userId: userId,
+                            paymentMethod: paymentMethod,
+
+                        })   
+                            .then((response) => {
+                                alert("Đặt hàng thành công!");
+                                resetCart();
+                                setIsLoading(false);
+                                return navigate("/thank-you");
+                            })
+                            .catch((error) => {
+                                console.error("Error placing order:", error);
+                                alert("Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại.");
+                                setIsLoading(false);
+                            });
+                    }
+                } catch (error) {
+                    console.error("Error checking quantity:", error);
+                    alert("Có lỗi xảy ra khi kiểm tra số lượng. Vui lòng thử lại.");
                 }
             } else {
-                alert("Vui lòng thêm địa chỉ !");
+                alert("Vui lòng thêm địa chỉ hoặc số điện thoại !");
                 return navigate('/tai-khoan');
             }
         } else {
@@ -79,7 +105,7 @@ const Orders = () => {
     };
 
     if (isLoading) {
-        return <Loading />
+        return <Loading />;
     }
 
     return (
@@ -114,7 +140,13 @@ const Orders = () => {
                                                 <h3>{item.fishName}</h3>
                                             </td>
                                             <td>{item.unitPrice.toLocaleString()} VND</td>
-                                            <td>{item.quantity}</td>
+                                            <td>{item.quantity}
+                                                {availableQuantities[item.fishId] !== undefined && item.quantity > availableQuantities[item.fishId] && (
+                                                    <div className={styles["quantity-warning"]}>
+                                                        Vượt quá số lượng, trong kho chỉ còn {availableQuantities[item.fishId]} con cá
+                                                    </div>
+                                                )}
+                                            </td>
                                             <td>{(item.unitPrice * item.quantity).toLocaleString()} VND</td>
                                         </tr>
                                     ))}
