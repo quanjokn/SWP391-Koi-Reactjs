@@ -11,6 +11,7 @@ import './dashboard.css';
 const Dashboard = () => {
     const [monthlyData, setMonthlyData] = useState({ revenue: 0, sales: 0 });
     const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
+    const [hasData, setHasData] = useState(true);
 
     // Hàm lấy dữ liệu từ API
     useEffect(() => {
@@ -20,18 +21,26 @@ const Dashboard = () => {
                     year: new Date().getFullYear(),
                     month: selectedMonth
                 });
+                // Kiểm tra nếu không có dữ liệu
+                if (response.data.ordersRevenueList.length === 0) {
+                    setMonthlyData({ revenue: 0, sales: 0 });
+                    setHasData(false);
+                } else {
+                    // tổng doanh thu và doanh số cho tháng
+                    const totalRevenue = response.data.allRevenueOfMonth;
 
-                // tổng doanh thu và doanh số cho tháng
-                const totalRevenue = response.data.allRevenueOfMonth;
+                    const totalSales = response.data.ordersRevenueList.reduce((acc, item) => {
+                        return acc + item.totalOrders;
+                    }, 0);
 
-                const totalSales = response.data.ordersRevenueList.reduce((acc, item) => {
-                    return acc + item.totalOrders;
-                }, 0);
+                    // Cập nhật dữ liệu hàng tháng
+                    setMonthlyData({ revenue: totalRevenue, sales: totalSales });
+                }
 
-                // Cập nhật dữ liệu hàng tháng
-                setMonthlyData({ revenue: totalRevenue, sales: totalSales });
             } catch (error) {
                 console.error('Error fetching monthly data:', error);
+                setMonthlyData({ revenue: 0, sales: 0 });
+                setHasData(false);
             }
         };
 

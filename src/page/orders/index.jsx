@@ -39,14 +39,12 @@ const Orders = () => {
 
     const handlePlaceOrder = async () => {
         if (cart && cart.cartItems.length > 0) {
-            console.log("Cart exists and has items");
             const userId = user ? user.id : null;
 
             if (!userId) {
                 alert("Bạn cần đăng nhập trước khi đặt hàng.");
                 return navigate(`/login`);
             }
-
             if ((user.address != null && user.address !== "") && (user.phone != null && user.phone !== "")) {
                 console.log("User address exists");
 
