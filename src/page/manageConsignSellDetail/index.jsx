@@ -35,7 +35,7 @@ const ManageConsignSellDetail = () => {
                 setStatus(response.data.status); // Cập nhật trạng thái
             } else {
                 throw new Error('No order data found');
-            }
+            }   
         } catch (error) {
             console.error('Error fetching order detail:', error);
             navigate('/error');
@@ -127,10 +127,11 @@ const ManageConsignSellDetail = () => {
         const staffId = user ? user.id : null;
         console.log('Staff ID:', staffId);
         console.log('Order ID:', orderId);
+        const total = order.request.totalPrice * 0.9;
         try {
             const response = await api.post(`/staff/generateOrderId`, {});
             const type = 'consignOrder';
-            return navigate(`/vnpay/onlinePayment/${type}/${staffId}/${order.orderID}/${response.data}/${order.request.totalPrice}`);
+            return navigate(`/vnpay/onlinePayment/${type}/${staffId}/${order.orderID}/${response.data}/${total}`);
         } catch (error) {
             alert("Có lỗi xảy ra khi lấy đường dẫn thanh toán. Vui lòng thử lại.");
             return null; // Trả về null nếu có lỗi

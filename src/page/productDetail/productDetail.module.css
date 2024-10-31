@@ -11,6 +11,35 @@ body {
   z-index: 1000;
   color: white;
 }
+.ratingRow {
+  display: flex;
+  align-items: center; /* Center aligns items vertically */
+  margin: 10px 0; /* Space above and below the rating */
+  font-family: Arial, sans-serif; /* Choose a font */
+  font-size: 16px; /* Base font size */
+  color: #333; /* Base text color */
+}
+.rating-number{
+  margin-right: 8px; /* Space between rating and icon */
+    font-weight: bold; /* Make the rating stand out */
+    color: rgb(0, 0, 0);
+    font-size: 30px;
+}
+.staricon {
+  color: gold; /* Color of the star icon */
+  transition: transform 0.3s; /* Smooth scaling on hover */
+}
+
+/* Scale up the star icon on hover */
+.staricon:hover {
+  transform: scale(1.2); /* Slightly increase size on hover */
+}
+
+/* Optional: Style for loading message */
+.loadingMessage {
+  font-style: italic; /* Italic style for loading message */
+  color: #999; /* Lighter color for loading text */
+}
 
 .price {
   font-size: 1.5em;
