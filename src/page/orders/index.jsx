@@ -9,6 +9,7 @@ import styles from "./orders.module.css"; // CSS Module
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../service/UserContext";
 import { CartContext } from "../../service/CartContext";
+import Loading from "../../component/loading";
 
 const Orders = () => {
 
@@ -19,6 +20,7 @@ const Orders = () => {
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
     const { resetCart } = useContext(CartContext);
+    const [isLoading, setIsLoading] = useState(false);
     console.log(cart)
 
     const handlePaymentChange = (event) => {
@@ -37,32 +39,34 @@ const Orders = () => {
 
     const handlePlaceOrder = () => {
         if (cart && cart.cartItems.length > 0) {
-            console.log("Cart exists and has items");
             const userId = user ? user.id : null;
             if (!userId) {
                 alert("Bạn cần đăng nhập trước khi đặt hàng.");
                 return navigate(`/login`);
             }
             if (user.address != null && user.address !== "") {
-                console.log("User address exists");
                 if (paymentMethod === "VNPAY") {
                     const type = 'order';
                     const orderId = '0';
-                    console.log("Navigating to VNPAY payment page");
                     return navigate(`/vnpay/onlinePayment/${type}/${userId}/${orderId}/${generateId}/${user.point >= 200 ? (cart.totalPrice * 0.9).toFixed(0) : cart.totalPrice}`);
                 } else {
-                    console.log("Placing COD order");
+                    // Bắt đầu loading
+                    setIsLoading(true);
                     api.post(`/order/placeOrder`, {
                         userId: userId,
                         paymentMethod: paymentMethod,
                     })
                         .then((response) => {
                             resetCart();
+                            // Kết thúc loading
+                            setIsLoading(false);
                             return navigate("/thank-you");
                         })
                         .catch((error) => {
                             console.error("Error placing order:", error);
                             alert("Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại.");
+                            // Kết thúc loading
+                            setIsLoading(false);
                         });
                 }
             } else {
@@ -73,6 +77,10 @@ const Orders = () => {
             alert("Giỏ hàng của bạn trống.");
         }
     };
+
+    if (isLoading) {
+        return <Loading />
+    }
 
     return (
         <>

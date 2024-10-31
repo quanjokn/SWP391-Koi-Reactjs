@@ -9,6 +9,8 @@ const OrderRevenueChart = ({ month }) => { // Nhận props month từ Dashboard
     const [chartData, setChartData] = useState(null);
 
     useEffect(() => {
+        setChartData(null);
+
         const fetchData = async () => {
             try {
                 const response = await api.post('/dashBoard/orderAndRevenue', {
@@ -69,6 +71,7 @@ const OrderRevenueChart = ({ month }) => { // Nhận props month từ Dashboard
                 }
             } catch (error) {
                 console.error('Error fetching order revenue data:', error);
+                setChartData(null);
             }
         };
 
@@ -76,7 +79,7 @@ const OrderRevenueChart = ({ month }) => { // Nhận props month từ Dashboard
     }, [month]); // Thêm month vào dependency để biểu đồ cập nhật khi tháng thay đổi
 
     if (!chartData) {
-        return <p>Loading chart...</p>;
+        return <p>Không có dữ liệu hiển thị</p>;
     }
 
     return (
