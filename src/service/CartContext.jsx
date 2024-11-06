@@ -10,7 +10,7 @@ export const CartProvider = ({ children }) => {
     const userId = user ? user.id : null;
 
     useEffect(() => {
-        if (userId) {
+        if (userId && userId.role == "Customer") {
             api.post(`/cart/${userId}`)
                 .then(response => {
                     setCart(response.data);
