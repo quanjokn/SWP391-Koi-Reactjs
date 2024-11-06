@@ -44,7 +44,7 @@ const OrderRevenueChart = ({ month }) => { // Nhận props month từ Dashboard
                     });
                 } else {
                     const weeks = response.data.ordersRevenueList.map(item =>
-                        item.weekofMonth === 5 ? 'Tuần 4' : `Tuần ${item.weekofMonth}`
+                        `Tuần ${item.weekofMonth}`
                     );
                     const orders = response.data.ordersRevenueList.map(item => item.totalOrders);
                     const revenue = response.data.ordersRevenueList.map(item => item.totalRevenueOfWeek);

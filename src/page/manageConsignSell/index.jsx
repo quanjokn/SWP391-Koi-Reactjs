@@ -79,7 +79,7 @@ const ManageConsignSell = () => {
                                 <tr key={order.id} className={styles.row}>
                                     <td className={styles.textLeft}>{order.id}</td>
                                     <td className={styles.textLeft}>{order.date}</td>
-                                    <td className={styles.textLeft}>{order.totalPrice}</td>
+                                    <td className={styles.textLeft}>{order.totalPrice.toLocaleString('vi-VN')}</td>
                                     <td className={styles.textCenter}>
                                         <button
                                             className={styles.button1}
