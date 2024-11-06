@@ -104,6 +104,7 @@ const RegisterForm = () => {
             <form onSubmit={handleRegister}>
                 <h1>Đăng ký</h1>
                 {errors.userName && <p className={styles.error}>{errors.userName}</p>} {/* Hiển thị lỗi tên đăng nhập trùng */}
+                {errors.email && <p className={styles.error}>{errors.email}</p>} {/* Hiển thị lỗi email */}
                 <div className={styles.inputBox}>
                     <input
                         name='userName' // Sửa name thành 'userName'
@@ -133,7 +134,6 @@ const RegisterForm = () => {
                         onChange={handleInputChange}
                         required
                     />
-                    {errors.email && <p className={styles.error}>{errors.email}</p>} {/* Hiển thị lỗi email */}
                 </div>
                 <div className={styles.inputBox}>
                     <input
