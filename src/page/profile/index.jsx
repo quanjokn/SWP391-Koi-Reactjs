@@ -65,7 +65,7 @@ const ProfilePage = () => {
             // Tắt chế độ chỉnh sửa
             setIsEditing(false);
 
-            navigate('/tai-khoan');
+            window.location.reload();
         } catch (error) {
             console.error('Error updating profile:', error);
         }
@@ -174,7 +174,7 @@ const ProfilePage = () => {
                                     <>
                                         <button
                                             className="btn btn-secondary me-2"
-                                            onClick={() => setIsEditing(false)}
+                                            onClick={() => window.location.reload()}
                                         >
                                             Huỷ
                                         </button>
