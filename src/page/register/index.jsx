@@ -105,6 +105,8 @@ const RegisterForm = () => {
                 <h1>Đăng ký</h1>
                 {errors.userName && <p className={styles.error}>{errors.userName}</p>} {/* Hiển thị lỗi tên đăng nhập trùng */}
                 {errors.email && <p className={styles.error}>{errors.email}</p>} {/* Hiển thị lỗi email */}
+                {errors.phone && <p className={styles.error}>{errors.phone}</p>} {/* Hiển thị lỗi số điện thoại */}
+                {errors.api && <p className={styles.error}>{errors.api}</p>} {/* Hiển thị lỗi từ API */}
                 <div className={styles.inputBox}>
                     <input
                         name='userName' // Sửa name thành 'userName'
@@ -144,10 +146,7 @@ const RegisterForm = () => {
                         onChange={handleInputChange}
                         required
                     />
-                    {errors.phone && <p className={styles.error}>{errors.phone}</p>} {/* Hiển thị lỗi số điện thoại */}
                 </div>
-                {errors.api && <p className={styles.error}>{errors.api}</p>} {/* Hiển thị lỗi từ API */}
-
                 <button type='submit'>Đăng ký</button>
 
                 <div className={styles.registerLink}>
