@@ -21,7 +21,15 @@ const handleBefore = (config) => {
 
 // Interceptor để đính kèm token vào tất cả các request
 api.interceptors.request.use(handleBefore, (error) => {
-    console.error("Error in request interceptor:", error);
+    if (error.code === 'ECONNABORTED') {
+        // Xử lý lỗi timeout
+        console.warn("Request timeout, please reset the page.");
+    }
+    // Yêu cầu người dùng reset lại trang
+    alert("Đã xảy ra lỗi, vui lòng tải lại trang.");
+
+    // Có thể thêm logic để reload trang nếu cần
+    window.location.reload();
     return Promise.reject(error);
 });
 
