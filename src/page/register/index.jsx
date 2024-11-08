@@ -47,12 +47,17 @@ const RegisterForm = () => {
         if (!userName || !password || !email || !phone) {
             setErrors("Cần nhập đầy đủ thông tin đăng kí");
             return;
-        } else {
+        }
+        else {
             // Regex xác thực email và số điện thoại
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             const phoneRegex = /^\d{10}$/;
 
             const newErrors = {};
+
+            if (userName.length < 3) {
+                newErrors.email = "Tài khoản phải có từ 3 kí tự";
+            }
 
             // Xác thực định dạng email
             if (!emailRegex.test(email)) {
