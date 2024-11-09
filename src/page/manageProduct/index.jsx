@@ -316,6 +316,8 @@ const ManageProduct = () => {
                             <input
                                 type="text"
                                 name="size"
+                                 min="1" 
+                                                max="100"
                                 value={formData.size}
                                 onChange={handleChange}
                                 required
@@ -328,7 +330,8 @@ const ManageProduct = () => {
                                 name="price"
                                 value={formData.price}
                                 onChange={handleChange}
-                                min="1"
+                                 min="100000"
+                                                max="100000000"
                                 required
                             />
                         </div>
@@ -474,6 +477,8 @@ const ManageProduct = () => {
                                     {editFishId === fish.id ? (
                                             <input
                                                 type="number"
+                                                min="100000"
+                                                max="100000000"
                                                 value={price}
                                                 onChange={(e) => setPrice(e.target.value)}
                                             />
@@ -486,6 +491,8 @@ const ManageProduct = () => {
                                             <input
                                                 type="number"
                                                 value={quantity}
+                                                min="1" 
+                                                max="50"
                                                 onChange={(e) => setQuantity(e.target.value)}
                                             />
                                         ) : (
