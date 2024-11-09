@@ -262,6 +262,7 @@ const ManageProduct = () => {
                                 value={formData.quantity}
                                 onChange={handleChange}
                                 min="1"
+                                max="100"
                                 required
                             />
                         </div>
@@ -294,9 +295,11 @@ const ManageProduct = () => {
                         <div>
                             <label>Tuổi:</label>
                             <input
-                                type="text"
+                                type="number"
                                 name="age"
                                 value={formData.age}
+                                min="1"
+                                max="10"
                                 onChange={handleChange}
                                 required
                             />
@@ -312,12 +315,13 @@ const ManageProduct = () => {
                             />
                         </div>
                         <div>
-                            <label>Kích cỡ:</label>
+                            <label>Kích thước:</label>
                             <input
-                                type="text"
+                                type="number"
                                 name="size"
-                                 min="1" 
-                                                max="100"
+                                min="10" 
+                                max="100"
+                                placeholder="(cm)"
                                 value={formData.size}
                                 onChange={handleChange}
                                 required
@@ -330,8 +334,8 @@ const ManageProduct = () => {
                                 name="price"
                                 value={formData.price}
                                 onChange={handleChange}
-                                 min="100000"
-                                                max="100000000"
+                                min="100000"
+                                max="100000000"
                                 required
                             />
                         </div>
