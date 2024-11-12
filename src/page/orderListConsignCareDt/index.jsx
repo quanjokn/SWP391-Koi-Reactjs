@@ -116,7 +116,7 @@ const OrderDetailConSignCare = () => {
                     requestDate={order.careDateStatus.requestDate }
                     pendingDate={order.careDateStatus.pendingDate }
                     responseDate={order.careDateStatus.responseDate } 
-                    completeDate={order.careDateStatus.completedDate }
+                    completedDate={order.careDateStatus.completedDate }
                     paymentDate={order.careDateStatus.paymentDate }
                 />
 

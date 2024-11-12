@@ -35,7 +35,7 @@ const ManageConsignSellDetail = () => {
                 setStatus(response.data.status); // Cập nhật trạng thái
             } else {
                 throw new Error('No order data found');
-            }   
+            }
         } catch (error) {
             console.error('Error fetching order detail:', error);
             navigate('/error');
@@ -75,6 +75,8 @@ const ManageConsignSellDetail = () => {
                 return "Đã thanh toán";
             case "Rejected":
                 return "Đã bị từ chối";
+            case "Expired":
+                return "Đã hết hạn";
             default:
                 return status;
         }
@@ -232,9 +234,11 @@ const ManageConsignSellDetail = () => {
                             price={order.request.totalPrice.toLocaleString('vi-VN') || 'N/A'}
                             requestDate={order.consignDateStatus.requestDate}
                             pendingDate={order.consignDateStatus.pendingDate}
-                            responseDate={order.consignDateStatus.responseDate} 
-                            completeDate={order.consignDateStatus.completedDate}
+                            responseDate={order.consignDateStatus.responseDate}
+                            completedDate={order.consignDateStatus.completedDate}
                             paymentDate={order.consignDateStatus.paymentDate}
+                            approvalDate={order.approvalDate}
+                            expiredDate={order.expiredDate}
                         />
                     </>
                 ) : (

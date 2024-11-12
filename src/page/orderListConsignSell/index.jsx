@@ -98,6 +98,8 @@ const OrderListConsignSell = () => {
                 return { text: 'Đã thanh toán', className: styles.shared };
             case 'Rejected':
                 return { text: 'Đã bị từ chối', className: styles.rejected };
+                case "Expired":
+                    return { text: 'Đã hết hạn', className: styles.rejected};
             default:
                 return { text: status, className: '' };
         }

@@ -55,6 +55,8 @@ const OrderDetailConSignSell = () => {
                 return { text: 'Đã hoàn thành', className: styles.done };
             case 'Rejected':
                 return { text: 'Đã bị từ chối', className: styles.rejected };
+                case "Expired":
+                    return { text: 'Đã hết hạn'};
             default:
                 return { text: status, className: '' };
         }
@@ -77,8 +79,10 @@ const OrderDetailConSignSell = () => {
                     requestDate={order.consignDateStatus.requestDate}
                     pendingDate={order.consignDateStatus.pendingDate}
                     responseDate={order.consignDateStatus.responseDate} 
-                    completeDate={order.consignDateStatus.completedDate}
+                    completedDate={order.consignDateStatus.completedDate}
                     paymentDate={order.consignDateStatus.paymentDate}
+                    approvalDate={order.approvalDate}
+                    expiredDate={order.expiredDate}
                 />
 
                 {/* Bảng thông tin cá Koi được bán */}

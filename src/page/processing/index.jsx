@@ -66,7 +66,7 @@ const Processing = () => {
                 .sort((a, b) => b.startDate - a.startDate); // Sắp xếp theo ngày bắt đầu
 
             const consign = response.data.consignOrders
-                .filter(order => order.status !== "Shared" && order.status !== "Rejected")
+                .filter(order => order.status !== "Shared" && order.status !== "Rejected" && order.status !== "Expired")
                 .map(order => ({
                     id: order.id,
                     totalPrice: order.totalPrice,
@@ -171,6 +171,8 @@ const Processing = () => {
                 return "Đã hoàn thành";
             case "Paid":
                 return "Đã thanh toán";
+                case "Expired":
+                    return "Đã hết hạn";
             default:
                 return status;
         }

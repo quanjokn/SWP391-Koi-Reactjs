@@ -66,7 +66,7 @@ const History = () => {
                 .sort((a, b) => b.startDate - a.startDate); // Sắp xếp theo ngày bắt đầu
 
             const consign = response.data.consignOrders
-                .filter(order => order.status === "Shared" || order.status === "Rejected")
+                .filter(order => order.status === "Shared" || order.status === "Rejected" || order.status === "Expired")
                 .map(order => ({
                     id: order.id,
                     totalPrice: order.totalPrice,
@@ -161,6 +161,8 @@ const History = () => {
                 return { text: 'Đã bị từ chối', className: styles.rejected };
             case 'Shared':
                 return { text: 'Đã thanh toán', className: styles.done };
+                case "Expired":
+                    return { text: 'Đã hết hạn', className: styles.rejected};
             default:
                 return status;
         }
