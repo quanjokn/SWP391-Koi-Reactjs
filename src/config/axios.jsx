@@ -5,8 +5,7 @@ const baseURL = "http://localhost:8080";
 
 // Tạo instance axios với baseURL
 const api = axios.create({
-    baseURL: baseURL,
-    timeout: 15000
+    baseURL: baseURL
 });
 
 // Hàm xử lý trước khi gọi API (interceptor)
@@ -28,9 +27,33 @@ api.interceptors.request.use(handleBefore, (error) => {
     // Yêu cầu người dùng reset lại trang
     alert("Đã xảy ra lỗi, vui lòng tải lại trang.");
 
-    // Có thể thêm logic để reload trang nếu cần
     window.location.reload();
     return Promise.reject(error);
 });
+
+// Interceptor phản hồi
+api.interceptors.response.use(
+    (response) => {
+        // Xử lý phản hồi thành công
+        return response;
+    },
+    (error) => {
+        if (api.isCancel(error)) {
+            console.log("Request canceled:", error.message);
+            return;
+        }
+
+        if (error.code === 'ECONNABORTED') {
+            console.error("Request timeout:", error);
+            alert("Đã xảy ra lỗi, vui lòng tải lại trang.");
+        } else {
+            console.error("Response error:", error);
+            alert("Đã xảy ra lỗi, vui lòng thử lại.");
+        }
+
+        window.location.reload();
+        return Promise.reject(error);
+    }
+);
 
 export default api;

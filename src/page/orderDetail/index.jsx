@@ -60,7 +60,15 @@ const OrderDetail = () => {
             <Header />
             <Tagbar />
             <div className="container mt-5" style={containerStyle}>
-                <OrderStatus orderId={order.orderId} date={order.date} status={order.status} />
+                <OrderStatus orderId={order.orderId}
+                    date={order.date}
+                    status={order.status}
+                    orderDate={order.orderDateStatus.orderDate}
+                    responseDate={order.orderDateStatus.responseDate}
+                    deliveryDate={order.orderDateStatus.deliveryDate}
+                    completeDate={order.orderDateStatus.completeDate}
+                />
+
                 {order.status === 'Rejected' && (
                     <h3 className={styles.textCenter}>
                         <span>Lý do từ chối:</span> {order.note}

@@ -37,6 +37,7 @@ const ManageOrderDetail = () => {
             const response = await api.post(`/staff/orderDetail/${orderId}`);
             if (response.data) {
                 // Cập nhật order với thông tin nhận được từ API
+                console.log(response.data)
                 setOrder(response.data); // Cập nhật với đối tượng order
                 setStatus(response.data.status); // Cập nhật trạng thái
             } else {
@@ -201,6 +202,10 @@ const ManageOrderDetail = () => {
                     orderId={orderId}
                     date={new Date(order.date).toLocaleDateString()}
                     status={status}
+                    orderDate={order.orderDateStatus.orderDate}
+                    responseDate={order.orderDateStatus.responseDate}
+                    deliveryDate={order.orderDateStatus.deliveryDate}
+                    completeDate={order.orderDateStatus.completeDate}
                 />
 
                 {/* Kiểm duyệt */}
