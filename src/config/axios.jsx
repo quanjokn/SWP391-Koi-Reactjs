@@ -27,7 +27,6 @@ api.interceptors.request.use(handleBefore, (error) => {
     // Yêu cầu người dùng reset lại trang
     alert("Đã xảy ra lỗi, vui lòng tải lại trang.");
 
-    window.location.reload();
     return Promise.reject(error);
 });
 
@@ -38,7 +37,7 @@ api.interceptors.response.use(
         return response;
     },
     (error) => {
-        if (api.isCancel(error)) {
+        if (axios.isCancel(error)) {
             console.log("Request canceled:", error.message);
             return;
         }
@@ -48,10 +47,7 @@ api.interceptors.response.use(
             alert("Đã xảy ra lỗi, vui lòng tải lại trang.");
         } else {
             console.error("Response error:", error);
-            alert("Đã xảy ra lỗi, vui lòng thử lại.");
         }
-
-        window.location.reload();
         return Promise.reject(error);
     }
 );

@@ -22,6 +22,7 @@ const ManageProduct = () => {
     const [editFishId, setEditFishId] = useState('');
     const [quantity, setQuantity] = useState('');  // To store the new quantity
     const [category, setCategory] = useState('');
+    const [price, setPrice] = useState('');
     const [formData, setFormData] = useState({
         fishID: '',
         name: '',
@@ -100,23 +101,29 @@ const ManageProduct = () => {
         setEditFishId(fish.id);
         setCategory(fish.category);
         setQuantity(fish.quantity);  // Set the initial quantity for editing
+        setPrice(fish.price)
     };
 
     const handleSaveClick = async (fishId) => {
         const updatedFish = {
             fishID: fishId,
             category: category,
-            quantity: Number(quantity)  // Update the quantity with the new value
+            quantity: Number(quantity),  // Update the quantity with the new value
+            price: Number(price)
         };
         console.log(updatedFish);
+        if (quantity < 1) {
+            alert("Không được nhập số âm");
+            return;
+        }
         try {
             const response = await api.post(`/productList/updateFish/${fishId}`, updatedFish, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-            });   
+            });
             // Update the koi state with the new quantity
-            setKoi(prevKoi => prevKoi.map(fish => fish.id === fishId ? { ...fish, quantity: quantity } : fish));
+            setKoi(prevKoi => prevKoi.map(fish => fish.id === fishId ? { ...fish, quantity: quantity, price: price } : fish));
             setEditFishId('');  // Exit edit mode
         } catch (error) {
             console.error("Error:", error);
@@ -259,6 +266,7 @@ const ManageProduct = () => {
                                 value={formData.quantity}
                                 onChange={handleChange}
                                 min="1"
+                                max="100"
                                 required
                             />
                         </div>
@@ -291,9 +299,11 @@ const ManageProduct = () => {
                         <div>
                             <label>Tuổi:</label>
                             <input
-                                type="text"
+                                type="number"
                                 name="age"
                                 value={formData.age}
+                                min="1"
+                                max="10"
                                 onChange={handleChange}
                                 required
                             />
@@ -309,10 +319,13 @@ const ManageProduct = () => {
                             />
                         </div>
                         <div>
-                            <label>Kích cỡ:</label>
+                            <label>Kích thước:</label>
                             <input
-                                type="text"
+                                type="number"
                                 name="size"
+                                min="10"
+                                max="100"
+                                placeholder="(cm)"
                                 value={formData.size}
                                 onChange={handleChange}
                                 required
@@ -325,7 +338,8 @@ const ManageProduct = () => {
                                 name="price"
                                 value={formData.price}
                                 onChange={handleChange}
-                                min="1"
+                                min="100000"
+                                max="100000000"
                                 required
                             />
                         </div>
@@ -467,12 +481,26 @@ const ManageProduct = () => {
                                         {fish.name}
                                     </td>
 
-                                    <td>{fish.price.toLocaleString('vi-VN')}</td>
+                                    <td>
+                                        {editFishId === fish.id ? (
+                                            <input
+                                                type="number"
+                                                min="100000"
+                                                max="100000000"
+                                                value={price}
+                                                onChange={(e) => setPrice(e.target.value)}
+                                            />
+                                        ) : (
+                                            fish.price.toLocaleString('vi-VN')
+                                        )}
+                                    </td>
                                     <td>
                                         {editFishId === fish.id ? (
                                             <input
                                                 type="number"
                                                 value={quantity}
+                                                min="1"
+                                                max="50"
                                                 onChange={(e) => setQuantity(e.target.value)}
                                             />
                                         ) : (

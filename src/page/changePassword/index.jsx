@@ -44,6 +44,10 @@ const ChangePasswordPage = () => {
         setErrorMessage('');
         setSuccessMessage('');
 
+        if (!oldPassword || !newPassword || !confirmPassword) {
+            setErrorMessage('Bạn không được để trống các ô nhập');
+            return;
+        }
 
         // Kiểm tra mật khẩu mới và xác nhận mật khẩu
         if (newPassword !== confirmPassword) {
@@ -58,7 +62,7 @@ const ChangePasswordPage = () => {
                 newPassword,
                 confirmPassword
             });
-
+            console.log(response.data)
             if (response.data && response.data.id) {
                 setSuccessMessage('Mật khẩu đã được thay đổi thành công!');
                 // Reset passwordData về giá trị mặc định
@@ -73,7 +77,16 @@ const ChangePasswordPage = () => {
             }
         } catch (error) {
             if (error.response) {
-                setErrorMessage('Mật khẩu hiện tại sai' || 'Yêu cầu không hợp lệ.');
+                const { message } = error.response.data; // Lấy thông báo lỗi từ phản hồi backend
+                setErrorMessage(message || 'Yêu cầu không hợp lệ.');
+            } else if (error.request) {
+                // Trường hợp không nhận được phản hồi từ server (có thể là lỗi mạng hoặc CORS)
+                console.error('No response received:', error.request);
+                setErrorMessage('Không thể kết nối tới server. Vui lòng kiểm tra kết nối mạng');
+            } else {
+                // Các lỗi khác (thiết lập sai hoặc lỗi không xác định)
+                console.error('Error:', error.message);
+                setErrorMessage('Có lỗi xảy ra, vui lòng thử lại.');
             }
         }
     };
