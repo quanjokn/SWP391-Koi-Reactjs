@@ -108,7 +108,7 @@ const OrderDetail = () => {
                                 <th className={styles.textLeft}>Tên cá</th>
                                 <th className={`${styles.textRight} ${styles.quantityColumn}`}>Số lượng</th>
                                 <th className={styles.textRight}>Giá tiền VND</th>
-                                {order.status === 'Completed' && (
+                                {order.status === 'Completed' && order.orderDetailsDTO.some(detail => detail.category !== 'ConsignedKoi') && (
                                     <th className={styles.textCenter}>Nhận xét</th>
                                 )}
                             </tr>
@@ -127,7 +127,7 @@ const OrderDetail = () => {
                                     <td className={`${styles.textRight} ${styles.quantityColumn}`}>{item.quantity || 0}</td>
                                     <td className={styles.textRight}>{item.unitPrice ? item.unitPrice.toLocaleString('vi-VN') : 0}</td>
                                     {/* Nút đánh giá cho từng con cá */}
-                                    {order.status === 'Completed' && !item.evaluationStatus && (
+                                    {order.status === 'Completed' && !item.evaluationStatus && order.orderDetailsDTO.some(detail => detail.category !== 'ConsignedKoi') && (
                                         <td className={styles.textCenter}>
 
                                             <button
