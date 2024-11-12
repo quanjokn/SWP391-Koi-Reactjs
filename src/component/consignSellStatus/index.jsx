@@ -10,7 +10,7 @@ import {
 } from "mdb-react-ui-kit";
 import "./consignSellStatus.css";
 
-export default function ConsignSellStatus({ orderId, date, status, price, requestDate, pendingDate, responseDate, paymentDate, completeDate }) {
+export default function ConsignSellStatus({ orderId, date, status, price, requestDate, pendingDate, responseDate, paymentDate, completedDate }) {
     // Nhận thêm status từ API
     useEffect(() => {
         const colElement = document.querySelector(".col-12");
@@ -151,7 +151,7 @@ export default function ConsignSellStatus({ orderId, date, status, price, reques
                                                 Đã Hoàn Thành
                                             </p>
                                             <p className={`fw-bold text-center mb-0 ${getTextColorClass(1)}`}>
-                                                {completeDate}
+                                                {completedDate}
                                             </p>
                                         </div>
                                         <div className="d-flex flex-column align-items-center">

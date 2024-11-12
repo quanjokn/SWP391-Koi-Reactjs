@@ -77,7 +77,7 @@ const OrderDetailConSignSell = () => {
                     requestDate={order.consignDateStatus.requestDate}
                     pendingDate={order.consignDateStatus.pendingDate}
                     responseDate={order.consignDateStatus.responseDate} 
-                    completeDate={order.consignDateStatus.completeDate}
+                    completeDate={order.consignDateStatus.completedDate}
                     paymentDate={order.consignDateStatus.paymentDate}
                 />
 
