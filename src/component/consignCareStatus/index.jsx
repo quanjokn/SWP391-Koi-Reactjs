@@ -10,7 +10,7 @@ import {
 } from "mdb-react-ui-kit";
 import "./consignCareStatus.css";
 
-export default function ConsignCareStatus({ orderId, startDate, endDate, status, price }) {
+export default function ConsignCareStatus({ orderId, startDate, endDate, status, price, requestDate, pendingDate, responseDate, paymentDate, completedDate }) {
     // Nhận thêm status từ API
     useEffect(() => {
         const colElement = document.querySelector(".col-12");
@@ -99,7 +99,7 @@ export default function ConsignCareStatus({ orderId, startDate, endDate, status,
                                         <li
                                             className={`step0 ${getStatusClass(1)} text-center`}
                                             id="step1"
-                                        ></li>
+                                        ></li>                                   
                                         <li
                                             className={`step0 ${getStatusClass(2)} text-center`}
                                             id="step2"
@@ -124,22 +124,37 @@ export default function ConsignCareStatus({ orderId, startDate, endDate, status,
                                             <p className={`fw-bold text-center mb-0 ${getTextColorClass(1)}`}>
                                                 Đợi Xác Nhận
                                             </p>
+                                            <p className={`fw-bold text-center mb-0 ${getTextColorClass(1)}`}>
+                                                {requestDate}
+                                            </p>
                                         </div>
                                         <div className="d-flex flex-column align-items-center">
                                             <MDBIcon fas icon="clipboard-check" size="3x" />
                                             <p className={`fw-bold text-center mb-0 ${getTextColorClass(2)}`}>Đang xác nhận</p>
+                                            <p className={`fw-bold text-center mb-0 ${getTextColorClass(2)}`}>
+                                                {pendingDate}
+                                            </p>
                                         </div>
                                         <div className="d-flex flex-column align-items-center">
                                             <MDBIcon fas icon="reply" size="3x" />
                                             <p className={`fw-bold text-center mb-0 ${getTextColorClass(3)}`}>Đã phản hồi</p>
+                                            <p className={`fw-bold text-center mb-0 ${getTextColorClass(3)}`}>
+                                                {responseDate}
+                                            </p>
                                         </div>
                                         <div className="d-flex flex-column align-items-center">
                                             <MDBIcon fas icon="coins" size="3x" />
                                             <p className={`fw-bold text-center mb-0 ${getTextColorClass(4)}`}>Đã thanh toán</p>
+                                            <p className={`fw-bold text-center mb-0 ${getTextColorClass(4)}`}>
+                                                {paymentDate}
+                                            </p>
                                         </div>
                                         <div className="d-flex flex-column align-items-center">
                                             <MDBIcon fas icon="circle-check" size="3x" />
                                             <p className={`fw-bold text-center mb-0 ${getTextColorClass(5)}`}>Đã Hoàn Thành</p>
+                                            <p className={`fw-bold text-center mb-0 ${getTextColorClass(5)}`}>
+                                                {completedDate}
+                                            </p>
                                         </div>
                                     </div>
                                     <div>

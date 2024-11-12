@@ -222,6 +222,7 @@ const ConsignedKoiToCare = () => {
                                             className="form-control"
                                             name="age"
                                             min="1"
+                                            max="10"
                                             value={fishData.age}
                                             onChange={(e) => handleInputChange(index, e)}
                                             required
@@ -231,9 +232,11 @@ const ConsignedKoiToCare = () => {
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
                                         <label>Kích thước:</label>
                                         <input
-                                            type="text"
+                                            type="number"
                                             className="form-control"
                                             name="size"
+                                            min="10"
+                                            max="100"
                                             placeholder="(cm)"
                                             value={fishData.size}
                                             onChange={(e) => handleInputChange(index, e)}

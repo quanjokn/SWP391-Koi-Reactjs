@@ -65,7 +65,7 @@ const ManageConsignCareDetail = () => {
         }
     };
 
-    const fetchUpdateHistory = async () => {      
+    const fetchUpdateHistory = async () => {
         try {
             const response = await api.get(`/caringManagement/getAllHealthUpdation/${updateData.caredKoiID}`);
             setUpdateHistory(response.data); // Giả sử API trả về mảng lịch sử
@@ -80,7 +80,7 @@ const ManageConsignCareDetail = () => {
             return;
         } else {
             fetchOrderDetail();
-            fetchUpdateHistory(); 
+            fetchUpdateHistory();
         }
     }, [user, orderId, navigate]);
 
@@ -96,6 +96,8 @@ const ManageConsignCareDetail = () => {
                 return "Đã thanh toán";
             case "Rejected":
                 return "Đã bị từ chối";
+            case "Pending_payment":
+                return "Chờ thanh toán";
             default:
                 return status;
         }
@@ -114,28 +116,35 @@ const ManageConsignCareDetail = () => {
 
     const handleAcceptOrder = async () => {
         const staffId = user ? user.id : null;
-        const approveReq = {
-            staffID: staffId,
-            orderID: orderId,
-            decision,
-            note: ""
-        };
-        try {
-            setIsLoading(true);
-            await api.post(`/caringManagement/approval`, approveReq, {
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            },);
-            setIsLoading(false);
-            alert('Đã phản hồi thành công!');
-            setIsOrderProcessed(true);
+        const hasPendingDecision = order.caredKois.some(koi => decision[koi.id] === undefined);
+        if (hasPendingDecision) {
+            alert('Vui lòng chọn chấp nhận hoặc từ chối !');
             fetchOrderDetail();
-        } catch (error) {
-            console.error('Error accepting order:', error);
-            alert('Đã xảy ra lỗi khi phản hồi.');
-            setIsLoading(false);
+        } else {
+            const approveReq = {
+                staffID: staffId,
+                orderID: orderId,
+                decision,
+                note: ""
+            };
+            try {
+                setIsLoading(true);
+                await api.post(`/caringManagement/approval`, approveReq, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                },);
+                setIsLoading(false);
+                alert('Đã phản hồi thành công!');
+                setIsOrderProcessed(true);
+                fetchOrderDetail();
+            } catch (error) {
+                console.error('Error accepting order:', error);
+                alert('Đã xảy ra lỗi khi phản hồi.');
+                setIsLoading(false);
+            }
         }
+
     };
 
     const handleCompleteOrder = async () => {
@@ -166,7 +175,7 @@ const ManageConsignCareDetail = () => {
     const handleUpdateSubmit = async (e) => {
         e.preventDefault();
         console.log(updateData);
-        try { 
+        try {
             setIsLoading(true);
             await api.post(`/caringManagement/updateHealthStatus`, updateData); // Giả sử endpoint này nhận thông tin cập nhật
             setIsLoading(false);
@@ -178,11 +187,11 @@ const ManageConsignCareDetail = () => {
             console.error('Error updating fish status:', error);
             alert('Đã xảy ra lỗi khi cập nhật.');
             setIsLoading(false);
-        } 
+        }
     };
 
-    if(isLoading){
-        return <Loading/>
+    if (isLoading) {
+        return <Loading />
     }
 
     return (
@@ -266,11 +275,16 @@ const ManageConsignCareDetail = () => {
                             </tbody>
                         </table>
                         <ConsignCareStatus
-                            orderId={orderId}
-                            startDate={new Date(order.caringOrder.startDate).toLocaleDateString()}
-                            endDate={new Date(order.caringOrder.endDate).toLocaleDateString()}
-                            status={status}
-                            price={order.caringOrder.totalPrice}
+                            orderId={orderId || 'N/A'}
+                            startDate={new Date(order.caringOrder.startDate).toLocaleDateString() || 'N/A'}
+                            endDate={new Date(order.caringOrder.endDate).toLocaleDateString() || 'N/A'}
+                            status={status || 'N/A'}
+                            price={order.caringOrder.totalPrice || 'N/A'}
+                            requestDate={order.caringOrder.careDateStatus.requestDate }
+                            pendingDate={order.caringOrder.careDateStatus.pendingDate }
+                            responseDate={order.caringOrder.careDateStatus.responseDate } 
+                            completeDate={order.caringOrder.careDateStatus.completedDate }
+                            paymentDate={order.caringOrder.careDateStatus.paymentDate }                        
                         />
                     </>
                 ) : (

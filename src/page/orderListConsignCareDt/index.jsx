@@ -23,13 +23,13 @@ const OrderDetailConSignCare = () => {
         try {
             const response = await api.get(`/caringManagement/getAllHealthUpdation/${koiId}`);
             setUpdateHistory(prevHistory => {
-            // Filter out entries that already exist in the history
-            const newEntries = response.data
-                .map(entry => ({ ...entry, caredKoiID: koiId }))
-                .filter(newEntry => !prevHistory.some(existingEntry => existingEntry.id === newEntry.id));
-            
-            return [...prevHistory, ...newEntries];
-        });
+                // Filter out entries that already exist in the history
+                const newEntries = response.data
+                    .map(entry => ({ ...entry, caredKoiID: koiId }))
+                    .filter(newEntry => !prevHistory.some(existingEntry => existingEntry.id === newEntry.id));
+
+                return [...prevHistory, ...newEntries];
+            });
             console.log(updateHistory)
         } catch (error) {
             console.error('Error fetching update history:', error);
@@ -80,6 +80,8 @@ const OrderDetailConSignCare = () => {
                 return { text: 'Đã hoàn thành', className: styles.done };
             case 'Rejected':
                 return { text: 'Đã bị từ chối', className: styles.rejected };
+            case "Pending_payment":
+                return { text: 'Chờ thanh toán' };
             default:
                 return { text: status, className: '' };
         }
@@ -111,6 +113,11 @@ const OrderDetailConSignCare = () => {
                     endDate={new Date(order.endDate).toLocaleDateString() || 'N/A'}
                     status={order.status || 'N/A'}
                     price={order.totalPrice || 'N/A'}
+                    requestDate={order.careDateStatus.requestDate }
+                    pendingDate={order.careDateStatus.pendingDate }
+                    responseDate={order.careDateStatus.responseDate } 
+                    completeDate={order.careDateStatus.completedDate }
+                    paymentDate={order.careDateStatus.paymentDate }
                 />
 
                 {(order.status === 'Responded') && (

@@ -32,6 +32,7 @@ const ProductDetail = () => {
         api.post(`/fish/fish-detail/${productId}`)
             .then((response) => {
                 setProduct(response.data);
+                console.log(response.data);
             })
             .catch((error) => {
                 console.error("Error fetching product details:", error);
@@ -71,7 +72,8 @@ const ProductDetail = () => {
                 fetchCart(); // Gọi lại để cập nhật giỏ hàng
             })
             .catch((error) => {
-                console.error("Error adding product to cart!", error);
+                console.error("Error adding item to cart!", error);
+                alert("Không thể mua, đây là cá của bạn!");
             });
     };
 
@@ -184,6 +186,25 @@ const ProductDetail = () => {
 
                         <div className={styles["product-info "]} class="col-md-7">
                             <p className={styles['price']}>Giá bán: {product.price.toLocaleString('vi-VN')} VND</p>
+                            <div className={styles.ratingRow}>
+                                {product ? (
+                                    <>
+                                        <span className={styles["rating-number"]}>{product.rating ? product.rating.toFixed(1) : 'Chưa có đánh giá'}</span>
+                                        <svg
+                                            width="45"
+                                            height="45"
+                                            viewBox="0 0 45 45"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className={styles.staricon}
+                                        >
+                                            <path d="M10.9219 41.25L13.9688 28.0781L3.75 19.2188L17.25 18.0469L22.5 5.625L27.75 18.0469L41.25 19.2188L31.0312 28.0781L34.0781 41.25L22.5 34.2656L10.9219 41.25Z" fill="currentColor" />
+                                        </svg>
+                                    </>
+                                ) : (
+                                    <span>Đang tải sản phẩm...</span> // Or any loading message or placeholder
+                                )}
+                            </div>
+
                             {product.discount > 0 && (
                                 <p>Giá khuyến mãi: {promotionPrice.toFixed(2)} VND</p>
                             )}
@@ -205,7 +226,7 @@ const ProductDetail = () => {
                             <div className={styles["action-buttons"]}>
                                 <button className={styles["add-to-cart"]}
                                     onClick={() => handleAddToCart(product)}><i class="fa-solid fa-cart-shopping"></i></button>
-                                
+
                             </div>
                         </div>
                     </div>

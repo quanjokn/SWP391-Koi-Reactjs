@@ -27,15 +27,15 @@ export const UserProvider = ({ children }) => {
                         console.error("Lỗi khi lấy thông tin người dùng:", error);
                         setUser(null);
                     })
-                    .finally(() => setLoading(false));  // Hết quá trình tải
+                    .finally(() => setLoading(false)); 
             } else {
                 localStorage.removeItem('jwt');
                 localStorage.removeItem('userExpiration');
                 setUser(null);
-                setLoading(false);  // Kết thúc quá trình tải
+                setLoading(false); 
             }
         } else {
-            setLoading(false);  // Kết thúc quá trình tải nếu không có jwt
+            setLoading(false); 
         }
     }, []);
 
