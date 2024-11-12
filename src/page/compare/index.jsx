@@ -26,10 +26,15 @@ const ComparePage = () => {
                         <p>Giá: {product.price}</p>
                         <p>Kích thước: {product.size}</p>
                         <p>Giới tính: {product.sex}</p>
-                        <p>Mô tả{product.description}</p>
+                        <p>Mô tả: {product.description}</p>
                         <p>Tuổi: {product.age}</p>
                         <p>Trạng thái sức khỏe: {product.healthStatus}</p>
-                        <p>Giống cá: {product.category}</p>
+                        <p>
+                                Loại cá: {product.category === "Koi" ? "cá Koi"
+                                    : product.category === "Batch" ? "Lô cá Koi"
+                                        : product.category === "ConsignedKoi" ? "Cá kí gửi"
+                                            : product.category}
+                            </p>
                         <p>Số lượng đang bán: {product.quantity}</p>
                         <p>Nguồn gốc: {product.origin}</p>
                         <p>Tính cách: {product.character}</p>

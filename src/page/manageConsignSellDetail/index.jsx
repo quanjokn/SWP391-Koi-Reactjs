@@ -226,10 +226,15 @@ const ManageConsignSellDetail = () => {
                             </tbody>
                         </table>
                         <ConsignSellStatus
-                            orderId={orderId}
-                            date={new Date(order.request.date).toLocaleDateString()}
-                            status={status}
-                            price={order.request.totalPrice.toLocaleString('vi-VN')}
+                            orderId={orderId || 'N/A'}
+                            date={new Date(order.request.date).toLocaleDateString() || 'N/A'}
+                            status={status || 'N/A'}
+                            price={order.request.totalPrice.toLocaleString('vi-VN') || 'N/A'}
+                            requestDate={order.consignDateStatus.requestDate}
+                            pendingDate={order.consignDateStatus.pendingDate}
+                            responseDate={order.consignDateStatus.responseDate} 
+                            completeDate={order.consignDateStatus.completeDate}
+                            paymentDate={order.consignDateStatus.paymentDate}
                         />
                     </>
                 ) : (

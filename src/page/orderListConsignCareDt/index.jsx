@@ -113,6 +113,11 @@ const OrderDetailConSignCare = () => {
                     endDate={new Date(order.endDate).toLocaleDateString() || 'N/A'}
                     status={order.status || 'N/A'}
                     price={order.totalPrice || 'N/A'}
+                    requestDate={order.careDateStatus.requestDate }
+                    pendingDate={order.careDateStatus.pendingDate }
+                    responseDate={order.careDateStatus.responseDate } 
+                    completeDate={order.careDateStatus.completedDate }
+                    paymentDate={order.careDateStatus.paymentDate }
                 />
 
                 {(order.status === 'Responded') && (

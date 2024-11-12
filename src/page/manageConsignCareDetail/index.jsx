@@ -275,11 +275,16 @@ const ManageConsignCareDetail = () => {
                             </tbody>
                         </table>
                         <ConsignCareStatus
-                            orderId={orderId}
-                            startDate={new Date(order.caringOrder.startDate).toLocaleDateString()}
-                            endDate={new Date(order.caringOrder.endDate).toLocaleDateString()}
-                            status={status}
-                            price={order.caringOrder.totalPrice}
+                            orderId={orderId || 'N/A'}
+                            startDate={new Date(order.caringOrder.startDate).toLocaleDateString() || 'N/A'}
+                            endDate={new Date(order.caringOrder.endDate).toLocaleDateString() || 'N/A'}
+                            status={status || 'N/A'}
+                            price={order.caringOrder.totalPrice || 'N/A'}
+                            requestDate={order.caringOrder.careDateStatus.requestDate }
+                            pendingDate={order.caringOrder.careDateStatus.pendingDate }
+                            responseDate={order.caringOrder.careDateStatus.responseDate } 
+                            completeDate={order.caringOrder.careDateStatus.completedDate }
+                            paymentDate={order.caringOrder.careDateStatus.paymentDate }                        
                         />
                     </>
                 ) : (
