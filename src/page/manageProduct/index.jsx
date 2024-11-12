@@ -112,12 +112,16 @@ const ManageProduct = () => {
             price: Number(price)
         };
         console.log(updatedFish);
+        if (quantity < 1) {
+            alert("Không được nhập số âm");
+            return;
+        }
         try {
             const response = await api.post(`/productList/updateFish/${fishId}`, updatedFish, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-            });   
+            });
             // Update the koi state with the new quantity
             setKoi(prevKoi => prevKoi.map(fish => fish.id === fishId ? { ...fish, quantity: quantity, price: price } : fish));
             setEditFishId('');  // Exit edit mode
