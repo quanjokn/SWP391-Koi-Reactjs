@@ -70,6 +70,7 @@ const ManageEmployee = () => {
             navigate('/nhan-vien');
         } catch (error) {
             console.error('Error creating account:', error);
+            alert('Tài khoản đã tồn tại !');
         }
     };
 

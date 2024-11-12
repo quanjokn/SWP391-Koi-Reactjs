@@ -328,7 +328,7 @@ const ManageProduct = () => {
                             <input
                                 type="number"
                                 name="size"
-                                min="10"
+                                min="10" 
                                 max="100"
                                 placeholder="(cm)"
                                 value={formData.size}
@@ -487,7 +487,7 @@ const ManageProduct = () => {
                                     </td>
 
                                     <td>
-                                        {editFishId === fish.id ? (
+                                    {editFishId === fish.id ? (
                                             <input
                                                 type="number"
                                                 min="100000"
@@ -497,14 +497,14 @@ const ManageProduct = () => {
                                             />
                                         ) : (
                                             fish.price.toLocaleString('vi-VN')
-                                        )}
-                                    </td>
+                                        )}      
+                                        </td>
                                     <td>
                                         {editFishId === fish.id ? (
                                             <input
                                                 type="number"
                                                 value={quantity}
-                                                min="1"
+                                                min="1" 
                                                 max="50"
                                                 onChange={(e) => setQuantity(e.target.value)}
                                             />

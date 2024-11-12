@@ -179,6 +179,7 @@ const ConsignedKoiToSell = () => {
                                             className="form-control"
                                             name="age"
                                             min="1"
+                                            max="10"
                                             value={fishData.age}
                                             onChange={(e) => handleInputChange(index, e)}
                                             required
@@ -193,7 +194,8 @@ const ConsignedKoiToSell = () => {
                                             placeholder="VNĐ"
                                             value={fishData.price}
                                             onChange={(e) => handleInputChange(index, e)}
-                                            min="1"
+                                            min="100000"
+                                            max="100000000"
                                             required
                                         />
                                     </div>
@@ -216,6 +218,7 @@ const ConsignedKoiToSell = () => {
                                             value={fishData.quantity}
                                             onChange={(e) => handleInputChange(index, e)}
                                             min="1"
+                                            max="1"
                                             required
                                         />
                                     </div>
@@ -239,9 +242,11 @@ const ConsignedKoiToSell = () => {
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
                                         <label>Kích thước:</label>
                                         <input
-                                            type="text"
+                                            type="number"
                                             className="form-control"
                                             name="size"
+                                            min="10"
+                                            max="100"
                                             placeholder="(cm)"
                                             value={fishData.size}
                                             onChange={(e) => handleInputChange(index, e)}
@@ -289,6 +294,7 @@ const ConsignedKoiToSell = () => {
                                             name="video"
                                             placeholder="Nhập đường link URL"
                                             onChange={(e) => handleInputChange(index, e)}
+                                            required
                                         />
                                     </div>
                                     <div className="col-12 col-md-6 col-lg-3 mb-3">
@@ -342,7 +348,7 @@ const ConsignedKoiToSell = () => {
                                             name="species"
                                             value={fishData.species}
                                             onChange={(e) => handleInputChange(index, e)}
-                                            size={2}
+                                            size={4}
                                             multiple={true}
                                             required
                                         >

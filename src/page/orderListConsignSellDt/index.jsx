@@ -50,7 +50,7 @@ const OrderDetailConSignSell = () => {
             case 'Accepted_Selling':
                 return { text: 'Đang bán' };
             case "Sold":
-                return "Đã bán";
+                return { text: 'Đã bán' };
             case 'Done':
                 return { text: 'Đã hoàn thành', className: styles.done };
             case 'Rejected':
@@ -74,6 +74,11 @@ const OrderDetailConSignSell = () => {
                     date={new Date(order.request.date).toLocaleDateString() || 'N/A'}
                     status={order?.status || 'N/A'}
                     price={order.request.totalPrice.toLocaleString('vi-VN') || 'N/A'}
+                    requestDate={order.consignDateStatus.requestDate}
+                    pendingDate={order.consignDateStatus.pendingDate}
+                    responseDate={order.consignDateStatus.responseDate} 
+                    completeDate={order.consignDateStatus.completedDate}
+                    paymentDate={order.consignDateStatus.paymentDate}
                 />
 
                 {/* Bảng thông tin cá Koi được bán */}
