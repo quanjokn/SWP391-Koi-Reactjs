@@ -218,7 +218,7 @@ const ConsignedKoiToSell = () => {
                                             value={fishData.quantity}
                                             onChange={(e) => handleInputChange(index, e)}
                                             min="1"
-                                            max="10"
+                                            max="1"
                                             required
                                         />
                                     </div>
@@ -348,7 +348,7 @@ const ConsignedKoiToSell = () => {
                                             name="species"
                                             value={fishData.species}
                                             onChange={(e) => handleInputChange(index, e)}
-                                            size={2}
+                                            size={4}
                                             multiple={true}
                                             required
                                         >
