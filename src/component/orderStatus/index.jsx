@@ -10,7 +10,7 @@ import {
 } from "mdb-react-ui-kit";
 import "./orderStatus.css";
 
-export default function OrderStatus({ orderId, date, status }) {
+export default function OrderStatus({ orderId, date, status, orderDate, responseDate, deliveryDate, completeDate }) {
     // Nhận thêm status từ API
     useEffect(() => {
         const colElement = document.querySelector(".col-12");
@@ -116,18 +116,38 @@ export default function OrderStatus({ orderId, date, status }) {
                                             <p className={`fw-bold text-center mb-0 ${getTextColorClass(1)}`}>
                                                 Đợi Xác Nhận
                                             </p>
+                                            {orderDate && (
+                                                <p className={`fw-bold text-center mb-0 ${getTextColorClass(1)}`}>
+                                                    {orderDate}
+                                                </p>
+                                            )}
                                         </div>
                                         <div className="d-flex flex-column align-items-center">
                                             <MDBIcon fas icon="box-open" size="3x" />
                                             <p className={`fw-bold text-center mb-0 ${getTextColorClass(2)}`}>Đang Chuẩn Bị</p>
+                                            {responseDate && (
+                                                <p className={`fw-bold text-center mb-0 ${getTextColorClass(2)}`}>
+                                                    {responseDate}
+                                                </p>
+                                            )}
                                         </div>
                                         <div className="d-flex flex-column align-items-center">
                                             <MDBIcon fas icon="shipping-fast" size="3x" />
                                             <p className={`fw-bold text-center mb-0 ${getTextColorClass(3)}`}>Đang Vận Chuyển</p>
+                                            {deliveryDate && (
+                                                <p className={`fw-bold text-center mb-0 ${getTextColorClass(3)}`}>
+                                                    {deliveryDate}
+                                                </p>
+                                            )}
                                         </div>
                                         <div className="d-flex flex-column align-items-center">
                                             <MDBIcon fas icon="home" size="3x" />
                                             <p className={`fw-bold text-center mb-0 ${getTextColorClass(4)}`}>Đã Hoàn Thành</p>
+                                            {completeDate && (
+                                                <p className={`fw-bold text-center mb-0 ${getTextColorClass(4)}`}>
+                                                    {completeDate}
+                                                </p>
+                                            )}
                                         </div>
                                     </div>
                                 </MDBCardBody>

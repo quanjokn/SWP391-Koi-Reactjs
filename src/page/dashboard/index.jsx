@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import OrderRevenueChart from '../../component/orderRevenueChart/index';
-import WeeklySalesPieChart from '../../component/weeklySalesPieChart/index';
+import MonthlySalesPieChart from '../../component/monthlySalesPieChart';
 import Header from '../../component/header';
 import Tagbar from '../../component/tagbar';
 import Footer from '../../component/footer';
@@ -120,7 +120,7 @@ const Dashboard = () => {
 
                     <div className="col-md-4 mb-4">
                         <div className="chart-box p-3">
-                            <WeeklySalesPieChart month={selectedMonth} />
+                            <MonthlySalesPieChart month={selectedMonth} />
                         </div>
                     </div>
                 </div>
