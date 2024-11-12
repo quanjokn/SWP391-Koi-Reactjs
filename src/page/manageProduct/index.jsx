@@ -89,6 +89,7 @@ const ManageProduct = () => {
             });
             alert('Thêm cá thành công!');
             setIsFormVisible(false); // Hide the form after submission
+            window.location.reload();
         } catch (error) {
             console.error('Error adding fish:', error);
             console.log(error.response?.data);
@@ -113,6 +114,10 @@ const ManageProduct = () => {
         };
         console.log(updatedFish);
         if (quantity < 1) {
+            alert("Không được nhập số âm");
+            return;
+        }
+        if (price < 100000) {
             alert("Không được nhập số âm");
             return;
         }

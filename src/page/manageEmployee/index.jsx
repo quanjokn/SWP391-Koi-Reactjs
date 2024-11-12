@@ -88,7 +88,7 @@ const ManageEmployee = () => {
             if (response.status === 200) {
                 alert('Delete user successfully');
                 const updatedUsersResponse = await api.get('/userManagement/allAccount');
-                const allUsers = [...updatedUsersResponse.data.customers, ...updatedUsersResponse.data.staff];                
+                const allUsers = [...updatedUsersResponse.data.customers, ...updatedUsersResponse.data.staff];
                 setUsers(allUsers);
                 setFilteredUsers(allUsers);
             } else {
@@ -190,7 +190,7 @@ const ManageEmployee = () => {
                                                 {user.status === true ? <div className={styles["online-icon"]}></div> : <div className={styles["offline-icon"]}></div>}
                                             </td>
                                             <td>
-                                                <button className={styles["btn"]} onClick={() => handleRemove(user.id)}>Remove</button>
+                                                <button className={styles["btn"]} onClick={() => handleRemove(user.id)}>Xoá</button>
                                             </td>
                                         </tr>
                                     ))
