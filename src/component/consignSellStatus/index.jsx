@@ -10,7 +10,7 @@ import {
 } from "mdb-react-ui-kit";
 import "./consignSellStatus.css";
 
-export default function ConsignSellStatus({ orderId, date, status, price, requestDate, pendingDate, responseDate, paymentDate, completedDate }) {
+export default function ConsignSellStatus({ orderId, date, status, price, requestDate, pendingDate, responseDate, paymentDate, completedDate,expiredDate,approvalDate }) {
     // Nhận thêm status từ API
     useEffect(() => {
         const colElement = document.querySelector(".col-12");
@@ -38,7 +38,7 @@ export default function ConsignSellStatus({ orderId, date, status, price, reques
 
         const currentStep = statusMap[status] || 0;
 
-        if (status === "Rejected") {
+        if (status === "Rejected" || status === "Expired") {
             return "rejected";
         }
 
@@ -55,12 +55,13 @@ export default function ConsignSellStatus({ orderId, date, status, price, reques
             Responded: 3,
             Done: 4,
             Shared: 5,
+            Expired: 6,
             Rejected: 0,
         };
 
         const currentStep = statusMap[status] || 0;
 
-        if (status === "Rejected") {
+        if (status === "Rejected" || status === "Expired" ) {
             return "text-danger"; // Màu đỏ cho chữ
         }
 
@@ -78,6 +79,11 @@ export default function ConsignSellStatus({ orderId, date, status, price, reques
                                 style={{ borderRadius: "5px" }}
                             >
                                 <MDBCardBody className="p-5">
+                                    {status === "Expired" && (
+                                        <div className="d-flex justify-content-between align-items-center mb-5">
+                                            <h2 style={{ color: 'red' }}>Đã hết hạn kí gửi bán</h2>
+                                        </div>
+                                    )}
                                     <div className="d-flex justify-content-between align-items-center mb-5">
                                         <div>
                                             <MDBTypography tag="h5" className="mb-0">
@@ -88,12 +94,15 @@ export default function ConsignSellStatus({ orderId, date, status, price, reques
                                             </MDBTypography>
                                         </div>
                                         <div className="text-end justify-content-between align-items-center mb-0">
-                                            Ngày kí gửi: <span>{date}</span>
-                                        </div>    
+                                            Ngày duyệt: <span>{approvalDate}</span>
+                                        </div>
+                                        <div className="text-end justify-content-between align-items-center mb-0">
+                                            Ngày hết hạn: <span>{expiredDate}</span>
+                                        </div>
                                     </div>
                                     <ul
                                         id="progressbar-sell"
-                                        className={`d-flex justify-content-between mx-0 mt-0 mb-5 px-0 pt-0 pb-2 ${status === 'Rejected' ? 'rejected' : ''}`}
+                                        className={`d-flex justify-content-between mx-0 mt-0 mb-5 px-0 pt-0 pb-2 ${status === 'Rejected' || status === "Expired" ? 'rejected' : ''}`}
                                     >
                                         <li
                                             className={`step0 ${getStatusClass(1)} text-center`}
@@ -132,7 +141,7 @@ export default function ConsignSellStatus({ orderId, date, status, price, reques
                                             <p className={`fw-bold text-center mb-0 ${getTextColorClass(2)}`}>
                                                 Đang xác nhận
                                             </p>
-                                            <p className={`fw-bold text-center mb-0 ${getTextColorClass(1)}`}>
+                                            <p className={`fw-bold text-center mb-0 ${getTextColorClass(2)}`}>
                                                 {pendingDate}
                                             </p>
                                         </div>
@@ -141,7 +150,7 @@ export default function ConsignSellStatus({ orderId, date, status, price, reques
                                             <p className={`fw-bold text-center mb-0 ${getTextColorClass(3)}`}>
                                                 Đã phản hồi
                                             </p>
-                                            <p className={`fw-bold text-center mb-0 ${getTextColorClass(1)}`}>
+                                            <p className={`fw-bold text-center mb-0 ${getTextColorClass(3)}`}>
                                                 {responseDate}
                                             </p>
                                         </div>
@@ -150,7 +159,7 @@ export default function ConsignSellStatus({ orderId, date, status, price, reques
                                             <p className={`fw-bold text-center mb-0 ${getTextColorClass(4)}`}>
                                                 Đã Hoàn Thành
                                             </p>
-                                            <p className={`fw-bold text-center mb-0 ${getTextColorClass(1)}`}>
+                                            <p className={`fw-bold text-center mb-0 ${getTextColorClass(4)}`}>
                                                 {completedDate}
                                             </p>
                                         </div>
@@ -159,7 +168,7 @@ export default function ConsignSellStatus({ orderId, date, status, price, reques
                                             <p className={`fw-bold text-center mb-0 ${getTextColorClass(5)}`}>
                                                 Đã Thanh toán
                                             </p>
-                                            <p className={`fw-bold text-center mb-0 ${getTextColorClass(1)}`}>
+                                            <p className={`fw-bold text-center mb-0 ${getTextColorClass(5)}`}>
                                                 {paymentDate}
                                             </p>
                                         </div>

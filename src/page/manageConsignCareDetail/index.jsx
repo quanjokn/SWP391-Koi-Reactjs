@@ -283,7 +283,7 @@ const ManageConsignCareDetail = () => {
                             requestDate={order.caringOrder.careDateStatus.requestDate }
                             pendingDate={order.caringOrder.careDateStatus.pendingDate }
                             responseDate={order.caringOrder.careDateStatus.responseDate } 
-                            completeDate={order.caringOrder.careDateStatus.completedDate }
+                            completedDate={order.caringOrder.careDateStatus.completedDate }
                             paymentDate={order.caringOrder.careDateStatus.paymentDate }                        
                         />
                     </>
