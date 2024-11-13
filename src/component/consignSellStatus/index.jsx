@@ -10,7 +10,7 @@ import {
 } from "mdb-react-ui-kit";
 import "./consignSellStatus.css";
 
-export default function ConsignSellStatus({ orderId, date, status, price, requestDate, pendingDate, responseDate, paymentDate, completedDate,expiredDate,approvalDate }) {
+export default function ConsignSellStatus({ orderId, date, status, price, requestDate, pendingDate, responseDate, paymentDate, completedDate, expiredDate, approvalDate }) {
     // Nhận thêm status từ API
     useEffect(() => {
         const colElement = document.querySelector(".col-12");
@@ -61,7 +61,7 @@ export default function ConsignSellStatus({ orderId, date, status, price, reques
 
         const currentStep = statusMap[status] || 0;
 
-        if (status === "Rejected" || status === "Expired" ) {
+        if (status === "Rejected" || status === "Expired") {
             return "text-danger"; // Màu đỏ cho chữ
         }
 
@@ -93,12 +93,18 @@ export default function ConsignSellStatus({ orderId, date, status, price, reques
                                                 </span>
                                             </MDBTypography>
                                         </div>
-                                        <div className="text-end justify-content-between align-items-center mb-0">
-                                            Ngày duyệt: <span>{approvalDate}</span>
-                                        </div>
-                                        <div className="text-end justify-content-between align-items-center mb-0">
-                                            Ngày hết hạn: <span>{expiredDate}</span>
-                                        </div>
+                                        {(status === "Responded" || status === "Done" || status === "Shared" || status === "Expired") && (
+                                            <>
+                                                <div className="text-end justify-content-between align-items-center mb-0">
+                                                    Ngày duyệt: <span>{approvalDate}</span>
+                                                </div>
+                                                <div className="text-end justify-content-between align-items-center mb-0">
+                                                    Ngày hết hạn: <span>{expiredDate}</span>
+                                                </div>
+                                            </>
+
+                                        )}
+
                                     </div>
                                     <ul
                                         id="progressbar-sell"
